@@ -1,17 +1,17 @@
-Package: template
-Title: PsyTeachR Book Template
-Version: 2.1
+Package: statsresdesign
+Title: PsyTeachR MSc Statistics and Research Design
+Version: 1.0
 Authors@R:
   c(
     person(
-        given = "Lisa", 
-        family = "DeBruine", 
+        given = "James", 
+        family = "Bartlett", 
         role = c("aut", "cre"), 
-        email = "debruine@gmail.com", 
-        comment = c(ORCID = "0000-0002-7523-5539")
+        email = "jebartlett94@gmail.com", 
+        comment = c(ORCID = "0000-0002-4191-5245")
     )
   )
-Description: This book provides a starting template for books in the psyTeachR series at the University of Glasgow School of Psychology and Neuroscience.
+Description: This book...
 License: CC BY 4.0 + LICENSE
 Encoding: UTF-8
 LazyData: true
