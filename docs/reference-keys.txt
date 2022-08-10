@@ -1,7 +1,16 @@
 fig:settings-general
 fig:settings-code
 fig:img-soundimals-hash
-introduction-to-glm
+introduction-to-linear-regression-1
+introduction-to-linear-regression-2
+introduction-to-generalised-linear-models-1
+introduction-to-generalised-linear-models-2
+introduction-to-linear-mixed-effects-models
+introduction-to-percentile-bootstrap
+graphical-representations
+myths-and-fallacies
+introduction-to-bayesian-hypothesis-testing
+introduction-to-bayesian-estimation
 installing-r
 installing-base-r
 installing-rstudio
