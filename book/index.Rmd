@@ -24,7 +24,7 @@ favicon: images/logos/favicon.ico # replace with your logo
 # automatically create a bib database for R packages
 # add any packages you want to cite here
 knitr::write_bib(c(
-  .packages(), 'bookdown', 'tidyverse', 'tinytex'
+  'bookdown', 'tidyverse', 'tinytex'
 ), 'packages.bib')
 
 ```
