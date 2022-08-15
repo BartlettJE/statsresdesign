@@ -2,7 +2,7 @@
 title: "Statistics and Research Design" # edit
 #subtitle: "optional" 
 author: "James Bartlett" # edit
-date: "2022-08-13"
+date: "2022-08-15"
 site: bookdown::bookdown_site
 documentclass: book
 classoption: oneside # for PDFs
@@ -27,6 +27,17 @@ favicon: images/logos/favicon.ico # replace with your logo
 <div class="small_right"><img src="images/logos/logo.png" 
      alt="ADS Hex Logo" /></div>
 
+**Book Name**: Statistics and Research Design.
+
+**Summary**: Materials for the Statistics and Research Design course on the MSc Research Methods in Psychological Science programme, University of Glasgow School of Psychology & Neuroscience.
+
+**Authors**: James Bartlett, Guillaume Rousselet, & Christoph Scheepers. 
+
+**Aim**: This course covers advanced statistics concepts you might need in psychological research, but you do not normally learn on standard curricula. The course is split into three segments for each lecturer to outline a core part of your advanced training. The first segment covers the general linear model, building up from simple linear regression to mixed effects models (Scheepers). The second segment covers statistical fallacies, misconceptions, and bootstrapping (Rousselet). The third segment covers Bayesian approaches to hypothesis testing and estimation (Bartlett). 
+
+**Contact**: This book is a living document and will be regularly checked and updated for improvements. Should you have any issues using the book or queries, please contact James Bartlett.
+
+**R Version**: This book has been written with R version 4.1.3 (2022-03-10). 
 
 
 

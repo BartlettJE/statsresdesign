@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 9 Introduction to Bayesian Hypothesis Testing | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
-<meta name="description" content="9.1 Learning objectives blah blah blah. To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. Save the code in a folder...">
+<meta name="description" content="In this chapter, we will be exploring how you can perform hypothesis testing under a Bayesian framework. After working through some interactive apps to understand the logic behind Bayesian...">
 <meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 9 Introduction to Bayesian Hypothesis Testing | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-bayesian-hypothesis-testing.html">
 <meta property="og:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
-<meta property="og:description" content="9.1 Learning objectives blah blah blah. To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. Save the code in a folder...">
+<meta property="og:description" content="In this chapter, we will be exploring how you can perform hypothesis testing under a Bayesian framework. After working through some interactive apps to understand the logic behind Bayesian...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 9 Introduction to Bayesian Hypothesis Testing | Statistics and Research Design">
-<meta name="twitter:description" content="9.1 Learning objectives blah blah blah. To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. Save the code in a folder...">
+<meta name="twitter:description" content="In this chapter, we will be exploring how you can perform hypothesis testing under a Bayesian framework. After working through some interactive apps to understand the logic behind Bayesian...">
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -106,12 +106,19 @@
 <h1>
 <span class="header-section-number">9</span> Introduction to Bayesian Hypothesis Testing<a class="anchor" aria-label="anchor" href="#introduction-to-bayesian-hypothesis-testing"><i class="fas fa-link"></i></a>
 </h1>
+<p>In this chapter, we will be exploring how you can perform hypothesis testing under a Bayesian framework. After working through some interactive apps to understand the logic behind Bayesian statistics and Bayes factors, we will calculate Bayes factors for two independent samples and two dependent samples using real data. The application of Bayes factors still mostly relies on testing against a point null hypothesis, so we will end on an alternative known as a Region of Practical Equivalence (ROPE). Here, we try to reject parameter values inside boundaries for your smallest effect size of interest.</p>
 <div id="learning-objectives" class="section level2" number="9.1">
 <h2>
 <span class="header-section-number">9.1</span> Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"><i class="fas fa-link"></i></a>
 </h2>
-<p>blah blah blah.</p>
-<p>To follow along to this chapter and try the code yourself, please download the data files we will be using in <a href="create%20and%20link">this zip file</a>. Save the code in a folder called <code class="path">data</code> and you will be able to use the same code.</p>
+<ol style="list-style-type: decimal">
+<li><p>Understand the logic behind <a href="introduction-to-bayesian-hypothesis-testing.html#bayes-logic">Bayesian inference</a> using the sweet example and Shiny app.</p></li>
+<li><p>Use the online visualisation to explore what impacts <a href="introduction-to-bayesian-hypothesis-testing.html#Bayes-factors">Bayes factors</a>.</p></li>
+<li><p>Calculate Bayes factors for <a href="introduction-to-bayesian-hypothesis-testing.html#Bayes-independent-samples">two independent samples</a>.</p></li>
+<li><p>Calculate Bayes factors for <a href="introduction-to-bayesian-hypothesis-testing.html#Bayes-dependent-samples">two dependent samples</a>.</p></li>
+<li><p>Define a <a href="introduction-to-bayesian-hypothesis-testing.html#ROPE">Region of Practical Equivalence (ROPE)</a> as an alternative to null hypothesis testing.</p></li>
+</ol>
+<p>To follow along to this chapter and try the code yourself, please download the data files we will be using in <a href="data/09_data.zip">this zip file</a>.</p>
 </div>
 <div id="bayes-logic" class="section level2" number="9.2">
 <h2>
@@ -148,9 +155,9 @@
 <p>In section 4, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. But you can always come back to it later in your own time.</p>
 </div>
 </div>
-<div id="the-logic-behind-bayes-factors" class="section level2" number="9.3">
+<div id="Bayes-factors" class="section level2" number="9.3">
 <h2>
-<span class="header-section-number">9.3</span> The Logic Behind Bayes Factors<a class="anchor" aria-label="anchor" href="#the-logic-behind-bayes-factors"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.3</span> The Logic Behind Bayes Factors<a class="anchor" aria-label="anchor" href="#Bayes-factors"><i class="fas fa-link"></i></a>
 </h2>
 <p>To demonstrate the logic behind Bayes factors, we will play around with this shiny app by <a href="https://rpsychologist.com/d3/bayes/">Magnusson</a>. Building on <a href="introduction-to-bayesian-hypothesis-testing.html#bayes-logic">section 1</a>, the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI) (define), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors.</p>
 <p>On the visualisation, there are three settings:</p>
@@ -173,9 +180,9 @@
 <li><p>Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, you usually find the values from the two intervals are very similar, but you have to interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% CI represents the area of the posterior, so it might be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0.</p></li>
 </ol>
 </div>
-<div id="bayes-factors-for-two-independent-samples" class="section level2" number="9.4">
+<div id="Bayes-independent-samples" class="section level2" number="9.4">
 <h2>
-<span class="header-section-number">9.4</span> Bayes factors for two independent samples<a class="anchor" aria-label="anchor" href="#bayes-factors-for-two-independent-samples"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.4</span> Bayes factors for two independent samples<a class="anchor" aria-label="anchor" href="#Bayes-independent-samples"><i class="fas fa-link"></i></a>
 </h2>
 <div id="guided-example-bastian-et-al.-2014" class="section level3" number="9.4.1">
 <h3>
@@ -301,13 +308,13 @@ MAP
 mu
 </td>
 <td style="text-align:right;">
-3.4266792
+3.4261054
 </td>
 <td style="text-align:right;">
-3.4264451
+3.4264321
 </td>
 <td style="text-align:right;">
-3.4246524
+3.4224490
 </td>
 </tr>
 <tr>
@@ -315,13 +322,13 @@ mu
 beta (Control - Pain)
 </td>
 <td style="text-align:right;">
--0.4849824
+-0.4855294
 </td>
 <td style="text-align:right;">
--0.4895553
+-0.4908014
 </td>
 <td style="text-align:right;">
--0.4665456
+-0.4610588
 </td>
 </tr>
 <tr>
@@ -329,13 +336,13 @@ beta (Control - Pain)
 sig2
 </td>
 <td style="text-align:right;">
-1.1040877
+1.1026847
 </td>
 <td style="text-align:right;">
-1.1329872
+1.1320402
 </td>
 <td style="text-align:right;">
-1.0732476
+1.0552317
 </td>
 </tr>
 <tr>
@@ -343,13 +350,13 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.4623043
+-0.4630292
 </td>
 <td style="text-align:right;">
--0.4669970
+-0.4684085
 </td>
 <td style="text-align:right;">
--0.4582879
+-0.4553272
 </td>
 </tr>
 <tr>
@@ -357,13 +364,13 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.5434767
+0.5466884
 </td>
 <td style="text-align:right;">
-5.5681309
+3.9885767
 </td>
 <td style="text-align:right;">
-0.0217733
+0.0281342
 </td>
 </tr>
 </tbody>
@@ -398,10 +405,10 @@ mu
 0.95
 </td>
 <td style="text-align:right;">
-3.1410977
+3.1402190
 </td>
 <td style="text-align:right;">
-3.7109497
+3.7124545
 </td>
 </tr>
 <tr>
@@ -412,10 +419,10 @@ beta (Control - Pain)
 0.95
 </td>
 <td style="text-align:right;">
--1.0240761
+-1.0337029
 </td>
 <td style="text-align:right;">
-0.0610567
+0.0475741
 </td>
 </tr>
 <tr>
@@ -426,10 +433,10 @@ sig2
 0.95
 </td>
 <td style="text-align:right;">
-0.7281116
+0.7338982
 </td>
 <td style="text-align:right;">
-1.5922883
+1.5958668
 </td>
 </tr>
 <tr>
@@ -440,10 +447,10 @@ delta
 0.95
 </td>
 <td style="text-align:right;">
--0.9866859
+-0.9892029
 </td>
 <td style="text-align:right;">
-0.0480039
+0.0454270
 </td>
 </tr>
 <tr>
@@ -454,10 +461,10 @@ g
 0.95
 </td>
 <td style="text-align:right;">
-0.0244192
+0.0281342
 </td>
 <td style="text-align:right;">
-7.5273334
+7.6898043
 </td>
 </tr>
 </tbody>
@@ -512,16 +519,16 @@ ROPE_Percentage
 mu
 </td>
 <td style="text-align:right;">
-3.4266792
+3.4261054
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-3.1410977
+3.1402190
 </td>
 <td style="text-align:right;">
-3.7109497
+3.7124545
 </td>
 <td style="text-align:right;">
 1.00000
@@ -547,19 +554,19 @@ mu
 beta (Control - Pain)
 </td>
 <td style="text-align:right;">
--0.4849824
+-0.4855294
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--1.0240761
+-1.0337029
 </td>
 <td style="text-align:right;">
-0.0610567
+0.0475741
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -571,7 +578,7 @@ beta (Control - Pain)
 0.1
 </td>
 <td style="text-align:right;">
-0.0577889
+0.0541152
 </td>
 </tr>
 <tr>
@@ -582,16 +589,16 @@ beta (Control - Pain)
 sig2
 </td>
 <td style="text-align:right;">
-1.1040877
+1.1026847
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.7281116
+0.7338982
 </td>
 <td style="text-align:right;">
-1.5922883
+1.5958668
 </td>
 <td style="text-align:right;">
 1.00000
@@ -617,19 +624,19 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.4623043
+-0.4630292
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.9866859
+-0.9892029
 </td>
 <td style="text-align:right;">
-0.0480039
+0.0454270
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -641,7 +648,7 @@ delta
 0.1
 </td>
 <td style="text-align:right;">
-0.0604415
+0.0586941
 </td>
 </tr>
 <tr>
@@ -652,16 +659,16 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.5434767
+0.5466884
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0244192
+0.0281342
 </td>
 <td style="text-align:right;">
-7.5273334
+7.6898043
 </td>
 <td style="text-align:right;">
 1.00000
@@ -676,7 +683,7 @@ g
 0.1
 </td>
 <td style="text-align:right;">
-0.0358417
+0.0355259
 </td>
 </tr>
 </tbody>
@@ -703,9 +710,9 @@ g
 <code class="sourceCode R"><span class="va">Schroeder_ttest</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></code></pre></div>
 </div>
 </div>
-<div id="bayes-factors-for-two-dependent-samples" class="section level2" number="9.5">
+<div id="Bayes-dependent-samples" class="section level2" number="9.5">
 <h2>
-<span class="header-section-number">9.5</span> Bayes factors for two dependent samples<a class="anchor" aria-label="anchor" href="#bayes-factors-for-two-dependent-samples"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.5</span> Bayes factors for two dependent samples<a class="anchor" aria-label="anchor" href="#Bayes-dependent-samples"><i class="fas fa-link"></i></a>
 </h2>
 <div id="guided-example-mehr-et-al.-2016" class="section level3" number="9.5.1">
 <h3>
@@ -744,10 +751,17 @@ g
                           iterations <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span></code></pre></div>
 <p>Just note in the plot we have fewer panels as the paired samples approach simplifies things. Mu is our mean difference in the first panel and delta is our standardised effect in the third panel. For a dependent variable of gaze proportion, an unstandardised effect size is more informative than the standardised version.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Mehr_samples</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Subset first plot for mean to display correctly</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Mehr_samples</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
+     main <span class="op">=</span> <span class="st">"Posterior for mu"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="09-BayesHypo_files/figure-html/Mehr%20plots-1.png" width="100%" style="display: block; margin: auto;"></div>
-<p>We finally have our wrapper function for the median posterior distribution and its 95% credible interval.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Subset third plot for delta to display correctly</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Mehr_samples</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span>,
+     main <span class="op">=</span> <span class="st">"Posterior for delta"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="09-BayesHypo_files/figure-html/Mehr%20plots-2.png" width="100%" style="display: block; margin: auto;"></div>
+<p>We finally have our wrapper function for the median posterior distribution and its 95% credible interval.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Mehr_samples</span><span class="op">)</span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
@@ -794,19 +808,19 @@ ROPE_Percentage
 mu
 </td>
 <td style="text-align:right;">
--0.0663848
+-0.0665333
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.1243754
+-0.1256160
 </td>
 <td style="text-align:right;">
--0.0065891
+-0.0079565
 </td>
 <td style="text-align:right;">
-0.98665
+0.98698
 </td>
 <td style="text-align:right;">
 0.95
@@ -818,7 +832,7 @@ mu
 0.1
 </td>
 <td style="text-align:right;">
-0.8942222
+0.8904854
 </td>
 </tr>
 <tr>
@@ -829,16 +843,16 @@ mu
 sig2
 </td>
 <td style="text-align:right;">
-0.0288530
+0.0288360
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0165291
+0.0167767
 </td>
 <td style="text-align:right;">
-0.0459401
+0.0462376
 </td>
 <td style="text-align:right;">
 1.00000
@@ -864,19 +878,19 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.3921505
+-0.3925180
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.7408409
+-0.7439426
 </td>
 <td style="text-align:right;">
--0.0396456
+-0.0387140
 </td>
 <td style="text-align:right;">
-0.98665
+0.98698
 </td>
 <td style="text-align:right;">
 0.95
@@ -888,7 +902,7 @@ delta
 0.1
 </td>
 <td style="text-align:right;">
-0.0283892
+0.0283681
 </td>
 </tr>
 <tr>
@@ -899,16 +913,16 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.4883025
+0.4929580
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0248296
+0.0288525
 </td>
 <td style="text-align:right;">
-6.7753647
+6.7978462
 </td>
 <td style="text-align:right;">
 1.00000
@@ -923,7 +937,7 @@ g
 0.1
 </td>
 <td style="text-align:right;">
-0.0419680
+0.0417048
 </td>
 </tr>
 </tbody>
@@ -938,15 +952,15 @@ g
 <p>For your final independent activity, we have data from <a href="http://link.springer.com/10.3758/s13423-017-1348-y">Zwaan et al. (2020)</a> who wanted to replicate experiments from cognitive psychology to see how replicable they are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task">flanker task</a>.</p>
 <p>In short, we have two conditions: congruent and incongruent. In congruent trials, five symbols like arrows are the same and participants must identify the central symbol with a keyboard response. In incongruent trials, the four outer symbols are different to the central symbol. Typically, we find participants respond faster to congruent trials than incongruent trials. The dependent variable here is the mean response time in milliseconds (ms).</p>
 <p>We want to know whether response times are faster to congruent trials (session1_responsecongruent) than incongruent trials (session1_incongruent). Zwaan et al. measured a few things like changing the stimuli and repeated the task in two sessions, so we will just focus on the first session for this example. In this scenario, you might want to think of a one-tailed test since there is a strong prediction to expect faster responses in the congruent condition.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Zwaan_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Zwaan_flanker.csv"</span><span class="op">)</span>
 
 <span class="va">Zwaan_ttest</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></code></pre></div>
 </div>
 </div>
-<div id="equivalence-testing-vs-rope" class="section level2" number="9.6">
+<div id="ROPE" class="section level2" number="9.6">
 <h2>
-<span class="header-section-number">9.6</span> Equivalence Testing vs ROPE<a class="anchor" aria-label="anchor" href="#equivalence-testing-vs-rope"><i class="fas fa-link"></i></a>
+<span class="header-section-number">9.6</span> Equivalence Testing vs ROPE<a class="anchor" aria-label="anchor" href="#ROPE"><i class="fas fa-link"></i></a>
 </h2>
 <div id="guided-example-for-two-independent-samples-bastian-et-al.-2014" class="section level3" number="9.6.1">
 <h3>
@@ -960,7 +974,7 @@ g
 <li><p>HDI and the ROPE partially overlap: We are undecided as we need more data and greater precision in the posterior to make a decision about whether we can reject the ROPE.</p></li>
 </ol>
 <p>This will be more meaningful in chapter 10 when we turn to Bayesian modelling as the <code class="package">bayestestR</code> package has great functions for visualising the ROPE, but they unfortunately do not work with <code class="package">BayesFactor</code> objects. We will return to the Bastian et al. (2014) data and the <code><span class="fu">describe_posterior</span><span class="op">(</span><span class="op">)</span></code> function. If you explored the complete output earlier, you might have noticed the values relating to ROPE, but we ignored it at the time. As a reminder, lets see the output:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># rerun the code from section 9.4.1 if you do not have this object saved</span>
 <span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Bastian_samples</span><span class="op">)</span></code></pre></div>
 <div class="kable-table">
@@ -1008,16 +1022,16 @@ ROPE_Percentage
 mu
 </td>
 <td style="text-align:right;">
-3.4266792
+3.4261054
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-3.1410977
+3.1402190
 </td>
 <td style="text-align:right;">
-3.7109497
+3.7124545
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1043,19 +1057,19 @@ mu
 beta (Control - Pain)
 </td>
 <td style="text-align:right;">
--0.4849824
+-0.4855294
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--1.0240761
+-1.0337029
 </td>
 <td style="text-align:right;">
-0.0610567
+0.0475741
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -1067,7 +1081,7 @@ beta (Control - Pain)
 0.1
 </td>
 <td style="text-align:right;">
-0.0577889
+0.0541152
 </td>
 </tr>
 <tr>
@@ -1078,16 +1092,16 @@ beta (Control - Pain)
 sig2
 </td>
 <td style="text-align:right;">
-1.1040877
+1.1026847
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.7281116
+0.7338982
 </td>
 <td style="text-align:right;">
-1.5922883
+1.5958668
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1113,19 +1127,19 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.4623043
+-0.4630292
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.9866859
+-0.9892029
 </td>
 <td style="text-align:right;">
-0.0480039
+0.0454270
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -1137,7 +1151,7 @@ delta
 0.1
 </td>
 <td style="text-align:right;">
-0.0604415
+0.0586941
 </td>
 </tr>
 <tr>
@@ -1148,16 +1162,16 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.5434767
+0.5466884
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0244192
+0.0281342
 </td>
 <td style="text-align:right;">
-7.5273334
+7.6898043
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1172,7 +1186,7 @@ g
 0.1
 </td>
 <td style="text-align:right;">
-0.0358417
+0.0355259
 </td>
 </tr>
 </tbody>
@@ -1192,7 +1206,7 @@ g
 <li><p>Small telescopes (the effect size the original study had 33% power to detect).</p></li>
 </ol>
 <p>For Bastian et al. (2014), they measured bonding on a 5-point Likert scale, so we might consider anything less than a one-point difference as too small to be practically meaningful.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Bastian_samples</span>,
                    rope_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># plus or minus one point difference</span></code></pre></div>
 <div class="kable-table">
@@ -1240,16 +1254,16 @@ ROPE_Percentage
 mu
 </td>
 <td style="text-align:right;">
-3.4266792
+3.4261054
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-3.1410977
+3.1402190
 </td>
 <td style="text-align:right;">
-3.7109497
+3.7124545
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1275,19 +1289,19 @@ mu
 beta (Control - Pain)
 </td>
 <td style="text-align:right;">
--0.4849824
+-0.4855294
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--1.0240761
+-1.0337029
 </td>
 <td style="text-align:right;">
-0.0610567
+0.0475741
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -1299,7 +1313,7 @@ beta (Control - Pain)
 1
 </td>
 <td style="text-align:right;">
-0.9936316
+0.9918211
 </td>
 </tr>
 <tr>
@@ -1310,16 +1324,16 @@ beta (Control - Pain)
 sig2
 </td>
 <td style="text-align:right;">
-1.1040877
+1.1026847
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.7281116
+0.7338982
 </td>
 <td style="text-align:right;">
-1.5922883
+1.5958668
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1334,7 +1348,7 @@ sig2
 1
 </td>
 <td style="text-align:right;">
-0.3092073
+0.3083652
 </td>
 </tr>
 <tr>
@@ -1345,19 +1359,19 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.4623043
+-0.4630292
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.9866859
+-0.9892029
 </td>
 <td style="text-align:right;">
-0.0480039
+0.0454270
 </td>
 <td style="text-align:right;">
-0.96422
+0.96571
 </td>
 <td style="text-align:right;">
 0.95
@@ -1380,16 +1394,16 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.5434767
+0.5466884
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0244192
+0.0281342
 </td>
 <td style="text-align:right;">
-7.5273334
+7.6898043
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1404,7 +1418,7 @@ g
 1
 </td>
 <td style="text-align:right;">
-0.7171714
+0.7158451
 </td>
 </tr>
 </tbody>
@@ -1420,7 +1434,7 @@ g
 <div class="try">
 <p>For your independent activity, apply the same logic to the Schroeder and Epley (2014) data set from before. Do you think plus or minus 1 point difference on a 10-point scale is informative, or would you choose another ROPE? Based on your ROPE, what is your decision?</p>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="cn">NULL</span></code></pre></div>
 <pre><code>## NULL</code></pre>
 </div>
@@ -1429,7 +1443,7 @@ g
 <span class="header-section-number">9.6.3</span> Guided example for two dependent samples (Mehr et al., 2014)<a class="anchor" aria-label="anchor" href="#guided-example-for-two-dependent-samples-mehr-et-al.-2014"><i class="fas fa-link"></i></a>
 </h3>
 <p>For the Mehr et al. (2014) data, the outcome is a little easier to interpret for an unstandardised effect than the two between-subjects examples. They compared proportion of gaze duration spent on the model that sang the familiar song and wanted to know whether this would increase at test compared to baseline. As the proportion of gaze is bound between 0 (none of the time) to 1 (all of the time), we might consider a 5% (0.05) increase or decrease as theoretically meaningful if we are not very certain the test will be higher than baseline.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Mehr_samples</span>,
                    rope_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.05</span>, <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="kable-table">
@@ -1477,19 +1491,19 @@ ROPE_Percentage
 mu
 </td>
 <td style="text-align:right;">
--0.0663848
+-0.0665333
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.1243754
+-0.1256160
 </td>
 <td style="text-align:right;">
--0.0065891
+-0.0079565
 </td>
 <td style="text-align:right;">
-0.98665
+0.98698
 </td>
 <td style="text-align:right;">
 0.95
@@ -1501,7 +1515,7 @@ mu
 0.05
 </td>
 <td style="text-align:right;">
-0.2798286
+0.2746603
 </td>
 </tr>
 <tr>
@@ -1512,16 +1526,16 @@ mu
 sig2
 </td>
 <td style="text-align:right;">
-0.0288530
+0.0288360
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0165291
+0.0167767
 </td>
 <td style="text-align:right;">
-0.0459401
+0.0462376
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1547,19 +1561,19 @@ sig2
 delta
 </td>
 <td style="text-align:right;">
--0.3921505
+-0.3925180
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
--0.7408409
+-0.7439426
 </td>
 <td style="text-align:right;">
--0.0396456
+-0.0387140
 </td>
 <td style="text-align:right;">
-0.98665
+0.98698
 </td>
 <td style="text-align:right;">
 0.95
@@ -1571,7 +1585,7 @@ delta
 0.05
 </td>
 <td style="text-align:right;">
-0.0038105
+0.0040526
 </td>
 </tr>
 <tr>
@@ -1582,16 +1596,16 @@ delta
 g
 </td>
 <td style="text-align:right;">
-0.4883025
+0.4929580
 </td>
 <td style="text-align:right;">
 0.95
 </td>
 <td style="text-align:right;">
-0.0248296
+0.0288525
 </td>
 <td style="text-align:right;">
-6.7753647
+6.7978462
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1606,7 +1620,7 @@ g
 0.05
 </td>
 <td style="text-align:right;">
-0.0022421
+0.0022737
 </td>
 </tr>
 </tbody>
@@ -1621,7 +1635,7 @@ g
 <div class="try">
 <p>For the final independent activity, apply the previous concepts to your understanding of Zwaan et al. (2018) and what you would consider your smallest effect size of interest for differences in response time.</p>
 </div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="cn">NULL</span></code></pre></div>
 <pre><code>## NULL</code></pre>
 </div>
@@ -1874,21 +1888,21 @@ $( document ).ready(function() {
 <li><a class="nav-link" href="#step-2---update-to-the-posterior"><span class="header-section-number">9.2.2</span> Step 2 - Update to the posterior</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#the-logic-behind-bayes-factors"><span class="header-section-number">9.3</span> The Logic Behind Bayes Factors</a></li>
+<li><a class="nav-link" href="#Bayes-factors"><span class="header-section-number">9.3</span> The Logic Behind Bayes Factors</a></li>
 <li>
-<a class="nav-link" href="#bayes-factors-for-two-independent-samples"><span class="header-section-number">9.4</span> Bayes factors for two independent samples</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#Bayes-independent-samples"><span class="header-section-number">9.4</span> Bayes factors for two independent samples</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#guided-example-bastian-et-al.-2014"><span class="header-section-number">9.4.1</span> Guided example (Bastian et al., 2014)</a></li>
 <li><a class="nav-link" href="#independent-activity-schroeder-epley-2015"><span class="header-section-number">9.4.2</span> Independent activity (Schroeder &amp; Epley, 2015)</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#bayes-factors-for-two-dependent-samples"><span class="header-section-number">9.5</span> Bayes factors for two dependent samples</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#Bayes-dependent-samples"><span class="header-section-number">9.5</span> Bayes factors for two dependent samples</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#guided-example-mehr-et-al.-2016"><span class="header-section-number">9.5.1</span> Guided example (Mehr et al., 2016)</a></li>
 <li><a class="nav-link" href="#independent-activity-zwaan-et-al.-2020"><span class="header-section-number">9.5.2</span> Independent activity (Zwaan et al., 2020)</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#equivalence-testing-vs-rope"><span class="header-section-number">9.6</span> Equivalence Testing vs ROPE</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#ROPE"><span class="header-section-number">9.6</span> Equivalence Testing vs ROPE</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#guided-example-for-two-independent-samples-bastian-et-al.-2014"><span class="header-section-number">9.6.1</span> Guided example for two independent samples (Bastian et al., 2014)</a></li>
 <li><a class="nav-link" href="#independent-activity-for-two-independent-samples-schroeder-epley-2014"><span class="header-section-number">9.6.2</span> Independent activity for two independent samples (Schroeder &amp; Epley, 2014)</a></li>
 <li><a class="nav-link" href="#guided-example-for-two-dependent-samples-mehr-et-al.-2014"><span class="header-section-number">9.6.3</span> Guided example for two dependent samples (Mehr et al., 2014)</a></li>
@@ -1921,7 +1935,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2022-08-13.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2022-08-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
