@@ -4,7 +4,7 @@
 
 blah blah blah. 
 
-To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](create and link). Save the code in a folder called `r path("data")` and you will be able to use the same code.
+To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/09_data.zip). Save the code in a folder called `r path("data")` and you will be able to use the same code.
 
 ## The Logic Behind Bayesian Inference {#bayes-logic}
 
