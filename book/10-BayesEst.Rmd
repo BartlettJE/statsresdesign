@@ -131,7 +131,7 @@ This is going to be the longest section as we are going to fit the `brms` model 
 
 As the process relies on sampling using MCMC, it is important to set a seed within the function for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. 
 
-```{r Schroeder fit, eval=FALSE}
+```{r Schroeder fit, eval=FALSE, message=FALSE, warning=FALSE}
 
 Schroeder_fit <- brm(
   formula = Schroeder_model1, # formula we defined above 
@@ -155,7 +155,7 @@ If you save the model as a .rds file, you can load them again using the `r hl(re
 Schroeder_fit <- read_rds("Models/Schroeder_model1.rds")
 ```
 
-There will be a lot of output here to explain the fitting and sampling process. See the references for explanations of how MCMC sampling works, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warmup / burnin iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
+There will be a lot of output here to explain the fitting and sampling process. The lecture references includes longer explanations of how MCMC sampling works, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
 
 Now we have fitted the model, we can also double check the priors you set are what you wanted. You will see the source for the priors you set switched from default to user. 
 
@@ -174,9 +174,9 @@ summary(Schroeder_fit)
 
 At the top, we have information on the model fitting process, like the family, data, and draws from the posterior summarising the chain iterations. 
 
-Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 2.94 with a 95% credible interval between 1.93 and 3.93. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
+Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.10 and 3.96. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
 
-We then have the median coefficient of 1.71 with a 95% credible interval between 0.37 and 2.99. This means our best guess for the mean difference / slope is an increase of 1.71 for the audio group. 
+We then have the median coefficient of 1.56 with a 95% credible interval between 0.40 and 2.68. This means our best guess for the mean difference / slope is an increase of 1.56 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the main conclusions should be the same. 
 
 For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS), but we did not explore this in the lecture. 
 
@@ -190,7 +190,7 @@ describe_posterior(Schroeder_fit)
 
 We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect. 
 
-This will be more useful when it comes to comparing models and building multiple regression models, but there is a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome your predictor(s) explain. 
+This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome your predictor(s) explain. 
 
 ```{r Schroeder R2}
 
@@ -220,7 +220,7 @@ plot(p_direction(Schroeder_fit),
 ```
 
 ::: {.warning data-latex=""}
-For this to work, you must specify priors in brms. It does not work with coefficient defaults. 
+For this to work, you must specify priors in `brms`. It does not work with the package default options for the coefficients. 
 :::
 
 We can see the pretty wide prior in blue, then the posterior. Almost all of the posterior distribution is above zero to show we're pretty confident that audio is associated with higher hire ratings than transcript. 
@@ -232,6 +232,10 @@ The next useful plot is seeing the 95% HDI / credible interval. On its own, `r h
 plot(hdi(Schroeder_fit))
 
 ```
+
+::: {.warning data-latex=""}
+These plots are informative for you learning about your model and the inferences you can learn from it. However, they would not be immediately suitable to enter into a report. Fortunately, they are created using `r pkg("ggplot")`, so you can customise them in the same way by adding layers of additional functions. 
+:::
 
 For this example, the 95% HDI excludes 0, so we can be confident the coefficient posterior is a positive effect, with the audio group leading to higher hire ratings than the transcript group. 
 
@@ -248,7 +252,7 @@ plot(rope(Schroeder_fit,
 
 For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.
 
-Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the [brms documentation](https://paul-buerkner.github.io/brms/reference/hypothesis.html) for the function. Here, we will test the coefficient/slope against a point-null of 0. 
+Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the [brms documentation online](https://paul-buerkner.github.io/brms/reference/hypothesis.html) for the function. Here, we will test the coefficient/slope against a point-null of 0. 
 
 ```{r Schroeder hypothesis}
 
@@ -261,9 +265,16 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 We must state a character hypothesis which requires you to select a parameter. Here, we focus on the `r hl("CONDITIONAudio")` parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITIONAudio > 0.
 :::
 
-The key part of the output is the evidence ratio, but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 5.56. 
+The key part of the output is the evidence ratio, but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 9.09 here. 
 
-Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITIONAudio > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 128 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
+Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITIONAudio > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 209 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
+
+```{r Schroeder positive hypothesis}
+
+hypothesis(Schroeder_fit, # brms model we fitted earlier
+           hypothesis = "CONDITIONAudio > 0") 
+
+```
 
 #### 5. Model checking 
 
@@ -271,7 +282,7 @@ Finally, we have our model checking procedure. We already looked at some informa
 
 Bayesian models are generative, which means once they are fitted, we can use them to sample values from the posterior and make predictions from it. One key process is called a posterior predictive check which takes the model and uses is to generate new samples. This shows how you have conditioned the model and what it expects. 
 
-The plot below is a `r pkh("brms")` function for facilitating this. The thick blue line is your data for the outcome. The light blue lines are 100 samples from the posterior to show what the model expects about the outcome. 
+The plot below is a `r pkg("brms")` function for facilitating this. The thick blue line is your data for the outcome. The light blue lines are 100 samples from the posterior to show what the model expects about the outcome. 
 
 ```{r Schroeder model check, warning=FALSE, message=FALSE}
 
@@ -285,6 +296,48 @@ For this example, it does an OK job at capturing the pattern of data and the bul
 ::: {.try data-latex=""}
 If you want to challenge yourself, I recommend working through [Bürkner and Vuorre (2019)](https://doi.org/10.1177/2515245918823199) and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
 :::
+
+The final thing we will check for this model is how sensitive it is to the choice of prior. A justifiable informative prior is a key strength of Bayesian statistics, but it is important to check the model under at least two sets of priors. For this example, we will compare the model output under the default package priors and our user defined priors we used all along.
+
+In the code below, we have omitted the prior argument, so we are fitting the exact same model as before but using the default package priors. 
+
+```{r Schroeder model 2, eval=FALSE, message=FALSE, warning=FALSE}
+Schroeder_fit2 <- brm(
+  formula = Schroeder_model1,
+  data = Schroeder_data, 
+  family = gaussian(),
+  seed = 1908,
+  file = "Models/Schroeder_model2" #Save the model as a .rds file
+)
+```
+
+```{r load Schroeder 2, echo=FALSE}
+
+Schroeder_fit2 <- read_rds("Models/Schroeder_model2.rds")
+
+```
+
+If we run the `r hl(summary())` function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+
+```{r summarise Schroeder 2}
+summary(Schroeder_fit2)
+```
+
+To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept between both models. The median is similar, both probability of direction values are 100%, and the 95% HDI ranges across similar values. For our user prior, the coefficient is a little more conservative, but the difference is also small here, showing how our results are robust to the choice of prior. 
+
+```{r side by side summary, echo=FALSE}
+
+model1 <- describe_posterior(Schroeder_fit) %>% 
+  dplyr::mutate(Model = "User prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+model2 <- describe_posterior(Schroeder_fit2) %>% 
+  dplyr::mutate(Model = "Default prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+dplyr::bind_rows(model1, model2)
+
+```
 
 ### Independent activity (Brandt et al., 2014)
 
@@ -301,7 +354,7 @@ Brandt_data <- read_csv("data/Brandt_unlit.csv")
 
 # Recode to dummy coding 
 Brandt_data <- Brandt_data %>% 
-  mutate(ExpCond = case_when(ExpCond == 1 ~ 0,
+  dplyr::mutate(ExpCond = dplyr::case_when(ExpCond == 1 ~ 0,
                              ExpCond == -1 ~ 1))
 
 # Relabel condition to be more intuitive which group is which 
