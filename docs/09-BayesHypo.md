@@ -266,33 +266,33 @@ point_estimate(Bastian_samples)
 <tbody>
   <tr>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4261054 </td>
-   <td style="text-align:right;"> 3.4264321 </td>
-   <td style="text-align:right;"> 3.4224490 </td>
+   <td style="text-align:right;"> 3.4262541 </td>
+   <td style="text-align:right;"> 3.4260957 </td>
+   <td style="text-align:right;"> 3.4199179 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4855294 </td>
-   <td style="text-align:right;"> -0.4908014 </td>
-   <td style="text-align:right;"> -0.4610588 </td>
+   <td style="text-align:right;"> -0.4877563 </td>
+   <td style="text-align:right;"> -0.4913901 </td>
+   <td style="text-align:right;"> -0.4627484 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1026847 </td>
-   <td style="text-align:right;"> 1.1320402 </td>
-   <td style="text-align:right;"> 1.0552317 </td>
+   <td style="text-align:right;"> 1.1068933 </td>
+   <td style="text-align:right;"> 1.1345778 </td>
+   <td style="text-align:right;"> 1.0589782 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4630292 </td>
-   <td style="text-align:right;"> -0.4684085 </td>
-   <td style="text-align:right;"> -0.4553272 </td>
+   <td style="text-align:right;"> -0.4635814 </td>
+   <td style="text-align:right;"> -0.4683431 </td>
+   <td style="text-align:right;"> -0.4303621 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5466884 </td>
-   <td style="text-align:right;"> 3.9885767 </td>
-   <td style="text-align:right;"> 0.0281342 </td>
+   <td style="text-align:right;"> 0.5479369 </td>
+   <td style="text-align:right;"> 4.4431907 </td>
+   <td style="text-align:right;"> 0.0280057 </td>
   </tr>
 </tbody>
 </table>
@@ -323,32 +323,32 @@ hdi(Bastian_samples)
   <tr>
    <td style="text-align:left;"> mu </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1402190 </td>
-   <td style="text-align:right;"> 3.7124545 </td>
+   <td style="text-align:right;"> 3.1400897 </td>
+   <td style="text-align:right;"> 3.7091730 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0337029 </td>
-   <td style="text-align:right;"> 0.0475741 </td>
+   <td style="text-align:right;"> -1.0446904 </td>
+   <td style="text-align:right;"> 0.0456258 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338982 </td>
-   <td style="text-align:right;"> 1.5958668 </td>
+   <td style="text-align:right;"> 0.7338062 </td>
+   <td style="text-align:right;"> 1.5963293 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9892029 </td>
-   <td style="text-align:right;"> 0.0454270 </td>
+   <td style="text-align:right;"> -0.9923120 </td>
+   <td style="text-align:right;"> 0.0479797 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0281342 </td>
-   <td style="text-align:right;"> 7.6898043 </td>
+   <td style="text-align:right;"> 0.0280057 </td>
+   <td style="text-align:right;"> 7.6999392 </td>
   </tr>
 </tbody>
 </table>
@@ -386,10 +386,10 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4261054 </td>
+   <td style="text-align:right;"> 3.4262541 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1402190 </td>
-   <td style="text-align:right;"> 3.7124545 </td>
+   <td style="text-align:right;"> 3.1400897 </td>
+   <td style="text-align:right;"> 3.7091730 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -399,23 +399,23 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4855294 </td>
+   <td style="text-align:right;"> -0.4877563 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0337029 </td>
-   <td style="text-align:right;"> 0.0475741 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -1.0446904 </td>
+   <td style="text-align:right;"> 0.0456258 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0541152 </td>
+   <td style="text-align:right;"> 0.0535468 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1026847 </td>
+   <td style="text-align:right;"> 1.1068933 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338982 </td>
-   <td style="text-align:right;"> 1.5958668 </td>
+   <td style="text-align:right;"> 0.7338062 </td>
+   <td style="text-align:right;"> 1.5963293 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -425,28 +425,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4630292 </td>
+   <td style="text-align:right;"> -0.4635814 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9892029 </td>
-   <td style="text-align:right;"> 0.0454270 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -0.9923120 </td>
+   <td style="text-align:right;"> 0.0479797 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0586941 </td>
+   <td style="text-align:right;"> 0.0588625 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5466884 </td>
+   <td style="text-align:right;"> 0.5479369 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0281342 </td>
-   <td style="text-align:right;"> 7.6898043 </td>
+   <td style="text-align:right;"> 0.0280057 </td>
+   <td style="text-align:right;"> 7.6999392 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0355259 </td>
+   <td style="text-align:right;"> 0.0345470 </td>
   </tr>
 </tbody>
 </table>
@@ -579,23 +579,23 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0665333 </td>
+   <td style="text-align:right;"> -0.0665021 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1256160 </td>
-   <td style="text-align:right;"> -0.0079565 </td>
-   <td style="text-align:right;"> 0.98698 </td>
+   <td style="text-align:right;"> -0.1250706 </td>
+   <td style="text-align:right;"> -0.0078185 </td>
+   <td style="text-align:right;"> 0.98688 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.8904854 </td>
+   <td style="text-align:right;"> 0.8918853 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288360 </td>
+   <td style="text-align:right;"> 0.0288423 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0167767 </td>
-   <td style="text-align:right;"> 0.0462376 </td>
+   <td style="text-align:right;"> 0.0167027 </td>
+   <td style="text-align:right;"> 0.0465440 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -605,28 +605,28 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3925180 </td>
+   <td style="text-align:right;"> -0.3922957 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7439426 </td>
-   <td style="text-align:right;"> -0.0387140 </td>
-   <td style="text-align:right;"> 0.98698 </td>
+   <td style="text-align:right;"> -0.7448107 </td>
+   <td style="text-align:right;"> -0.0431335 </td>
+   <td style="text-align:right;"> 0.98688 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0283681 </td>
+   <td style="text-align:right;"> 0.0273155 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4929580 </td>
+   <td style="text-align:right;"> 0.4862971 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0288525 </td>
-   <td style="text-align:right;"> 6.7978462 </td>
+   <td style="text-align:right;"> 0.0300044 </td>
+   <td style="text-align:right;"> 6.7342436 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0417048 </td>
+   <td style="text-align:right;"> 0.0419575 </td>
   </tr>
 </tbody>
 </table>
@@ -694,10 +694,10 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4261054 </td>
+   <td style="text-align:right;"> 3.4262541 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1402190 </td>
-   <td style="text-align:right;"> 3.7124545 </td>
+   <td style="text-align:right;"> 3.1400897 </td>
+   <td style="text-align:right;"> 3.7091730 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -707,23 +707,23 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4855294 </td>
+   <td style="text-align:right;"> -0.4877563 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0337029 </td>
-   <td style="text-align:right;"> 0.0475741 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -1.0446904 </td>
+   <td style="text-align:right;"> 0.0456258 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0541152 </td>
+   <td style="text-align:right;"> 0.0535468 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1026847 </td>
+   <td style="text-align:right;"> 1.1068933 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338982 </td>
-   <td style="text-align:right;"> 1.5958668 </td>
+   <td style="text-align:right;"> 0.7338062 </td>
+   <td style="text-align:right;"> 1.5963293 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -733,28 +733,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4630292 </td>
+   <td style="text-align:right;"> -0.4635814 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9892029 </td>
-   <td style="text-align:right;"> 0.0454270 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -0.9923120 </td>
+   <td style="text-align:right;"> 0.0479797 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0586941 </td>
+   <td style="text-align:right;"> 0.0588625 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5466884 </td>
+   <td style="text-align:right;"> 0.5479369 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0281342 </td>
-   <td style="text-align:right;"> 7.6898043 </td>
+   <td style="text-align:right;"> 0.0280057 </td>
+   <td style="text-align:right;"> 7.6999392 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0355259 </td>
+   <td style="text-align:right;"> 0.0345470 </td>
   </tr>
 </tbody>
 </table>
@@ -809,10 +809,10 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4261054 </td>
+   <td style="text-align:right;"> 3.4262541 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1402190 </td>
-   <td style="text-align:right;"> 3.7124545 </td>
+   <td style="text-align:right;"> 3.1400897 </td>
+   <td style="text-align:right;"> 3.7091730 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
@@ -822,37 +822,37 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4855294 </td>
+   <td style="text-align:right;"> -0.4877563 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0337029 </td>
-   <td style="text-align:right;"> 0.0475741 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -1.0446904 </td>
+   <td style="text-align:right;"> 0.0456258 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.9918211 </td>
+   <td style="text-align:right;"> 0.9892212 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1026847 </td>
+   <td style="text-align:right;"> 1.1068933 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338982 </td>
-   <td style="text-align:right;"> 1.5958668 </td>
+   <td style="text-align:right;"> 0.7338062 </td>
+   <td style="text-align:right;"> 1.5963293 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.3083652 </td>
+   <td style="text-align:right;"> 0.3043547 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4630292 </td>
+   <td style="text-align:right;"> -0.4635814 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9892029 </td>
-   <td style="text-align:right;"> 0.0454270 </td>
-   <td style="text-align:right;"> 0.96571 </td>
+   <td style="text-align:right;"> -0.9923120 </td>
+   <td style="text-align:right;"> 0.0479797 </td>
+   <td style="text-align:right;"> 0.96414 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
@@ -861,15 +861,15 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5466884 </td>
+   <td style="text-align:right;"> 0.5479369 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0281342 </td>
-   <td style="text-align:right;"> 7.6898043 </td>
+   <td style="text-align:right;"> 0.0280057 </td>
+   <td style="text-align:right;"> 7.6999392 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.7158451 </td>
+   <td style="text-align:right;"> 0.7154135 </td>
   </tr>
 </tbody>
 </table>
@@ -927,23 +927,23 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0665333 </td>
+   <td style="text-align:right;"> -0.0665021 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1256160 </td>
-   <td style="text-align:right;"> -0.0079565 </td>
-   <td style="text-align:right;"> 0.98698 </td>
+   <td style="text-align:right;"> -0.1250706 </td>
+   <td style="text-align:right;"> -0.0078185 </td>
+   <td style="text-align:right;"> 0.98688 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.2746603 </td>
+   <td style="text-align:right;"> 0.2775550 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288360 </td>
+   <td style="text-align:right;"> 0.0288423 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0167767 </td>
-   <td style="text-align:right;"> 0.0462376 </td>
+   <td style="text-align:right;"> 0.0167027 </td>
+   <td style="text-align:right;"> 0.0465440 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
@@ -953,28 +953,28 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3925180 </td>
+   <td style="text-align:right;"> -0.3922957 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7439426 </td>
-   <td style="text-align:right;"> -0.0387140 </td>
-   <td style="text-align:right;"> 0.98698 </td>
+   <td style="text-align:right;"> -0.7448107 </td>
+   <td style="text-align:right;"> -0.0431335 </td>
+   <td style="text-align:right;"> 0.98688 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.0040526 </td>
+   <td style="text-align:right;"> 0.0027789 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4929580 </td>
+   <td style="text-align:right;"> 0.4862971 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0288525 </td>
-   <td style="text-align:right;"> 6.7978462 </td>
+   <td style="text-align:right;"> 0.0300044 </td>
+   <td style="text-align:right;"> 6.7342436 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.0022737 </td>
+   <td style="text-align:right;"> 0.0022316 </td>
   </tr>
 </tbody>
 </table>
