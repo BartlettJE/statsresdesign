@@ -131,7 +131,7 @@ This is going to be the longest section as we are going to fit the `brms` model 
 
 As the process relies on sampling using MCMC, it is important to set a seed within the function for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. 
 
-```{r Schroeder fit}
+```{r Schroeder fit, eval=FALSE}
 
 Schroeder_fit <- brm(
   formula = Schroeder_model1, # formula we defined above 
@@ -139,14 +139,21 @@ Schroeder_fit <- brm(
   family = gaussian(), # What distribution family do we want for the likelihood function? Many examples we use in psychology are Gaussian, but check the documentation for options
   prior = prior, # priors we stated above
   sample_prior = TRUE, # Setting this to true includes the prior in the object, so we can include it on plots later
-  seed = 1908
+  seed = 1908,
+  file = "Models/Schroeder_model1" #Save the model as a .rds file
 )
 
 ```
 
 ::: {.info data-latex=""}
-Depending on your computer, this can take a while. There is an argument called file which you can create a character string for the object to be saved in. This is super handy for more complex models as you can simply reload the results instead of waiting for it to rerun.
+When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the code below, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objectives, remember to refit them if you change anything like the priors, model, or data. 
 :::
+
+If you save the model as a .rds file, you can load them again using the `r hl(read_rds())` function from `r pkg("readr")` in the `r pkg("tidyverse")`. 
+
+```{r load Schroeder model 1}
+Schroeder_fit <- read_rds("Models/Schroeder_model1.rds")
+```
 
 There will be a lot of output here to explain the fitting and sampling process. See the references for explanations of how MCMC sampling works, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warmup / burnin iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
 
