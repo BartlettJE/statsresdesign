@@ -404,7 +404,7 @@ Part of their tutorial discusses a bigger multilevel model considering different
 I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (`r hl("value")`) and we want to look at the interaction between `r hl("intervention")` and `r hl("time")`. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
 ::: {.info data-latex=""}
-By default, R includes a fixed intercept in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.
+By default, R includes a fixed intercept (the `1 +` part) in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.
 :::
 
 ```{r Heino model}
@@ -415,10 +415,19 @@ Heino_model <- bf(value ~ 1 + time * intervention + (1 | ID))
 
 #### 3. Specify prior probability of parameters
 
+Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma. 
+
+```{r Heino prior options}
+
+get_prior(Heino_model, data = Heino_data)
+
+```
+
+Note, you get a warning about missing data but since its a multi-level model, we just have fewer observations in some conditions instead of the whole case being removed. 
+
 This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors to only allow positive values. 
 
 ```{r Heino priors}
-get_prior(Heino_model, data = Heino_data)
 
 Heino_priors <- prior(normal(0, 5), class = "b") +
   prior(cauchy(0, 1), class = "sd") +
@@ -426,37 +435,42 @@ Heino_priors <- prior(normal(0, 5), class = "b") +
 
 ```
 
-Note you get a warning about missing data but since its a multi-level model, we just have fewer observations in some conditions instead of the whole case being removed. 
-
 #### 4. Update prior to posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
 As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. 
 
-```{r Heino fit}
-set.seed(78912) # For reproducibility
+```{r Heino fit, eval=FALSE, message=FALSE, warning=FALSE}
 
 Heino_fit <- brm(
   formula = Heino_model,
   data = Heino_data,
   prior = Heino_priors,
   family = gaussian(),
-  seed = 2108
+  seed = 2108,
+  file = "Models/Heino_model"
 )
+
+```
+
+```{r load Heino model, echo=FALSE}
+
+Heino_fit <- read_rds("Models/Heino_model.rds")
 
 ```
 
 Now we have fitted the model, let's have a look at the summary. 
 
 ```{r Heino summary}
+
 summary(Heino_fit)
 
 ```
 
 The model summary is very similar to the examples in the simple linear regression section, but we also have a new section for group-level effects since we added a random intercept for participants.
 
-Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.09 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
+Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
 
 This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on. 
 
@@ -473,10 +487,11 @@ plot(hdi(Heino_fit))
 
 Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra, you can also use the `r pkg("emmeans")` package to calculate marginal effects on the posterior distribution. Its not important here as the interaction is not telling us anything, but it might come in handy in future. 
+As a bonus extra, you can also use the `r pkg("emmeans")` package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 ```{r Heino marginal}
 
+# Surround with brackets to both save and output
 (Heino_means <- emmeans(Heino_fit, # add the model object  
         ~ time | intervention)) # We want to separate time by levels of intervention
 
@@ -484,7 +499,7 @@ As a bonus extra, you can also use the `r pkg("emmeans")` package to calculate m
 
 This provides the median value of the posterior for the combination of time and intervention. Here, we can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping. 
 
-Depending on how you want to express the marginal means, you can also use the emmeans object to calculate contrasts, expressing the effects as mean differences in the posterior for each group/condition.  
+Depending on how you want to express the marginal means, you can also use the `r pkg("emmeans")` object to calculate contrasts, expressing the effects as mean differences in the posterior for each group/condition.  
 
 ```{r Heino contrasts}
 
@@ -494,7 +509,7 @@ contrast(Heino_means)
 
 #### 5. Model check
 
-As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples following the underlying data quite well. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
+As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
 
 ```{r Heino pp check}
 pp_check(Heino_fit,
@@ -527,11 +542,11 @@ The data set contains a range of variables used for the full model in the paper.
 
 Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How do absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) affect mystical experiences (`r hl("Mscale_SUM")`) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+Our research question is: How does absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) affect mystical experiences (`r hl("Mscale_SUM")`) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
 
 Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
-```{r Coleman data}
+```{r Coleman data, warning=FALSE, message=FALSE}
 
 Coleman_data <- read_csv("data/Coleman_2019.csv")
 
