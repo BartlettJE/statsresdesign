@@ -22,11 +22,11 @@ To demonstrate the logic behind Bayesian inference, we will play around with thi
 
 The example is based on estimating the the proportion of yellow candies in a bag with different coloured candies. If you see a yellow candy, it is logged as a 1. If you see a non-yellow candy, it is logged as a 0. We want to know what proportion of the candies are yellow. 
 
-This is a handy demonstration for the logic behind Bayesian inference as it is the simplest application. Behind the scenes, we could calculate these values directly as the distributions are simple and there is only one parameter. In later examples and in lesson 10, we will focus on more complicated models which require sampling for the posterior. 
+This is a handy demonstration for the logic behind Bayesian inference as it is the simplest application. Behind the scenes, we could calculate these values directly as the distributions are simple and there is only one parameter. In later examples and in lesson 10, we will focus on more complicated models which require sampling from the posterior. 
 
 ### Step 1 - Pick your prior 
 
-First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a beta distribution (define). There are only two parameters to set: *a* and *b*. 
+First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a `glossary("beta distribution")`. There are only two parameters to set: *a* and *b*. 
 
 Explore changing the parameters and their impact on the distribution, but here are a few observations to orient yourself: 
 
@@ -38,9 +38,11 @@ Explore changing the parameters and their impact on the distribution, but here a
 
 4. If parameter b > a, proportions higher than 0.5 are more likely. 
 
+::: {.try data-latex=""}
 After playing around, what proportion of yellow candies do you think are likely? Are you certain about the value or are you more accepting of the data? 
+:::
 
-### Step 2 - Update to the posterior
+### Step 2 - Update-to-a-posterior
 
 Now we have a prior, its time to collect some data and update to the posterior. In the lecture, we will play around with a practical demonstration of seeing how many candies are yellow, so set your prior by entering a value for *a* and *b*, and we will see what the data tell us. There are two boxes for entering data: the number of yellows you observe, and the number of non-yellows you observe. 
 
@@ -50,13 +52,13 @@ If you are trying this on your own, explore changing the prior and data to see h
 
 2. Now set a strong prior (20, 20) over 0.5 with 5 yellows and 10 non-yellows. Despite the observed data showing a proportion of 0.33, the peak of the posterior distribution is slightly higher than 0.4. The posterior is a compromise between the prior and the likelihood, so a stronger prior means you need more data to change your beliefs. For example, imagine we had 10 times more data with 50 yellows and 100 non-yellows. Now, there is greater density between 0.3 and 0.4, to show the posterior is now more convinced of the proportion of yellows. 
 
-In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior (define), and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
+In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior, and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
 
-In section 4, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. But you can always come back to it later in your own time. 
+In section 4 of the app, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. 
 
 ## The Logic Behind Bayes Factors {#Bayes-factors}
 
-To demonstrate the logic behind Bayes factors, we will play around with this shiny app by [Magnusson](https://rpsychologist.com/d3/bayes/). Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI) (define), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
+To demonstrate the logic behind Bayes factors, we will play around with <a href="https://rpsychologist.com/d3/bayes/" target="_blank">this shiny app by Magnusson</a>. Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI) (define), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
 
 On the visualisation, there are three settings:
 
@@ -68,23 +70,23 @@ On the visualisation, there are three settings:
 
 This visualisation is set up to test against the null hypothesis of no difference between two groups, but remember Bayes factors allow you to test any two hypotheses. The Bayes factor is represented by the difference between the two dots, where the curves represent a likelihood of 0 in the prior and posterior distributions. The Bayes factor is a ratio between these two values for the posterior odds of how much your belief should shift in favour of the experimental hypothesis compared to the null hypothesis. 
 
-::: {.try data-latex=""}
-Play around with the visualisation yourself to see how the Bayes factor changes as you alter the settings. Keep an eye on the *p*-value and 95% Confidence Interval (CI) to see where the inferences are similiar or different.
+::: {.info data-latex=""}
+Keep an eye on the *p*-value and 95% Confidence Interval (CI) to see where the inferences are similiar or different for each statistical philosophy. 
 :::
 
 To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on Bayes factors, there are some key observations:
 
 1. With a less informative prior (higher SD), the posterior is dominated by the likelihood to show the posterior is overwhelmed by data. For example, if you set the SD to 2, the prior peaks at 0 but the distribution is so flat it accepts any reasonable effect. If you move the observed effect anywhere along the scale, the likelihood and posterior almost completely overlap until you reach d = ±2. 
 
-2. With a stronger prior (lower SD), the posterior represents more of a compromise between the prior and likelihood. If you change the SD to 0.5 and the observed effect to 1, the posterior is closer to being an intermediary. You may have the observed data, but your prior belief in a null effect is so strong, it requires more data to be convinced otherwise.
+2. With a stronger prior (lower SD), the posterior represents more of a compromise between the prior and likelihood. If you change the SD to 0.5 and the observed effect to 1, the posterior is closer to being an intermediary. You may have the observed data, but your prior belief in a null effect is strong enough that it requires more data to be convinced otherwise.
 
 3. With more participants / data, there is less uncertainty in the likelihood. Keeping the same parameters as point 2, with 10 participants, the likelihood peaks at d = 1, but easily spans between 0 and 2. As you increase the sample size towards 1000, the uncertainty around the likelihood is lower. More data also overwhelm the prior, so although we had a relatively strong prior that we would have a null effect, with 50 participants, the likelihood and posterior mostly overlap. 
 
-4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases and with increasing sample size. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping is less of a problem (revise and add citation). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
+4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or with increasing sample size. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (Rouder, 2014, but see Schönbrodt et al. (2017) for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
 
-5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but cannot shift our belief towards the null. With Bayes factors, we can focus on supporting the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or decreasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null, your beliefs do not need to shift in light of the data. 
+5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but remember we cannot support the null. With Bayes factors, we can support the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or decreasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null, your beliefs do not need to shift in light of the data. 
 
-6. Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, you usually find the values from the two intervals are very similar, but you have to interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% CI represents the area of the posterior, so it might be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0. 
+6. Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, you usually find the values from the two intervals are very similar, but you have to interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% CI represents the area of the posterior, so it will be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0. 
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
