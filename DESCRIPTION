@@ -8,10 +8,18 @@ Authors@R:
         family = "Bartlett", 
         role = c("aut", "cre"), 
         email = "jebartlett94@gmail.com", 
-        comment = c(ORCID = "0000-0002-4191-5245")
+        comment = c(ORCID = "0000-0002-4191-5245")),
+    person(
+        given = "Christoph", 
+        family = "Scheepers", 
+        role = c("aut")),
+    person(
+        given = "Guillaume", 
+        family = "Rousselet", 
+        role = c("aut"), 
     )
   )
-Description: This book...
+Description:
 License: CC BY 4.0 + LICENSE
 Encoding: UTF-8
 LazyData: true
