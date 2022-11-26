@@ -13,7 +13,7 @@ introduction-to-bayesian-hypothesis-testing
 learning-objectives
 bayes-logic
 step-1---pick-your-prior
-step-2---update-to-the-posterior
+step-2---update-to-a-posterior
 Bayes-factors
 Bayes-independent-samples
 guided-example-bastian-et-al.-2014

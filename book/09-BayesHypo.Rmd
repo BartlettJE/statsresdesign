@@ -18,7 +18,7 @@ To follow along to this chapter and try the code yourself, please download the d
 
 ## The Logic Behind Bayesian Inference {#bayes-logic}
 
-To demonstrate the logic behind Bayesian inference, we will play around with this shiny app by [Wagenmakers (2015)](https://shiny.psy.lmu.de/felix/BayesLessons/BayesianLesson1.Rmd). The text walks you through the app and provides exercises to explore on your own, but we will use it to explore defining a prior distribution and seeing how the posterior updates with data. 
+To demonstrate the logic behind Bayesian inference, we will play around with <a href="https://shiny.psy.lmu.de/felix/BayesLessons/BayesianLesson1.Rmd" target="_blank">this shiny app by Wagenmakers (2015)</a>. The text walks you through the app and provides exercises to explore on your own, but we will use it to explore defining a prior distribution and seeing how the posterior updates with data. 
 
 The example is based on estimating the the proportion of yellow candies in a bag with different coloured candies. If you see a yellow candy, it is logged as a 1. If you see a non-yellow candy, it is logged as a 0. We want to know what proportion of the candies are yellow. 
 
@@ -26,7 +26,7 @@ This is a handy demonstration for the logic behind Bayesian inference as it is t
 
 ### Step 1 - Pick your prior 
 
-First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a `glossary("beta distribution")`. There are only two parameters to set: *a* and *b*. 
+First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a `r glossary("beta distribution")`. There are only two parameters to set: *a* and *b*. 
 
 Explore changing the parameters and their impact on the distribution, but here are a few observations to orient yourself: 
 
@@ -92,7 +92,7 @@ To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on 
 
 ### Guided example (Bastian et al., 2014)
 
-As this is the first time we've actually used R so far, we need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first. 
+This is the first time we have used R in this chapter, so we need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first. 
 
 ```{r packages, warning=FALSE, message=FALSE}
 library(BayesFactor)
@@ -101,7 +101,7 @@ library(tidyverse)
 
 ```
 
-For this guided example, we will reanalyse data from  [Bastian et al. (2014)](http://journals.sagepub.com/doi/10.1177/0956797614545886). This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
+For this guided example, we will reanalyse data from <a href="http://journals.sagepub.com/doi/10.1177/0956797614545886" target="_blank">Bastian et al. (2014)</a>. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
 
 Participants were randomly allocated into two conditions: pain or control. Participants in the pain group experienced mild pain through a cold pressor task (leaving your hand in ice cold water) and a wall squat (sitting against a wall). The control group completed a different task that did not involve pain. The participants then completed a scale to measure how bonded they felt to other participants in the group. Higher values on this scale mean greater bonding. 
 
@@ -115,21 +115,20 @@ Bastian_data$CONDITION <- factor(Bastian_data$CONDITION,
                                    levels = c(0, 1), 
                                    labels = c("Control", "Pain"))
 
-# First we need to get our DV from the mean of 7 items
-bonding <- Bastian_data %>% 
-  pivot_longer(cols = group101:group107, names_to = "item", values_to = "score") %>% 
-  group_by(subid) %>% 
-  summarise(mean_bonding = mean(score), ) %>% 
-  ungroup()
+# We also need to get our DV from the mean of 7 items
+Bastian_data <- Bastian_data %>% 
+  pivot_longer(names_to = "item", # var for item names
+               values_to = "score", # var for item scores
+               cols = group101:group107) %>% # Range of columns for group bonding items
+  group_by(across(.cols = c(-item, -score))) %>% # Group by everything but ignore item and score
+  summarise(mean_bonding = mean(score)) %>% # Summarise by creating a subscale name and specify sum or mean
+  ungroup() # Always ungroup
 
-# add back to the main dataframe and simplify 
-Bastian_data <- left_join(Bastian_data, bonding, by = "subid") %>% 
-  select(CONDITION, mean_bonding)
 ```
 
 To use the Bayesian version of the t-test, we use similar arguments to the frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
 
-The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The default prior is set to `r hl("medium")`, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like `r hl("medium")` and `r hl("wide")` depending on how weak you want the prior to be. 
+The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The default prior is set to `r hl("medium")`, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like `r hl("medium")`, `r hl("wide")`, and `r hl("ultrawide")` depending on how weak you want the prior to be. 
 
 ```{r Bastian ttest}
 Bastian_ttest <- ttestBF(formula = mean_bonding ~ CONDITION,
@@ -141,9 +140,11 @@ Bastian_ttest
 
 ```
 
-Don't worry about the warning, there were just previous issues with using tibbles in the `r pkg("BayesFactor")` package. 
+::: {.warning data-latex=""}
+Don't worry about the warning, there were just previous issues with using tibbles in the `r pkg("BayesFactor")` package. Now the package converts tibbles to normal R data frames before doing its thing.
+:::
 
-With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011) (add ref), this is quite weak anecdotal evidence.
+With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011), this is quite weak anecdotal evidence.
 
 The authors were pretty convinced that the pain group would score hire on the bonding rating than the control group, so lets see what happens with a one-tailed test to see how its done. We need to define the `nullInterval` argument to state we only consider negative effects. 
 

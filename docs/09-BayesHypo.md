@@ -18,15 +18,15 @@ To follow along to this chapter and try the code yourself, please download the d
 
 ## The Logic Behind Bayesian Inference {#bayes-logic}
 
-To demonstrate the logic behind Bayesian inference, we will play around with this shiny app by [Wagenmakers (2015)](https://shiny.psy.lmu.de/felix/BayesLessons/BayesianLesson1.Rmd). The text walks you through the app and provides exercises to explore on your own, but we will use it to explore defining a prior distribution and seeing how the posterior updates with data. 
+To demonstrate the logic behind Bayesian inference, we will play around with <a href="https://shiny.psy.lmu.de/felix/BayesLessons/BayesianLesson1.Rmd" target="_blank">this shiny app by Wagenmakers (2015)</a>. The text walks you through the app and provides exercises to explore on your own, but we will use it to explore defining a prior distribution and seeing how the posterior updates with data. 
 
 The example is based on estimating the the proportion of yellow candies in a bag with different coloured candies. If you see a yellow candy, it is logged as a 1. If you see a non-yellow candy, it is logged as a 0. We want to know what proportion of the candies are yellow. 
 
-This is a handy demonstration for the logic behind Bayesian inference as it is the simplest application. Behind the scenes, we could calculate these values directly as the distributions are simple and there is only one parameter. In later examples and in lesson 10, we will focus on more complicated models which require sampling for the posterior. 
+This is a handy demonstration for the logic behind Bayesian inference as it is the simplest application. Behind the scenes, we could calculate these values directly as the distributions are simple and there is only one parameter. In later examples and in lesson 10, we will focus on more complicated models which require sampling from the posterior. 
 
 ### Step 1 - Pick your prior 
 
-First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a beta distribution (define). There are only two parameters to set: *a* and *b*. 
+First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a <a class='glossary' target='_blank' title='A family of distributions of data that are characterised by two parameters: α and β' href='https://psyteachr.github.io/glossary/b#beta-distribution'>beta distribution</a>. There are only two parameters to set: *a* and *b*. 
 
 Explore changing the parameters and their impact on the distribution, but here are a few observations to orient yourself: 
 
@@ -38,9 +38,11 @@ Explore changing the parameters and their impact on the distribution, but here a
 
 4. If parameter b > a, proportions higher than 0.5 are more likely. 
 
+::: {.try data-latex=""}
 After playing around, what proportion of yellow candies do you think are likely? Are you certain about the value or are you more accepting of the data? 
+:::
 
-### Step 2 - Update to the posterior
+### Step 2 - Update-to-a-posterior
 
 Now we have a prior, its time to collect some data and update to the posterior. In the lecture, we will play around with a practical demonstration of seeing how many candies are yellow, so set your prior by entering a value for *a* and *b*, and we will see what the data tell us. There are two boxes for entering data: the number of yellows you observe, and the number of non-yellows you observe. 
 
@@ -50,13 +52,13 @@ If you are trying this on your own, explore changing the prior and data to see h
 
 2. Now set a strong prior (20, 20) over 0.5 with 5 yellows and 10 non-yellows. Despite the observed data showing a proportion of 0.33, the peak of the posterior distribution is slightly higher than 0.4. The posterior is a compromise between the prior and the likelihood, so a stronger prior means you need more data to change your beliefs. For example, imagine we had 10 times more data with 50 yellows and 100 non-yellows. Now, there is greater density between 0.3 and 0.4, to show the posterior is now more convinced of the proportion of yellows. 
 
-In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior (define), and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
+In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior, and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
 
-In section 4, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. But you can always come back to it later in your own time. 
+In section 4 of the app, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. 
 
 ## The Logic Behind Bayes Factors {#Bayes-factors}
 
-To demonstrate the logic behind Bayes factors, we will play around with this shiny app by [Magnusson](https://rpsychologist.com/d3/bayes/). Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI) (define), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
+To demonstrate the logic behind Bayes factors, we will play around with <a href="https://rpsychologist.com/d3/bayes/" target="_blank">this shiny app by Magnusson</a>. Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI) (define), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
 
 On the visualisation, there are three settings:
 
@@ -68,29 +70,29 @@ On the visualisation, there are three settings:
 
 This visualisation is set up to test against the null hypothesis of no difference between two groups, but remember Bayes factors allow you to test any two hypotheses. The Bayes factor is represented by the difference between the two dots, where the curves represent a likelihood of 0 in the prior and posterior distributions. The Bayes factor is a ratio between these two values for the posterior odds of how much your belief should shift in favour of the experimental hypothesis compared to the null hypothesis. 
 
-::: {.try data-latex=""}
-Play around with the visualisation yourself to see how the Bayes factor changes as you alter the settings. Keep an eye on the *p*-value and 95% Confidence Interval (CI) to see where the inferences are similiar or different.
+::: {.info data-latex=""}
+Keep an eye on the *p*-value and 95% Confidence Interval (CI) to see where the inferences are similiar or different for each statistical philosophy. 
 :::
 
 To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on Bayes factors, there are some key observations:
 
 1. With a less informative prior (higher SD), the posterior is dominated by the likelihood to show the posterior is overwhelmed by data. For example, if you set the SD to 2, the prior peaks at 0 but the distribution is so flat it accepts any reasonable effect. If you move the observed effect anywhere along the scale, the likelihood and posterior almost completely overlap until you reach d = ±2. 
 
-2. With a stronger prior (lower SD), the posterior represents more of a compromise between the prior and likelihood. If you change the SD to 0.5 and the observed effect to 1, the posterior is closer to being an intermediary. You may have the observed data, but your prior belief in a null effect is so strong, it requires more data to be convinced otherwise.
+2. With a stronger prior (lower SD), the posterior represents more of a compromise between the prior and likelihood. If you change the SD to 0.5 and the observed effect to 1, the posterior is closer to being an intermediary. You may have the observed data, but your prior belief in a null effect is strong enough that it requires more data to be convinced otherwise.
 
 3. With more participants / data, there is less uncertainty in the likelihood. Keeping the same parameters as point 2, with 10 participants, the likelihood peaks at d = 1, but easily spans between 0 and 2. As you increase the sample size towards 1000, the uncertainty around the likelihood is lower. More data also overwhelm the prior, so although we had a relatively strong prior that we would have a null effect, with 50 participants, the likelihood and posterior mostly overlap. 
 
-4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases and with increasing sample size. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping is less of a problem (revise and add citation). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
+4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or with increasing sample size. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (Rouder, 2014, but see Schönbrodt et al. (2017) for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
 
-5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but cannot shift our belief towards the null. With Bayes factors, we can focus on supporting the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or decreasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null, your beliefs do not need to shift in light of the data. 
+5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but remember we cannot support the null. With Bayes factors, we can support the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or decreasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null, your beliefs do not need to shift in light of the data. 
 
-6. Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, you usually find the values from the two intervals are very similar, but you have to interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% CI represents the area of the posterior, so it might be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0. 
+6. Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, you usually find the values from the two intervals are very similar, but you have to interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% CI represents the area of the posterior, so it will be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0. 
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
 ### Guided example (Bastian et al., 2014)
 
-As this is the first time we've actually used R so far, we need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first. 
+This is the first time we have used R in this chapter, so we need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first. 
 
 
 ```r
@@ -99,7 +101,7 @@ library(bayestestR)
 library(tidyverse)
 ```
 
-For this guided example, we will reanalyse data from  [Bastian et al. (2014)](http://journals.sagepub.com/doi/10.1177/0956797614545886). This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
+For this guided example, we will reanalyse data from <a href="http://journals.sagepub.com/doi/10.1177/0956797614545886" target="_blank">Bastian et al. (2014)</a>. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
 
 Participants were randomly allocated into two conditions: pain or control. Participants in the pain group experienced mild pain through a cold pressor task (leaving your hand in ice cold water) and a wall squat (sitting against a wall). The control group completed a different task that did not involve pain. The participants then completed a scale to measure how bonded they felt to other participants in the group. Higher values on this scale mean greater bonding. 
 
@@ -114,21 +116,19 @@ Bastian_data$CONDITION <- factor(Bastian_data$CONDITION,
                                    levels = c(0, 1), 
                                    labels = c("Control", "Pain"))
 
-# First we need to get our DV from the mean of 7 items
-bonding <- Bastian_data %>% 
-  pivot_longer(cols = group101:group107, names_to = "item", values_to = "score") %>% 
-  group_by(subid) %>% 
-  summarise(mean_bonding = mean(score), ) %>% 
-  ungroup()
-
-# add back to the main dataframe and simplify 
-Bastian_data <- left_join(Bastian_data, bonding, by = "subid") %>% 
-  select(CONDITION, mean_bonding)
+# We also need to get our DV from the mean of 7 items
+Bastian_data <- Bastian_data %>% 
+  pivot_longer(names_to = "item", # var for item names
+               values_to = "score", # var for item scores
+               cols = group101:group107) %>% # Range of columns for group bonding items
+  group_by(across(.cols = c(-item, -score))) %>% # Group by everything but ignore item and score
+  summarise(mean_bonding = mean(score)) %>% # Summarise by creating a subscale name and specify sum or mean
+  ungroup() # Always ungroup
 ```
 
 To use the Bayesian version of the t-test, we use similar arguments to the frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
 
-The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The default prior is set to <code><span class='st'>"medium"</span></code>, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like <code><span class='st'>"medium"</span></code> and <code><span class='st'>"wide"</span></code> depending on how weak you want the prior to be. 
+The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The default prior is set to <code><span class='st'>"medium"</span></code>, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like <code><span class='st'>"medium"</span></code>, <code><span class='st'>"wide"</span></code>, and <code><span class='st'>"ultrawide"</span></code> depending on how weak you want the prior to be. 
 
 
 ```r
@@ -157,9 +157,11 @@ Bastian_ttest
 ## Bayes factor type: BFindepSample, JZS
 ```
 
-Don't worry about the warning, there were just previous issues with using tibbles in the <code class='package'>BayesFactor</code> package. 
+::: {.warning data-latex=""}
+Don't worry about the warning, there were just previous issues with using tibbles in the <code class='package'>BayesFactor</code> package. Now the package converts tibbles to normal R data frames before doing its thing.
+:::
 
-With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011) (add ref), this is quite weak anecdotal evidence.
+With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011), this is quite weak anecdotal evidence.
 
 The authors were pretty convinced that the pain group would score hire on the bonding rating than the control group, so lets see what happens with a one-tailed test to see how its done. We need to define the `nullInterval` argument to state we only consider negative effects. 
 
@@ -266,33 +268,33 @@ point_estimate(Bastian_samples)
 <tbody>
   <tr>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4262541 </td>
-   <td style="text-align:right;"> 3.4260957 </td>
-   <td style="text-align:right;"> 3.4199179 </td>
+   <td style="text-align:right;"> 3.4256457 </td>
+   <td style="text-align:right;"> 3.4257920 </td>
+   <td style="text-align:right;"> 3.4266426 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4877563 </td>
-   <td style="text-align:right;"> -0.4913901 </td>
-   <td style="text-align:right;"> -0.4627484 </td>
+   <td style="text-align:right;"> -0.4857046 </td>
+   <td style="text-align:right;"> -0.4895633 </td>
+   <td style="text-align:right;"> -0.4679517 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1068933 </td>
-   <td style="text-align:right;"> 1.1345778 </td>
-   <td style="text-align:right;"> 1.0589782 </td>
+   <td style="text-align:right;"> 1.1040610 </td>
+   <td style="text-align:right;"> 1.1333647 </td>
+   <td style="text-align:right;"> 1.0591335 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4635814 </td>
-   <td style="text-align:right;"> -0.4683431 </td>
-   <td style="text-align:right;"> -0.4303621 </td>
+   <td style="text-align:right;"> -0.4629884 </td>
+   <td style="text-align:right;"> -0.4667853 </td>
+   <td style="text-align:right;"> -0.4780470 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5479369 </td>
-   <td style="text-align:right;"> 4.4431907 </td>
-   <td style="text-align:right;"> 0.0280057 </td>
+   <td style="text-align:right;"> 0.5452093 </td>
+   <td style="text-align:right;"> 5.4272956 </td>
+   <td style="text-align:right;"> 0.0178584 </td>
   </tr>
 </tbody>
 </table>
@@ -323,32 +325,32 @@ hdi(Bastian_samples)
   <tr>
    <td style="text-align:left;"> mu </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1400897 </td>
-   <td style="text-align:right;"> 3.7091730 </td>
+   <td style="text-align:right;"> 3.1434717 </td>
+   <td style="text-align:right;"> 3.7129992 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0446904 </td>
-   <td style="text-align:right;"> 0.0456258 </td>
+   <td style="text-align:right;"> -1.0347721 </td>
+   <td style="text-align:right;"> 0.0444293 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338062 </td>
-   <td style="text-align:right;"> 1.5963293 </td>
+   <td style="text-align:right;"> 0.7403585 </td>
+   <td style="text-align:right;"> 1.5997688 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9923120 </td>
-   <td style="text-align:right;"> 0.0479797 </td>
+   <td style="text-align:right;"> -0.9862166 </td>
+   <td style="text-align:right;"> 0.0451062 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0280057 </td>
-   <td style="text-align:right;"> 7.6999392 </td>
+   <td style="text-align:right;"> 0.0296597 </td>
+   <td style="text-align:right;"> 7.7865875 </td>
   </tr>
 </tbody>
 </table>
@@ -386,10 +388,10 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4262541 </td>
+   <td style="text-align:right;"> 3.4256457 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1400897 </td>
-   <td style="text-align:right;"> 3.7091730 </td>
+   <td style="text-align:right;"> 3.1404090 </td>
+   <td style="text-align:right;"> 3.7103194 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -399,23 +401,23 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4877563 </td>
+   <td style="text-align:right;"> -0.4857046 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0446904 </td>
-   <td style="text-align:right;"> 0.0456258 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -1.0420455 </td>
+   <td style="text-align:right;"> 0.0386620 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0535468 </td>
+   <td style="text-align:right;"> 0.0521895 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1068933 </td>
+   <td style="text-align:right;"> 1.1040610 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338062 </td>
-   <td style="text-align:right;"> 1.5963293 </td>
+   <td style="text-align:right;"> 0.7723319 </td>
+   <td style="text-align:right;"> 1.6577747 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -425,28 +427,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4635814 </td>
+   <td style="text-align:right;"> -0.4629884 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9923120 </td>
-   <td style="text-align:right;"> 0.0479797 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -0.9960398 </td>
+   <td style="text-align:right;"> 0.0355119 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0588625 </td>
+   <td style="text-align:right;"> 0.0562000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5479369 </td>
+   <td style="text-align:right;"> 0.5452093 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0280057 </td>
-   <td style="text-align:right;"> 7.6999392 </td>
+   <td style="text-align:right;"> 0.0910432 </td>
+   <td style="text-align:right;"> 15.5873354 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0345470 </td>
+   <td style="text-align:right;"> 0.0089368 </td>
   </tr>
 </tbody>
 </table>
@@ -579,23 +581,23 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0665021 </td>
+   <td style="text-align:right;"> -0.0663345 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1250706 </td>
-   <td style="text-align:right;"> -0.0078185 </td>
-   <td style="text-align:right;"> 0.98688 </td>
+   <td style="text-align:right;"> -0.1258279 </td>
+   <td style="text-align:right;"> -0.0080876 </td>
+   <td style="text-align:right;"> 0.98677 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.8918853 </td>
+   <td style="text-align:right;"> 0.8913474 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288423 </td>
+   <td style="text-align:right;"> 0.0288242 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0167027 </td>
-   <td style="text-align:right;"> 0.0465440 </td>
+   <td style="text-align:right;"> 0.0182936 </td>
+   <td style="text-align:right;"> 0.0491760 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -605,28 +607,28 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3922957 </td>
+   <td style="text-align:right;"> -0.3912701 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7448107 </td>
-   <td style="text-align:right;"> -0.0431335 </td>
-   <td style="text-align:right;"> 0.98688 </td>
+   <td style="text-align:right;"> -0.7489902 </td>
+   <td style="text-align:right;"> -0.0452248 </td>
+   <td style="text-align:right;"> 0.98677 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0273155 </td>
+   <td style="text-align:right;"> 0.0258947 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4862971 </td>
+   <td style="text-align:right;"> 0.4893017 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0300044 </td>
-   <td style="text-align:right;"> 6.7342436 </td>
+   <td style="text-align:right;"> 0.0859706 </td>
+   <td style="text-align:right;"> 13.6742127 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0419575 </td>
+   <td style="text-align:right;"> 0.0171368 </td>
   </tr>
 </tbody>
 </table>
@@ -694,10 +696,10 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4262541 </td>
+   <td style="text-align:right;"> 3.4256457 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1400897 </td>
-   <td style="text-align:right;"> 3.7091730 </td>
+   <td style="text-align:right;"> 3.1404090 </td>
+   <td style="text-align:right;"> 3.7103194 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -707,23 +709,23 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4877563 </td>
+   <td style="text-align:right;"> -0.4857046 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0446904 </td>
-   <td style="text-align:right;"> 0.0456258 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -1.0420455 </td>
+   <td style="text-align:right;"> 0.0386620 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0535468 </td>
+   <td style="text-align:right;"> 0.0521895 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1068933 </td>
+   <td style="text-align:right;"> 1.1040610 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338062 </td>
-   <td style="text-align:right;"> 1.5963293 </td>
+   <td style="text-align:right;"> 0.7723319 </td>
+   <td style="text-align:right;"> 1.6577747 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -733,28 +735,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4635814 </td>
+   <td style="text-align:right;"> -0.4629884 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9923120 </td>
-   <td style="text-align:right;"> 0.0479797 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -0.9960398 </td>
+   <td style="text-align:right;"> 0.0355119 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0588625 </td>
+   <td style="text-align:right;"> 0.0562000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5479369 </td>
+   <td style="text-align:right;"> 0.5452093 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0280057 </td>
-   <td style="text-align:right;"> 7.6999392 </td>
+   <td style="text-align:right;"> 0.0910432 </td>
+   <td style="text-align:right;"> 15.5873354 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0345470 </td>
+   <td style="text-align:right;"> 0.0089368 </td>
   </tr>
 </tbody>
 </table>
@@ -809,10 +811,10 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4262541 </td>
+   <td style="text-align:right;"> 3.4256457 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1400897 </td>
-   <td style="text-align:right;"> 3.7091730 </td>
+   <td style="text-align:right;"> 3.1404090 </td>
+   <td style="text-align:right;"> 3.7103194 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
@@ -822,37 +824,37 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4877563 </td>
+   <td style="text-align:right;"> -0.4857046 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0446904 </td>
-   <td style="text-align:right;"> 0.0456258 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -1.0420455 </td>
+   <td style="text-align:right;"> 0.0386620 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.9892212 </td>
+   <td style="text-align:right;"> 0.9900316 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1068933 </td>
+   <td style="text-align:right;"> 1.1040610 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7338062 </td>
-   <td style="text-align:right;"> 1.5963293 </td>
+   <td style="text-align:right;"> 0.7723319 </td>
+   <td style="text-align:right;"> 1.6577747 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.3043547 </td>
+   <td style="text-align:right;"> 0.2916421 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4635814 </td>
+   <td style="text-align:right;"> -0.4629884 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9923120 </td>
-   <td style="text-align:right;"> 0.0479797 </td>
-   <td style="text-align:right;"> 0.96414 </td>
+   <td style="text-align:right;"> -0.9960398 </td>
+   <td style="text-align:right;"> 0.0355119 </td>
+   <td style="text-align:right;"> 0.96526 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
@@ -861,15 +863,15 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5479369 </td>
+   <td style="text-align:right;"> 0.5452093 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0280057 </td>
-   <td style="text-align:right;"> 7.6999392 </td>
+   <td style="text-align:right;"> 0.0910432 </td>
+   <td style="text-align:right;"> 15.5873354 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.7154135 </td>
+   <td style="text-align:right;"> 0.6894105 </td>
   </tr>
 </tbody>
 </table>
@@ -927,23 +929,23 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0665021 </td>
+   <td style="text-align:right;"> -0.0663345 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1250706 </td>
-   <td style="text-align:right;"> -0.0078185 </td>
-   <td style="text-align:right;"> 0.98688 </td>
+   <td style="text-align:right;"> -0.1258279 </td>
+   <td style="text-align:right;"> -0.0080876 </td>
+   <td style="text-align:right;"> 0.98677 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.2775550 </td>
+   <td style="text-align:right;"> 0.2753895 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288423 </td>
+   <td style="text-align:right;"> 0.0288242 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0167027 </td>
-   <td style="text-align:right;"> 0.0465440 </td>
+   <td style="text-align:right;"> 0.0182936 </td>
+   <td style="text-align:right;"> 0.0491760 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
@@ -953,28 +955,28 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3922957 </td>
+   <td style="text-align:right;"> -0.3912701 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7448107 </td>
-   <td style="text-align:right;"> -0.0431335 </td>
-   <td style="text-align:right;"> 0.98688 </td>
+   <td style="text-align:right;"> -0.7489902 </td>
+   <td style="text-align:right;"> -0.0452248 </td>
+   <td style="text-align:right;"> 0.98677 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.0027789 </td>
+   <td style="text-align:right;"> 0.0018211 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4862971 </td>
+   <td style="text-align:right;"> 0.4893017 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0300044 </td>
-   <td style="text-align:right;"> 6.7342436 </td>
+   <td style="text-align:right;"> 0.0859706 </td>
+   <td style="text-align:right;"> 13.6742127 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.0022316 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
   </tr>
 </tbody>
 </table>

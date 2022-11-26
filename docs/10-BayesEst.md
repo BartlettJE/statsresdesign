@@ -369,12 +369,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.002274 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.1383382 </td>
-   <td style="text-align:right;"> 3.989010 </td>
+   <td style="text-align:right;"> 2.0956343 </td>
+   <td style="text-align:right;"> 3.957506 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 1.0002836 </td>
    <td style="text-align:right;"> 2999.233 </td>
@@ -384,12 +384,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.563360 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.4333066 </td>
-   <td style="text-align:right;"> 2.692349 </td>
+   <td style="text-align:right;"> 0.3956451 </td>
+   <td style="text-align:right;"> 2.679314 </td>
    <td style="text-align:right;"> 0.99525 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9993928 </td>
    <td style="text-align:right;"> 3173.220 </td>
@@ -609,32 +609,32 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.002274 </td>
-   <td style="text-align:right;"> 2.1383382 </td>
-   <td style="text-align:right;"> 3.989010 </td>
+   <td style="text-align:right;"> 2.0956343 </td>
+   <td style="text-align:right;"> 3.957506 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.563360 </td>
-   <td style="text-align:right;"> 0.4333066 </td>
-   <td style="text-align:right;"> 2.692349 </td>
+   <td style="text-align:right;"> 0.3956451 </td>
+   <td style="text-align:right;"> 2.679314 </td>
    <td style="text-align:right;"> 0.99525 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 2.903251 </td>
-   <td style="text-align:right;"> 1.9052542 </td>
-   <td style="text-align:right;"> 3.942468 </td>
+   <td style="text-align:right;"> 1.8855461 </td>
+   <td style="text-align:right;"> 3.930462 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.838562 </td>
-   <td style="text-align:right;"> 0.4885740 </td>
-   <td style="text-align:right;"> 3.365554 </td>
+   <td style="text-align:right;"> 0.3318538 </td>
+   <td style="text-align:right;"> 3.237537 </td>
    <td style="text-align:right;"> 0.98900 </td>
   </tr>
 </tbody>
