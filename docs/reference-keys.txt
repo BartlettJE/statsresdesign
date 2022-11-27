@@ -28,7 +28,7 @@ guided-example-for-two-dependent-samples-mehr-et-al.-2014
 independent-activity-for-two-dependent-samples-zwaan-et-al.-2018
 summary
 independent-activity-solutions
-schroeder-and-epley-2015-bayes-factor
+Schroeder-solution
 zwaan-et-al.-2020-bayes-factor
 schroeder-and-epley-2015-rope
 zwaan-et-al.-2020-rope
