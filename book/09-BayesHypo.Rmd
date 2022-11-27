@@ -140,13 +140,13 @@ Bastian_ttest
 
 ```
 
-::: {.warning data-latex=""}
+::: {.info data-latex=""}
 Don't worry about the warning, there were just previous issues with using tibbles in the `r pkg("BayesFactor")` package. Now the package converts tibbles to normal R data frames before doing its thing.
 :::
 
 With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011), this is quite weak anecdotal evidence.
 
-The authors were pretty convinced that the pain group would score hire on the bonding rating than the control group, so lets see what happens with a one-tailed test to see how its done. We need to define the `nullInterval` argument to state we only consider negative effects. 
+The authors were pretty convinced that the pain group would score higher on the bonding rating than the control group, so lets see what happens with a one-tailed test to see how its done. We need to define the `nullInterval` argument to state we only consider negative effects. 
 
 ::: {.warning data-latex=""}
 Make sure you check the order of your groups to check which direction you expect the results to go in. If you expect group A to be smaller than group B, you would code for negative effects. If you expect group A to be bigger than group B, you would code for positive effects. A common mistake is defining the wrong direction if you do not know which order the groups are coded. 
@@ -163,7 +163,7 @@ Bastian_onetail
 
 ```
 
-In a one-tailed test, we now have two tests. In row one, we have the test we want where we compare our experimental hypothesis (negative effects) against the point null. In row two, we have the opposite which is the complement of our experimental hypothesis. Even with a one-tailed test, the evidence in favour of our experimental hypothesis compared to the null is anecdotal at best ($BF$$_1$$_0$ = 2.79). 
+In a one-tailed test, we now have two tests. In row one, we have the test we want where we compare our experimental hypothesis (negative effects) against the point null. In row two, we have the opposite which is the complement of our experimental hypothesis, which would be that the effect is *not* negative. Even with a one-tailed test, the evidence in favour of our experimental hypothesis compared to the null is anecdotal at best ($BF$$_1$$_0$ = 2.79). 
 
 If we wanted to test the null compared to the experimental hypothesis, we can simply take the reciprocal of the object, here demonstrated on the two-tailed object. 
 
@@ -177,7 +177,7 @@ For this object, we already know there is anecdotal evidence in favour of the ex
 
 For the purposes of the rest of the demonstration, we will stick with our original object with a two-tailed test to see how we can interpret inconclusive results. In the original study, the pain group scored significantly higher than the control group, but the p-value was .048, so hardly convincing evidence. With Bayes factors, at least we can see we ideally need more data to make a decision. 
 
-We will spend more time on this process next week, but a Bayes factor on its own is normally not enough. We also want an estimate of the effect size and the precision around it. Within the `r pkg("BayesFactor")` package, there is a function to sample from the posterior distribution using MCMC sampling. We need to pass the t-test object into the `posterior` function, and include the number of iterations we want. We will use 10,000 here. Depending on your computer, this may take a few seconds.
+We will spend more time on this process in week/chapter 10, but a Bayes factor on its own is normally not enough. We also want an estimate of the effect size and the precision around it. Within the `r pkg("BayesFactor")` package, there is a function to sample from the posterior distribution using MCMC sampling. We need to pass the t-test object into the `posterior` function, and include the number of iterations we want. We will use 10,000 here. Depending on your computer, this may take a few seconds.
 
 ::: {.warning data-latex=""}
 If you use a one-tailed test, you must index the first object (e.g., `Bastian_ttest[1]`) as a one-tailed test includes two lines: 1) the directional alternative we state against the null and 2) the complement of the alternative against the null. 
@@ -190,7 +190,7 @@ Bastian_samples <- posterior(Bastian_ttest,
 
 ```
 
-Once we have the samples, we can use the generic `plot` function to see trace plots (more on those in chapter 10) and a density plot of the posterior distributions for several parameters. 
+Once we have the samples, we can use the base `plot` function to see trace plots (more on those in chapter 10) and a density plot of the posterior distributions for several parameters. 
 
 ```{r Bastian plot}
 
@@ -198,7 +198,7 @@ plot(Bastian_samples)
 
 ```
 
-The second and fourth plots are what we are mainly interested in for a t-test. Once we know what kind of evidence we have for different hypotheses, typically we want to know what the effect size is. In the `r pkg("BayesFactor")` package, we get the mean difference between groups (unhelpfully named beta) and the effect size Delta, which is kind of like Cohen's d. It is calculated by dividing the t statistic by the square root of the sample size, so kind of a standardised mean difference. One of my main complaints with the `r pkg("BayesFactor")` package is not explaining what the outputs mean as the only explanation I could find is this [old blog post](http://bayesfactor.blogspot.com/2014/02/bayes-factor-t-tests-part-1.html), with no clear overview in the documentation.  
+The second and fourth plots are what we are mainly interested in for a t-test. Once we know what kind of evidence we have for different hypotheses, typically we want to know what the effect size is. In the `r pkg("BayesFactor")` package, we get the mean difference between groups (unhelpfully named beta) and the effect size Delta, which is kind of like Cohen's d. It is calculated by dividing the t statistic by the square root of the sample size, so a type of standardised mean difference. One of my main complaints with the `r pkg("BayesFactor")` package is not explaining what the outputs mean as the only explanation I could find is <a href="http://bayesfactor.blogspot.com/2014/02/bayes-factor-t-tests-part-1.html" target="_blank">old blog post</a> with no clear overview in the documentation.  
 
 The plot provides the posterior distribution of different statistics based on sampling 10,000 times. For beta, we can see the peak of the distribution is around -0.5, spanning from above 0 to -1. For delta, we can see the peak of the distribution is around -0.5, and spans from above 0 to -1 again. 
 
@@ -218,9 +218,9 @@ We do not just want a point estimate though, we also want the credible interval 
 hdi(Bastian_samples)
 ```
 
-So, we can be 95% confident that the mean difference is between -1.04 and 0.04, and that delta is between -0.99 and 0.04. As both values cross 0, we would not be confident in these findings and ideally we would need to collect more data.   
+So, 95% of the posterior distribution for the mean difference is between -1.04 and 0.04, and that delta is between -0.99 and 0.04. As both values cross 0, we would not be confident in these findings and ideally we would need to collect more data, which is consistent with the Bayes Factor results..   
 
-Finally, instead of separate functions, there is a handy wrapper for the median, 95% credible interval, and ROPE (more on that in section 4). 
+Finally, instead of separate functions, there is a handy wrapper for the median, 95% credible interval, and ROPE (more on that later). 
 
 ```{r Bastian wrapper}
 
@@ -228,11 +228,11 @@ describe_posterior(Bastian_samples)
 
 ```
 
-There are a bunch of tests and tricks we have not covered here, so check out the [Bayesfactor package page online](https://richarddmorey.github.io/BayesFactor/) for a series of vignettes. 
+There are a bunch of tests and tricks we have not covered here, so check out the <a href="https://richarddmorey.github.io/BayesFactor/" target="_blank">Bayesfactor package page online</a> for a series of vignettes. 
 
 ### Independent activity (Schroeder & Epley, 2015)
 
-For an independent activity, we will use data from the study by [Schroeder and Epley (2015)](https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full). The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of them reading the speech. 
+For an independent activity, we will use data from <a href="https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full" target="_blank">Schroeder and Epley (2015)</a>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech. 
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
@@ -247,11 +247,23 @@ Schroeder_data$CONDITION <- factor(Schroeder_data$CONDITION,
                                    labels = c("Transcript", "Audio"))
 ```
 
-From here, apply what you learnt in the first guided example to this new independent task. 
+::: {.try data-latex=""}
+From here, apply what you learnt in the first guided example to this new independent task and complete the questions below to check your understanding. Since we expect higher ratings for audio than transcript, use a one-tailed test. Remember to sample from the posterior, so we can also get estimates of the effect sizes.
+:::
+ 
+You can check your attempt to the solutions at [the bottom of the page](#Schroeder-solution). 
 
 ```{r Schroeder ttest}
 Schroeder_ttest <- NULL
 ```
+
+- Rounding to two decimals, what is the Bayes Factor in favour of the alternative hypothesis? `r fitb(answer = 8.21, num = TRUE, tol = .001)`
+
+- Looking at the guidelines from Wagenmakers et al. (2015), how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No", x = "Anecdotal", answer = "Substantial", x = "Strong"))`
+
+- Rounding to two decimals, what is the absolute (ignoring the sign) mean difference (beta) in favour of the audio condition? `r fitb(answer = 1.54, num = TRUE, tol = .001)`
+
+- Looking at the 95% credible interval, can we rule out an effect of 0 given these data and model? `r mcq(opts = c(answer = "Yes", x = "No"))` 
 
 ## Bayes factors for two dependent samples {#Bayes-dependent-samples}
 
@@ -425,7 +437,34 @@ Mention further resources.
 
 ## Independent activity solutions
 
-### Schroeder and Epley (2015) Bayes factor
+### Schroeder and Epley (2015) Bayes factor {#Schroeder-solution}
+
+```{r}
+Schroeder_ttest <- ttestBF(formula = Hire_Rating ~ CONDITION,
+        data = Schroeder_data, 
+        rscale = "medium",
+        nullInterval = c(-Inf, 0)) # Expect negative effects since Transcript < Audio
+
+Schroeder_ttest
+```
+```{r}
+# We need to index the first object as a one-tailed test includes two lines: 
+# 1. Directional alternative we state against the null
+# 2. Complement of the alternative against the null
+
+Schroeder_samples <- posterior(Schroeder_ttest[1], 
+                               iterations = 1e5)
+```
+
+```{r}
+plot(Schroeder_samples)
+```
+
+```{r}
+
+describe_posterior(Schroeder_samples)
+
+```
 
 ### Zwaan et al. (2020) Bayes factor
 
