@@ -271,11 +271,11 @@ Schroeder_ttest <- NULL
 
 For a paired samples t-test, the process is identical to the independent samples t-test apart from defining the variables. So, we will demonstrate a full example like before with less commentary, then you have an independent data frame to test your understanding. 
 
-The next study we are going to look at is by [Mehr et al. (2016)](http://journals.sagepub.com/doi/10.1177/0956797615626691). They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
+The next study we are going to look at is by <a href="http://journals.sagepub.com/doi/10.1177/0956797615626691" target="_blank">Mehr et al. (2016)</a>. They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
 
 Mehr et al. (2016) invited 32 infants and their parents to participate in a repeated measures experiment. First, the parents were asked to repeatedly sing a previously unfamiliar song to the infants for two weeks. When they returned to the lab, they measured the baseline gaze (where they were looking) of the infants towards two unfamiliar people on a screen who were just silently smiling at them. This was measured as the proportion of time looking at the individual who would later sing the familiar song (0.5 would indicate half the time was spent looking at the familiar singer. Values closer to one indicate looking at them for longer). The two silent people on the screen then took it in turns to sing a lullaby. One of the people sung the song that the infant’s parents had been told to sing for the previous two weeks, and the other one sang a song with the same lyrics and rhythm, but with a different melody. Mehr et al. (2016) then repeated the gaze procedure to the two people at the start of the experiment to provide a second measure of gaze as a proportion of looking at the familiar singer. 
 
-We are interested in whether the infants increased the proportion of time spent looking at the singer who sang the familiar song after they sang, in comparison to before they sang to the infants. We have one dependent variable (gaze proportion) and one within-subjects independent variable (baseline vs test). We want to know whether gaze proportion was higher at test than it was at baseline. 
+We are interested in whether the infants increased the proportion of time spent looking at the singer who sang the familiar song after they sang, in comparison to before they sang to the infants. We have one dependent variable (gaze proportion) and one within-subjects independent variable (baseline vs test). We want to know whether gaze proportion was higher at test (`r hl("Test_Proportion_Gaze_to_Singer")`) than it was at baseline (`r hl("Baseline_Proportion_Gaze_to_Singer")`). 
 
 ```{r Mehr data model, warning=FALSE, message=FALSE}
 
@@ -306,7 +306,7 @@ Mehr_samples <- posterior(Mehr_ttest,
 
 ```
 
-Just note in the plot we have fewer panels as the paired samples approach simplifies things. Mu is our mean difference in the first panel and delta is our standardised effect in the third panel. For a dependent variable of gaze proportion, an unstandardised effect size is more informative than the standardised version.
+Just note in the plot we have fewer panels as the paired samples approach simplifies things. Mu is our mean difference in the first panel and delta is our standardised effect in the third panel. For a dependent variable like gaze proportion, an unstandardised effect size is informative and comparable across studies, but its also useful to report standardised effect sizes for future power analyses etc. 
 
 ```{r Mehr plots}
 # Subset first plot for mean to display correctly
@@ -326,15 +326,21 @@ describe_posterior(Mehr_samples)
 
 ```
 
-We can see here the median posterior estimate of the mean difference is -.07 with a 95% credible interval ranging from -.13 to -.01. This means we can exclude 0 from the likely effects, but we still only have anecdotal evidence in favour of the experimental hypothesis compared to the null.
+We can see here the median posterior estimate of the mean difference is -.07 with a 95% credible interval ranging from -.13 to -.01. As the dependent variable is measured as a proportion of gaze time, infants looked at the familiar singer for 7% (1-13% for the 95% credible interval) longer at test than at baseline. This means we can exclude 0 from the likely effects, but we still only have anecdotal evidence in favour of the experimental hypothesis compared to the null.
 
 ### Independent activity (Zwaan et al., 2020)
 
-For your final independent activity, we have data from [Zwaan et al. (2020)](http://link.springer.com/10.3758/s13423-017-1348-y) who wanted to replicate experiments from cognitive psychology to see how replicable they are. For this exercise, we will explore the [flanker task](https://en.wikipedia.org/wiki/Eriksen_flanker_task). 
+For your final independent activity, we have data from <a href="http://link.springer.com/10.3758/s13423-017-1348-y" target="_blank">Zwaan et al. (2020)</a> who wanted to see how replicable experiments from cognitive psychology are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task" target="_blank">flanker task</a>.  
 
 In short, we have two conditions: congruent and incongruent. In congruent trials, five symbols like arrows are the same and participants must identify the central symbol with a keyboard response. In incongruent trials, the four outer symbols are different to the central symbol. Typically, we find participants respond faster to congruent trials than incongruent trials. The dependent variable here is the mean response time in milliseconds (ms). 
 
-We want to know whether response times are faster to congruent trials (session1_responsecongruent) than incongruent trials (session1_incongruent). Zwaan et al. measured a few things like changing the stimuli and repeated the task in two sessions, so we will just focus on the first session for this example. In this scenario, you might want to think of a one-tailed test since there is a strong prediction to expect faster responses in the congruent condition. 
+We want to know whether response times are faster to congruent trials (`r hl("session1_responsecongruent")`) than incongruent trials (`r hl("session1_incongruent")`). Zwaan et al. measured a few things like changing the stimuli and repeating the task in two sessions, so we will just focus on the first session for this example.
+
+::: {.try data-latex=""}
+Perform a paired samples t-test comparing the response times to congruent and incongruent trials. The questions below relate to a one-tailed test since there is a strong prediction to expect faster responses in the congruent condition compared to the incongruent condition. Think carefully about whether you expect positive or negative effects depending on the order you enter the variables.  
+:::
+
+You can check your attempt to the solutions at [the bottom of the page](#Zwaan-solution).
 
 ```{r Zwaan data and model, message=FALSE, warning=FALSE}
 
@@ -343,6 +349,18 @@ Zwaan_data <- read_csv("data/Zwaan_flanker.csv")
 Zwaan_ttest <- NULL
 
 ```
+
+- Looking at the guidelines from Wagenmakers et al. (2015), how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "Substantial", x = "Strong", x = "Very strong", answer = "Extreme))`
+
+```{Zwaan explanation, webex.hide="Explain this answer"}
+The Bayes Factor for this analysis is huge. Unless you edit the settings, R reports large numbers in scientific notation. The Bayes Factor in favour of the alternative hypothesis here is 8.7861e+12 or as a real number 8786100000000. For a finding as established as the flanker task, testing against a point null is not too informative, but this shows what extreme evidence looks like. We will come back to this in the ROPE demonstration later. 
+```
+
+- Rounding to two decimals, what is the absolute (ignoring the sign) mean difference (beta) in response time between congruent and incongruent trials? `r fitb(answer = 38.78, num = TRUE, tol = .001)`
+
+- Rounding to two decimals, what is the absolute (ignoring the sign) standardised mean difference (delta) in response time between congruent and incongruent trials? `r fitb(answer = 0.69, num = TRUE, tol = .001)`
+
+- Looking at the 95% credible interval for mu, we would expect the absolute mean difference to range between `r mcq(opts = c(answer = "30.06", x = "38.78, x = "47.54"))`ms and `r mcq(opts = c(x = "30.06", x = "38.78, answer = "47.54"))`ms.
 
 ## Equivalence Testing vs ROPE {#ROPE}
 
@@ -466,7 +484,34 @@ describe_posterior(Schroeder_samples)
 
 ```
 
-### Zwaan et al. (2020) Bayes factor
+### Zwaan et al. (2020) Bayes factor {#Zwaan-solution}
+
+```{r}
+Zwaan_ttest <- ttestBF(x = Zwaan_data$session1_responsecongruent,
+                      y = Zwaan_data$session1_incongruent,
+                      paired = TRUE, 
+                      rscale = "medium",
+                      nullInterval = c(-Inf, 0)) # negative as we expect incongruent to be larger than congruent
+
+Zwaan_ttest
+```
+
+```{r}
+Zwaan_samples <- posterior(Zwaan_ttest[1], # index first item for a one-tailed test
+                          iterations = 1e5)
+```
+
+```{r}
+plot(Zwaan_samples[, 1],
+     main = "Posterior for mu")
+
+plot(Zwaan_samples[, 3], 
+     main = "Posterior for delta")
+```
+
+```{r}
+describe_posterior(Zwaan_samples)
+```
 
 ### Schroeder and Epley (2015) ROPE
 
