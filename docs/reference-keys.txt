@@ -1,6 +1,5 @@
 fig:settings-general
 fig:settings-code
-fig:img-soundimals-hash
 introduction-to-linear-regression-1
 introduction-to-linear-regression-2
 introduction-to-generalised-linear-models-1
@@ -17,10 +16,10 @@ step-2---update-to-a-posterior
 Bayes-factors
 Bayes-independent-samples
 guided-example-bastian-et-al.-2014
-independent-activity-schroeder-epley-2015
+Schroeder-activity
 Bayes-dependent-samples
 guided-example-mehr-et-al.-2016
-independent-activity-zwaan-et-al.-2020
+Zwaan-activity
 ROPE
 guided-example-for-two-independent-samples-bastian-et-al.-2014
 independent-activity-for-two-independent-samples-schroeder-epley-2014
@@ -30,8 +29,8 @@ summary
 independent-activity-solutions
 Schroeder-solution
 Zwaan-solution
-schroeder-and-epley-2015-rope
-zwaan-et-al.-2020-rope
+Schroeder-ROPE-solution
+Zwaan-ROPE-solution
 introduction-to-bayesian-estimation
 learning-objectives-1
 simple-linear-regression
@@ -55,7 +54,7 @@ installing-base-r
 installing-rstudio
 rstudio-settings
 installing-latex
-symbols
+Frequentist-Equivalence
 conventions
 webexercises
 alert-boxes
