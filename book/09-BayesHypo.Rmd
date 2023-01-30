@@ -210,7 +210,7 @@ point_estimate(Bastian_samples)
 
 ```
 
-Our best guess for the mean difference between groups is -0.49 and a delta of -0.46 in favour of the pain group. 
+Our best guess (median of the posterior) for the mean difference between groups is -0.49 and a delta of -0.47 in favour of the pain group. 
 
 We do not just want a point estimate though, we also want the credible interval around it. For this, we have the `r hl(hdi)` function. 
 
@@ -218,7 +218,7 @@ We do not just want a point estimate though, we also want the credible interval 
 hdi(Bastian_samples)
 ```
 
-So, 95% of the posterior distribution for the mean difference is between -1.04 and 0.04, and that delta is between -0.99 and 0.04. As both values cross 0, we would not be confident in these findings and ideally we would need to collect more data, which is consistent with the Bayes Factor results..   
+So, 95% of the posterior distribution for the mean difference is between -1.04 and 0.04, and that delta is between -0.99 and 0.04. As both values cross 0, we would not be confident in these findings and ideally we would need to collect more data, which is consistent with the Bayes Factor results.   
 
 Finally, instead of separate functions, there is a handy wrapper for the median, 95% credible interval, and ROPE (more on that later). 
 
@@ -427,12 +427,6 @@ Use the `r hl(describe_posterior())` from [section 9.4.2](#Schroeder-activity), 
 
 You can check your attempt to the solutions at [the bottom of the page](#Schroeder-ROPE-solution).
 
-```{r Schroeder ROPE}
-
-NULL
-
-```
-
 - Looking at the 95% credible interval for beta, we would expect the absolute mean difference to range between `r mcq(opts = c(answer = "0.32", x = "2.94", x = "3.11", x = "4.52"))` and `r mcq(opts = c(x = "0.32", answer = "2.94", x = "3.11", x = "4.52"))`.
 
 - Rounding to two decimals, what percentage of the 95% credible interval is within the ROPE? `r fitb(answer = 75.88, num = TRUE, tol = .001)`
@@ -470,11 +464,6 @@ Use the `r hl(describe_posterior())` from [section 9.5.2](#Zwaan-activity), but 
 
 You can check your attempt to the solutions at [the bottom of the page](#Zwaan-ROPE-solution).
 
-```{r Zwaan ROPE}
-NULL
-
-```
-
 - Looking at the 95% credible interval for mu, we would expect the absolute mean difference to range between `r mcq(opts = c(answer = "30.06", x = "31.48", x = "38.78", x = "47.54"))` and `r mcq(opts = c(x = "30.06", x = "31.48", x = "38.78", answer = "47.54"))`.
 
 - What percentage of the 95% credible interval is within the ROPE? `r fitb(answer = 0, num = TRUE, tol = .001)`
@@ -492,7 +481,17 @@ cat("- What is the most appropriate conclusion based on this ROPE?:", longmcq(op
 
 ## Summary
 
-Mention further resources. 
+In this chapter, you learnt about hypothesis testing using a Bayesian framework. The first two activities explored the logic of Bayesian statistics to make inferences and how it can be used to test hypotheses when expressed as the Bayes factor. You then learnt how to perform Bayes factors applied to the simplest cases of two independent samples and two dependent samples. Bayes factors are a useful way of quantifying the evidence in favour of a hypotheses compared to a competing hypothesis. Bayesian statistics can still be used mindlessly, but hopefully you can see they provide the opportunity to move away from purely dichotomous thinking. Evidence that would be statistically significant (*p* < .05) but close to alpha only represents anecdotal evidence. 
+
+As with any new skill, practice is the best approach to becoming comfortable in applying your knowledge to novel scenario. Hopefully, you worked through the guided examples and tested your understanding on the independent activities.
+
+For further learning, we recommend the following resources relevant to this chapter:
+
+1. <a href="https://doi.org/10.3758/s13423-020-01798-5" target="_blank">Van Doorn et al. (2021)</a> - Although it focuses on the JASP software, this article provides an accessible introduction to Bayes factors and how you can report your findings. 
+
+2. <a href="https://doi.org/10.3758/s13423-016-1221-4" target="_blank">Kruschke and Liddell (2018)</a> - This article discusses the proposed shift away from dichotomous hypothesis testing towards estimation and how it relates to Bayesian statistics through summarising the posterior and the ROPE procedure. 
+
+3. <a href="https://psyarxiv.com/86p4k/" target="_blank">Wong et al. (2021)</a> - Although Bayes factors have the potential to help you make more nuanced inferences, they are still prone to misinterpretations. This preprint outlines common errors and misconceptions when researcher report Bayes factors. 
 
 ## Independent activity solutions
 
