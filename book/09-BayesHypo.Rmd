@@ -60,9 +60,9 @@ In section 4 of the app, you can also explore Bayes factors applied to this scen
 
 ## The Logic Behind Bayes Factors {#Bayes-factors}
 
-To demonstrate the logic behind Bayes factors, we will play around with <a href="https://rpsychologist.com/d3/bayes/" target="_blank">this shiny app by Magnusson</a>. Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
+To demonstrate the logic behind Bayes factors, we will play around with <a href="https://rpsychologist.com/d3/bayes/" target="_blank">this interactive app by Magnusson</a>. Building on [section 1](#bayes-logic), the visualisation shows a Bayesian two-sample t-test, demonstrating a more complicated application compared to the beta distribution and proportions. The visualisation shows both Bayesian estimation through the posterior distribution and 95% Highest Density Interval (HDI), and Bayes factors against a null hypothesis centered on 0. We will use this visualisation to reinforce what we learnt earlier and extend it to understanding the logic behind Bayes factors. 
 
-On the visualisation, there are three settings:
+There are three settings on the visualisation, :
 
 1. Observed effect - Expressed as Cohen's d, this represents the standardised mean difference between two groups. You can set larger effects (positive or negative) or assume the null hypothesis is true (d = 0). 
 
@@ -91,8 +91,20 @@ To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on 
 6. Finally, if you set a weak prior (SD = 2), you will see the frequentist 95% CI and the Bayesian 95% HDI are almost identical. With a weak or uninformative prior, the values from the two intervals are usually similar, but you must interpret them differently. Increasing the sample size makes both intervals smaller and changing the observed effect shifts them around. If you make a stronger prior (SD = 0.5), now the 95% HDI will change as you move the observed effect size around. The frequentist 95% CI will always follow the likelihood as it is only based on the observed data. The Bayesian 95% HDI represents the area of the posterior, so it will be a compromise between the prior and likelihood, or it can be smaller if you have a stronger prior in favour of the null and an observed effect of 0. 
 
 ::: {.try data-latex=""}
-Based on the observations above, try and apply your understanding to the questions below using Magnusson's Shiny app.
+Based on the observations above, try and apply your understanding to the questions below using Magnusson's interactive app.
 :::
+
+- Assuming a moderate effect size of d = 0.4 and a weak prior SD = 0.5, how many participants per group would you need for the Bayes factor to be 3 or more in favour of the alternative hypothesis? `r fitb(answer = 57, num = TRUE, tol = .001)`
+
+- Assuming a moderate effect size of d = 0.4 and 50 participants per group, when you use a weaker prior of SD = 2, evidence in favour of the alternative hypothesis is `r mcq(opts = c(x = "stronger", answer = "weaker", x = "the same"))` than when you use a stronger prior of SD = 1. 
+
+`r hide("Explain this answer")`
+```{r, echo = FALSE, results='asis'}
+cat("This is the opposite of point 5 in the explanation above. Remember Bayes factors represent a shift in belief in one hypothesis compared to another. If you are more confident in the null (smaller SD), then it would take more evidence to shift your belief in favour of the alternative hypothesis that there is a difference.")
+```
+`r unhide()`
+
+- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from <http://doi.apa.org/getdoi.cfm?doi=10.1037/a0022790" target="_blank">Wagenmakers et al. (2011)</a>, how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No evidence", answer = "Anecdotal", x = "Substantial", x = "Strong"))`
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
