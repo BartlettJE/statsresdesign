@@ -104,7 +104,7 @@ cat("This is the opposite of point 5 in the explanation above. Remember Bayes fa
 ```
 `r unhide()`
 
-- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from <http://doi.apa.org/getdoi.cfm?doi=10.1037/a0022790" target="_blank">Wagenmakers et al. (2011)</a>, how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No evidence", answer = "Anecdotal", x = "Substantial", x = "Strong"))`
+- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from <a href = <https://psycnet.apa.org/record/2011-01895-001" target="_blank">Wagenmakers et al. (2011)</a>, how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No evidence", answer = "Anecdotal", x = "Substantial", x = "Strong"))`
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
