@@ -54,7 +54,7 @@ If you are trying this on your own, explore changing the prior and data to see h
 
 2. Now set a strong prior (20, 20) over 0.5 with 5 yellows and 10 non-yellows. Despite the observed data showing a proportion of 0.33, the peak of the posterior distribution is slightly higher than 0.4. The posterior is a compromise between the prior and the likelihood, so a stronger prior means you need more data to change your beliefs. For example, imagine we had 10 times more data with 50 yellows and 100 non-yellows. Now, there is greater density between 0.3 and 0.4, to show the posterior is now more convinced of the proportion of yellows. 
 
-In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior, and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
+In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a [conjugate prior](https://en.wikipedia.org/wiki/Conjugate_prior), and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
 
 In section 4 of the app, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. 
 
@@ -84,7 +84,7 @@ To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on 
 
 3. With more participants / data, there is less uncertainty in the likelihood. Keeping the same inputs as point 2, with 10 participants, the likelihood peaks at d = 1, but easily spans between 0 and 2. As you increase the sample size towards 1000, the uncertainty around the likelihood is lower. More data also overwhelms the prior, so although we had a relatively strong prior that we would have a null effect, with 50 participants, the likelihood and posterior mostly overlap. 
 
-4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or the sample size increases. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (Rouder, 2014, but see Schönbrodt et al. (2017) for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
+4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or the sample size increases. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (@rouder_optional_2014 but see @schonbrodt_sequential_2017 for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
 
 5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but remember we cannot support the null. With Bayes factors, we can support the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or increasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null (small SD), your beliefs do not need to shift in light of the data. 
 
@@ -106,7 +106,7 @@ This is the opposite of point 5 in the explanation above. Remember Bayes factors
 </div>
 
 
-- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from <a href = <http://doi.apa.org/getdoi.cfm?doi=10.1037/a0022790" target="_blank">Wagenmakers et al. (2011)</a>, how could you describe the evidence in favour of the alternative hypothesis? <select class='webex-select'><option value='blank'></option><option value='x'>No evidence</option><option value='answer'>Anecdotal</option><option value='x'>Substantial</option><option value='x'>Strong</option></select>
+- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from @wagenmakers_why_2011, how could you describe the evidence in favour of the alternative hypothesis? <select class='webex-select'><option value='blank'></option><option value='x'>No evidence</option><option value='answer'>Anecdotal</option><option value='x'>Substantial</option><option value='x'>Strong</option></select>
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
@@ -121,7 +121,7 @@ library(bayestestR)
 library(tidyverse)
 ```
 
-For this guided example, we will reanalyse data from <a href="http://journals.sagepub.com/doi/10.1177/0956797614545886" target="_blank">Bastian et al. (2014)</a>. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
+For this guided example, we will reanalyse data from @bastian_pain_2014. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
 
 Participants were randomly allocated into two conditions: pain or control. Participants in the pain group experienced mild pain through a cold pressor task (leaving your hand in ice cold water) and a wall squat (sitting against a wall). The control group completed a different task that did not involve pain. The participants then completed a scale to measure how bonded they felt to other participants in the group. Higher values on this scale mean greater bonding. 
 
@@ -288,33 +288,33 @@ point_estimate(Bastian_samples)
 <tbody>
   <tr>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4257958 </td>
-   <td style="text-align:right;"> 3.4262339 </td>
-   <td style="text-align:right;"> 3.4244823 </td>
+   <td style="text-align:right;"> 3.4257671 </td>
+   <td style="text-align:right;"> 3.4261183 </td>
+   <td style="text-align:right;"> 3.4279050 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4888143 </td>
-   <td style="text-align:right;"> -0.4915859 </td>
-   <td style="text-align:right;"> -0.4847605 </td>
+   <td style="text-align:right;"> -0.4872161 </td>
+   <td style="text-align:right;"> -0.4911566 </td>
+   <td style="text-align:right;"> -0.4633320 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1025436 </td>
-   <td style="text-align:right;"> 1.1318607 </td>
-   <td style="text-align:right;"> 1.0682730 </td>
+   <td style="text-align:right;"> 1.1051537 </td>
+   <td style="text-align:right;"> 1.1334748 </td>
+   <td style="text-align:right;"> 1.0649357 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4654318 </td>
-   <td style="text-align:right;"> -0.4692304 </td>
-   <td style="text-align:right;"> -0.4606909 </td>
+   <td style="text-align:right;"> -0.4640355 </td>
+   <td style="text-align:right;"> -0.4683903 </td>
+   <td style="text-align:right;"> -0.4538975 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5488870 </td>
-   <td style="text-align:right;"> 4.9714737 </td>
-   <td style="text-align:right;"> 0.0257874 </td>
+   <td style="text-align:right;"> 0.5491552 </td>
+   <td style="text-align:right;"> 4.7912755 </td>
+   <td style="text-align:right;"> 0.0248355 </td>
   </tr>
 </tbody>
 </table>
@@ -345,32 +345,32 @@ hdi(Bastian_samples)
   <tr>
    <td style="text-align:left;"> mu </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1453339 </td>
-   <td style="text-align:right;"> 3.7145308 </td>
+   <td style="text-align:right;"> 3.1470822 </td>
+   <td style="text-align:right;"> 3.7144832 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> beta (Control - Pain) </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0391225 </td>
-   <td style="text-align:right;"> 0.0446402 </td>
+   <td style="text-align:right;"> -1.0478347 </td>
+   <td style="text-align:right;"> 0.0411032 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> sig2 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7226156 </td>
-   <td style="text-align:right;"> 1.5864245 </td>
+   <td style="text-align:right;"> 0.7347665 </td>
+   <td style="text-align:right;"> 1.5946554 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> delta </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9898741 </td>
-   <td style="text-align:right;"> 0.0455645 </td>
+   <td style="text-align:right;"> -0.9947939 </td>
+   <td style="text-align:right;"> 0.0447955 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> g </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0257874 </td>
-   <td style="text-align:right;"> 7.5099554 </td>
+   <td style="text-align:right;"> 0.0266519 </td>
+   <td style="text-align:right;"> 7.6516790 </td>
   </tr>
 </tbody>
 </table>
@@ -408,11 +408,11 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4257958 </td>
+   <td style="text-align:right;"> 3.4257671 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1418192 </td>
-   <td style="text-align:right;"> 3.7112009 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 3.1431207 </td>
+   <td style="text-align:right;"> 3.7108777 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
@@ -421,24 +421,24 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4888143 </td>
+   <td style="text-align:right;"> -0.4872161 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0420223 </td>
-   <td style="text-align:right;"> 0.0423859 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0460538 </td>
+   <td style="text-align:right;"> 0.0434636 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0529579 </td>
+   <td style="text-align:right;"> 0.0533263 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1025436 </td>
+   <td style="text-align:right;"> 1.1051537 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7693844 </td>
-   <td style="text-align:right;"> 1.6612806 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.7702146 </td>
+   <td style="text-align:right;"> 1.6617486 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
@@ -447,28 +447,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4654318 </td>
+   <td style="text-align:right;"> -0.4640355 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9982523 </td>
-   <td style="text-align:right;"> 0.0388888 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0006611 </td>
+   <td style="text-align:right;"> 0.0395680 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0568632 </td>
+   <td style="text-align:right;"> 0.0575579 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5488870 </td>
+   <td style="text-align:right;"> 0.5491552 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0912615 </td>
-   <td style="text-align:right;"> 15.1545734 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.0918467 </td>
+   <td style="text-align:right;"> 15.6410916 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0086947 </td>
+   <td style="text-align:right;"> 0.0082526 </td>
   </tr>
 </tbody>
 </table>
@@ -479,7 +479,7 @@ There are a bunch of tests and tricks we have not covered here, so check out the
 
 ### Independent activity (Schroeder & Epley, 2015) {#Schroeder-activity}
 
-For an independent activity, we will use data from <a href="https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full" target="_blank">Schroeder and Epley (2015)</a>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech. 
+For an independent activity, we will use data from @schroeder_sound_2015. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech. 
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
@@ -520,7 +520,7 @@ Schroeder_ttest <- NULL
 
 For a paired samples t-test, the process is identical to the independent samples t-test apart from defining the variables. So, we will demonstrate a full example like before with less commentary, then you have an independent data frame to test your understanding. 
 
-The next study we are going to look at is by <a href="http://journals.sagepub.com/doi/10.1177/0956797615626691" target="_blank">Mehr et al. (2016)</a>. They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
+The next study we are going to look at is by @mehr_for_2016. They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
 
 Mehr et al. (2016) invited 32 infants and their parents to participate in a repeated measures experiment. First, the parents were asked to repeatedly sing a previously unfamiliar song to the infants for two weeks. When they returned to the lab, they measured the baseline gaze (where they were looking) of the infants towards two unfamiliar people on a screen who were just silently smiling at them. This was measured as the proportion of time looking at the individual who would later sing the familiar song (0.5 would indicate half the time was spent looking at the familiar singer. Values closer to one indicate looking at them for longer). The two silent people on the screen then took it in turns to sing a lullaby. One of the people sung the song that the infant’s parents had been told to sing for the previous two weeks, and the other one sang a song with the same lyrics and rhythm, but with a different melody. Mehr et al. (2016) then repeated the gaze procedure to the two people at the start of the experiment to provide a second measure of gaze as a proportion of looking at the familiar singer. 
 
@@ -613,23 +613,23 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0664130 </td>
+   <td style="text-align:right;"> -0.0664854 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1256232 </td>
-   <td style="text-align:right;"> -0.0080312 </td>
-   <td style="text-align:right;"> 0.98653 </td>
+   <td style="text-align:right;"> -0.1254676 </td>
+   <td style="text-align:right;"> -0.0078590 </td>
+   <td style="text-align:right;"> 0.98648 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.8907895 </td>
+   <td style="text-align:right;"> 0.8932947 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288838 </td>
+   <td style="text-align:right;"> 0.0288025 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0182429 </td>
-   <td style="text-align:right;"> 0.0495533 </td>
+   <td style="text-align:right;"> 0.0182716 </td>
+   <td style="text-align:right;"> 0.0492251 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -639,28 +639,28 @@ describe_posterior(Mehr_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3921867 </td>
+   <td style="text-align:right;"> -0.3921852 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7483352 </td>
-   <td style="text-align:right;"> -0.0443290 </td>
-   <td style="text-align:right;"> 0.98653 </td>
+   <td style="text-align:right;"> -0.7467303 </td>
+   <td style="text-align:right;"> -0.0434517 </td>
+   <td style="text-align:right;"> 0.98648 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0269263 </td>
+   <td style="text-align:right;"> 0.0260632 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4885426 </td>
+   <td style="text-align:right;"> 0.4902821 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0862915 </td>
-   <td style="text-align:right;"> 13.3413907 </td>
+   <td style="text-align:right;"> 0.0866046 </td>
+   <td style="text-align:right;"> 13.4604170 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0155368 </td>
+   <td style="text-align:right;"> 0.0156737 </td>
   </tr>
 </tbody>
 </table>
@@ -671,7 +671,7 @@ We can see here the median posterior estimate of the mean difference is -.07 wit
 
 ### Independent activity (Zwaan et al., 2020) {#Zwaan-activity}
 
-For your final independent activity, we have data from <a href="http://link.springer.com/10.3758/s13423-017-1348-y" target="_blank">Zwaan et al. (2020)</a> who wanted to see how replicable experiments from cognitive psychology are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task" target="_blank">flanker task</a>.  
+For your final independent activity, we have data from @zwaan_participant_2018 who wanted to see how replicable experiments from cognitive psychology are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task" target="_blank">flanker task</a>.  
 
 In short, we have two conditions: congruent and incongruent. In congruent trials, five symbols like arrows are the same and participants must identify the central symbol with a keyboard response. In incongruent trials, the four outer symbols are different to the central symbol. Typically, we find participants respond faster to congruent trials than incongruent trials. The dependent variable here is the mean response time in milliseconds (ms). 
 
@@ -690,7 +690,7 @@ Zwaan_data <- read_csv("data/Zwaan_flanker.csv")
 Zwaan_ttest <- NULL
 ```
 
-- Looking at the guidelines from Wagenmakers et al. (2015), how could you describe the evidence in favour of the alternative hypothesis? <select class='webex-select'><option value='blank'></option><option value='x'>Substantial</option><option value='x'>Strong</option><option value='x'>Very strong</option><option value='answer'>Extreme</option></select>
+- Looking at the guidelines from Wagenmakers et al. (2011), how could you describe the evidence in favour of the alternative hypothesis? <select class='webex-select'><option value='blank'></option><option value='x'>Substantial</option><option value='x'>Strong</option><option value='x'>Very strong</option><option value='answer'>Extreme</option></select>
 
 
 <div class='webex-solution'><button>Explain this answer</button>
@@ -712,7 +712,7 @@ The Bayes Factor for this analysis is huge. Unless you edit the settings, R repo
 
 In sections 9.4 and 9.5, we focused on the Bayesian approach to null hypothesis testing. We compared the alternative hypothesis to the null hypothesis and wanted to know how much we should shift our beliefs. However, there are times when comparing against a point null is uninformative. The same advice applies to frequentist statistics where you can use equivalence testing (see [the bonus section in the appendix](#Frequentist-Equivalence) if you are interested in this). In this setup, you set two boundaries representing your smallest effect size of interest (SESOI) and conduct a two one-sided test: one comparing your sample mean (difference) to the upper bound and one comparing your sample mean (difference) to the lower bound. If both tests are significant, you can conclude the mean was within your bounds and it is practically equivalent to zero. 
 
-In a Bayesian framework, we follow a similar approach by setting an upper and lower bound for the interval we consider practically or theoretically meaningful. This is known as the Region of Practical Equivalence (ROPE). However, we do not perform a two one-sided test, we directly compare the posterior distribution to the ROPE and interpret how much of the ROPE captures our 95% credible interval. This creates three decisions <a href="http://link.springer.com/10.3758/s13423-017-1272-1" target="_blank">(Kruschke & Liddell, 2018)</a> instead of comparing the experimental hypothesis to the point null: 
+In a Bayesian framework, we follow a similar approach by setting an upper and lower bound for the interval we consider practically or theoretically meaningful. This is known as the Region of Practical Equivalence (ROPE). However, we do not perform a two one-sided test, we directly compare the posterior distribution to the ROPE and interpret how much of the ROPE captures our 95% credible interval. This creates three decisions [@kruschke_bayesian_2018-1] instead of comparing the experimental hypothesis to the point null: 
 
 1. HDI completely outside the ROPE: We reject the ROPE as the parameter is larger than the effects we consider too small to be practically/theoretically meaningful. 
 
@@ -750,11 +750,11 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4257958 </td>
+   <td style="text-align:right;"> 3.4257671 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1418192 </td>
-   <td style="text-align:right;"> 3.7112009 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 3.1431207 </td>
+   <td style="text-align:right;"> 3.7108777 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
@@ -763,24 +763,24 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4888143 </td>
+   <td style="text-align:right;"> -0.4872161 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0420223 </td>
-   <td style="text-align:right;"> 0.0423859 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0460538 </td>
+   <td style="text-align:right;"> 0.0434636 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0529579 </td>
+   <td style="text-align:right;"> 0.0533263 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1025436 </td>
+   <td style="text-align:right;"> 1.1051537 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7693844 </td>
-   <td style="text-align:right;"> 1.6612806 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.7702146 </td>
+   <td style="text-align:right;"> 1.6617486 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
@@ -789,28 +789,28 @@ describe_posterior(Bastian_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4654318 </td>
+   <td style="text-align:right;"> -0.4640355 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9982523 </td>
-   <td style="text-align:right;"> 0.0388888 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0006611 </td>
+   <td style="text-align:right;"> 0.0395680 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0568632 </td>
+   <td style="text-align:right;"> 0.0575579 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5488870 </td>
+   <td style="text-align:right;"> 0.5491552 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0912615 </td>
-   <td style="text-align:right;"> 15.1545734 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.0918467 </td>
+   <td style="text-align:right;"> 15.6410916 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
-   <td style="text-align:right;"> 0.0086947 </td>
+   <td style="text-align:right;"> 0.0082526 </td>
   </tr>
 </tbody>
 </table>
@@ -865,11 +865,11 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.4257958 </td>
+   <td style="text-align:right;"> 3.4257671 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1418192 </td>
-   <td style="text-align:right;"> 3.7112009 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 3.1431207 </td>
+   <td style="text-align:right;"> 3.7108777 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
@@ -878,54 +878,54 @@ describe_posterior(Bastian_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Control - Pain) </td>
-   <td style="text-align:right;"> -0.4888143 </td>
+   <td style="text-align:right;"> -0.4872161 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.0420223 </td>
-   <td style="text-align:right;"> 0.0423859 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0460538 </td>
+   <td style="text-align:right;"> 0.0434636 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.9894316 </td>
+   <td style="text-align:right;"> 0.9884105 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 1.1025436 </td>
+   <td style="text-align:right;"> 1.1051537 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.7693844 </td>
-   <td style="text-align:right;"> 1.6612806 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.7702146 </td>
+   <td style="text-align:right;"> 1.6617486 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.2969053 </td>
+   <td style="text-align:right;"> 0.2909053 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.4654318 </td>
+   <td style="text-align:right;"> -0.4640355 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.9982523 </td>
-   <td style="text-align:right;"> 0.0388888 </td>
-   <td style="text-align:right;"> 0.964 </td>
+   <td style="text-align:right;"> -1.0006611 </td>
+   <td style="text-align:right;"> 0.0395680 </td>
+   <td style="text-align:right;"> 0.96412 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1.0000000 </td>
+   <td style="text-align:right;"> 0.9997895 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.5488870 </td>
+   <td style="text-align:right;"> 0.5491552 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0912615 </td>
-   <td style="text-align:right;"> 15.1545734 </td>
-   <td style="text-align:right;"> 1.000 </td>
+   <td style="text-align:right;"> 0.0918467 </td>
+   <td style="text-align:right;"> 15.6410916 </td>
+   <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -1 </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 0.6891158 </td>
+   <td style="text-align:right;"> 0.6890737 </td>
   </tr>
 </tbody>
 </table>
@@ -950,7 +950,7 @@ You can check your attempt to the solutions at [the bottom of the page](#Schroed
 
 - Rounding to two decimals, what percentage of the 95% credible interval is within the ROPE? <input class='webex-solveme nospaces' data-tol='0.001' size='5' data-answer='["75.88"]'/>
 
-- What is the most appropriate conclusion based on this ROPE?: <div class='webex-radiogroup' id='radio_GEFDAZIDYC'><label><input type="radio" autocomplete="off" name="radio_GEFDAZIDYC" value="x"></input> <span>HDI completely outside the ROPE: We reject the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_GEFDAZIDYC" value="x"></input> <span>HDI completely within the ROPE: We accept the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_GEFDAZIDYC" value="answer"></input> <span>HDI and the ROPE partially overlap: We are undecided and we need more data.</span></label></div>
+- What is the most appropriate conclusion based on this ROPE?: <div class='webex-radiogroup' id='radio_WBVZJEGASJ'><label><input type="radio" autocomplete="off" name="radio_WBVZJEGASJ" value="x"></input> <span>HDI completely outside the ROPE: We reject the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_WBVZJEGASJ" value="x"></input> <span>HDI completely within the ROPE: We accept the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_WBVZJEGASJ" value="answer"></input> <span>HDI and the ROPE partially overlap: We are undecided and we need more data.</span></label></div>
 
 ### Guided example for two dependent samples (Mehr et al., 2014)
 
@@ -984,23 +984,23 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -0.0664130 </td>
+   <td style="text-align:right;"> -0.0664854 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1256232 </td>
-   <td style="text-align:right;"> -0.0080312 </td>
-   <td style="text-align:right;"> 0.98653 </td>
+   <td style="text-align:right;"> -0.1254676 </td>
+   <td style="text-align:right;"> -0.0078590 </td>
+   <td style="text-align:right;"> 0.98648 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.2757789 </td>
+   <td style="text-align:right;"> 0.2750316 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 0.0288838 </td>
+   <td style="text-align:right;"> 0.0288025 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0182429 </td>
-   <td style="text-align:right;"> 0.0495533 </td>
+   <td style="text-align:right;"> 0.0182716 </td>
+   <td style="text-align:right;"> 0.0492251 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
@@ -1010,23 +1010,23 @@ describe_posterior(Mehr_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.3921867 </td>
+   <td style="text-align:right;"> -0.3921852 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.7483352 </td>
-   <td style="text-align:right;"> -0.0443290 </td>
-   <td style="text-align:right;"> 0.98653 </td>
+   <td style="text-align:right;"> -0.7467303 </td>
+   <td style="text-align:right;"> -0.0434517 </td>
+   <td style="text-align:right;"> 0.98648 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
    <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.0020947 </td>
+   <td style="text-align:right;"> 0.0024421 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.4885426 </td>
+   <td style="text-align:right;"> 0.4902821 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.0862915 </td>
-   <td style="text-align:right;"> 13.3413907 </td>
+   <td style="text-align:right;"> 0.0866046 </td>
+   <td style="text-align:right;"> 13.4604170 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.05 </td>
@@ -1045,7 +1045,7 @@ Our observed mean difference was a posterior median of -0.07, 95% CI = [-.13, -0
 For this activity, you will need the objects you created in [section 9.5.2](#Zwaan-activity) for the independent activity. Remember it is based on a one-tailed t-test as we expected faster response times to congruent trials than incongruent trials. You will need the samples from the posterior as the only thing you will need to change is the arguments you use in the <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function. 
 
 ::: {.try data-latex=""}
-Use the <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> from [section 9.5.2](#Zwaan-activity), but this time enter values for the ROPE arguments. Set your ROPE to -10-0ms (or 0-10 depending on the order you entered the variables) as these are smaller effects closer to the sampling error we can expect with response time experiments held online [(Reimers & Stewart, 2015)](https://doi.org/10.3758/s13428-014-0471-1). 
+Use the <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> from [section 9.5.2](#Zwaan-activity), but this time enter values for the ROPE arguments. Set your ROPE to -10-0ms (or 0-10 depending on the order you entered the variables) as these are smaller effects closer to the sampling error we can expect with response time experiments held online [@reimers_presentation_2015]. 
 :::
 
 You can check your attempt to the solutions at [the bottom of the page](#Zwaan-ROPE-solution).
@@ -1054,7 +1054,7 @@ You can check your attempt to the solutions at [the bottom of the page](#Zwaan-R
 
 - What percentage of the 95% credible interval is within the ROPE? <input class='webex-solveme nospaces' data-tol='0.001' size='1' data-answer='["0"]'/>
 
-- What is the most appropriate conclusion based on this ROPE?: <div class='webex-radiogroup' id='radio_ZSVXUXAGUO'><label><input type="radio" autocomplete="off" name="radio_ZSVXUXAGUO" value="answer"></input> <span>HDI completely outside the ROPE: We reject the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_ZSVXUXAGUO" value="x"></input> <span>HDI completely within the ROPE: We accept the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_ZSVXUXAGUO" value="x"></input> <span>HDI and the ROPE partially overlap: We are undecided and we need more data.</span></label></div>
+- What is the most appropriate conclusion based on this ROPE?: <div class='webex-radiogroup' id='radio_CEOWLJCQWC'><label><input type="radio" autocomplete="off" name="radio_CEOWLJCQWC" value="answer"></input> <span>HDI completely outside the ROPE: We reject the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_CEOWLJCQWC" value="x"></input> <span>HDI completely within the ROPE: We accept the ROPE.</span></label><label><input type="radio" autocomplete="off" name="radio_CEOWLJCQWC" value="x"></input> <span>HDI and the ROPE partially overlap: We are undecided and we need more data.</span></label></div>
 
 ## Summary
 
@@ -1064,11 +1064,11 @@ As with any new skill, practice is the best approach to becoming comfortable in 
 
 For further learning, we recommend the following resources relevant to this chapter:
 
-1. <a href="https://doi.org/10.3758/s13423-020-01798-5" target="_blank">Van Doorn et al. (2021)</a> - Although it focuses on the JASP software, this article provides an accessible introduction to Bayes factors and how you can report your findings. 
+1. @van_doorn_jasp_2021 - Although it focuses on the JASP software, this article provides an accessible introduction to Bayes factors and how you can report your findings. 
 
-2. <a href="https://doi.org/10.3758/s13423-016-1221-4" target="_blank">Kruschke and Liddell (2018)</a> - This article discusses the proposed shift away from dichotomous hypothesis testing towards estimation and how it relates to Bayesian statistics through summarising the posterior and the ROPE procedure. 
+2. @kruschke_bayesian_2018 - This article discusses the proposed shift away from dichotomous hypothesis testing towards estimation and how it relates to Bayesian statistics through summarising the posterior and the ROPE procedure. 
 
-3. <a href="https://psyarxiv.com/86p4k/" target="_blank">Wong et al. (2021)</a> - Although Bayes factors have the potential to help you make more nuanced inferences, they are still prone to misinterpretations. This preprint outlines common errors and misconceptions when researcher report Bayes factors. 
+3. @wong_potential_2021 - Although Bayes factors have the potential to help you make more nuanced inferences, they are still prone to misinterpretations. This preprint outlines common errors and misconceptions when researcher report Bayes factors. 
 
 ## Independent activity solutions
 
@@ -1146,10 +1146,10 @@ describe_posterior(Schroeder_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.8099354 </td>
+   <td style="text-align:right;"> 3.8115308 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1093359 </td>
-   <td style="text-align:right;"> 4.5119900 </td>
+   <td style="text-align:right;"> 3.1046340 </td>
+   <td style="text-align:right;"> 4.5196585 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1159,10 +1159,10 @@ describe_posterior(Schroeder_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Transcript - Audio) </td>
-   <td style="text-align:right;"> -1.5434728 </td>
+   <td style="text-align:right;"> -1.5424724 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -2.9462864 </td>
-   <td style="text-align:right;"> -0.3186453 </td>
+   <td style="text-align:right;"> -2.9424666 </td>
+   <td style="text-align:right;"> -0.3142420 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1172,10 +1172,10 @@ describe_posterior(Schroeder_samples)
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 4.7859567 </td>
+   <td style="text-align:right;"> 4.7858435 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1294936 </td>
-   <td style="text-align:right;"> 7.8167807 </td>
+   <td style="text-align:right;"> 3.1408079 </td>
+   <td style="text-align:right;"> 7.8322979 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1185,10 +1185,10 @@ describe_posterior(Schroeder_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.7068879 </td>
+   <td style="text-align:right;"> -0.7054990 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.3663736 </td>
-   <td style="text-align:right;"> -0.1392561 </td>
+   <td style="text-align:right;"> -1.3642733 </td>
+   <td style="text-align:right;"> -0.1361937 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1198,10 +1198,10 @@ describe_posterior(Schroeder_samples)
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.7518447 </td>
+   <td style="text-align:right;"> 0.7514903 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.1139346 </td>
-   <td style="text-align:right;"> 21.9409175 </td>
+   <td style="text-align:right;"> 0.1146488 </td>
+   <td style="text-align:right;"> 22.2803429 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1293,10 +1293,10 @@ describe_posterior(Zwaan_samples)
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -38.8297824 </td>
+   <td style="text-align:right;"> -38.7896097 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -47.5180872 </td>
-   <td style="text-align:right;"> -30.0639623 </td>
+   <td style="text-align:right;"> -47.5006538 </td>
+   <td style="text-align:right;"> -30.0137573 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1306,10 +1306,10 @@ describe_posterior(Zwaan_samples)
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 3146.4897138 </td>
+   <td style="text-align:right;"> 3148.0156838 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2546.2980650 </td>
-   <td style="text-align:right;"> 3950.0342170 </td>
+   <td style="text-align:right;"> 2548.3219822 </td>
+   <td style="text-align:right;"> 3954.3229947 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1319,10 +1319,10 @@ describe_posterior(Zwaan_samples)
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.6924852 </td>
+   <td style="text-align:right;"> -0.6915327 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.8641176 </td>
-   <td style="text-align:right;"> -0.5195398 </td>
+   <td style="text-align:right;"> -0.8646487 </td>
+   <td style="text-align:right;"> -0.5184365 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1332,10 +1332,10 @@ describe_posterior(Zwaan_samples)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.7080819 </td>
+   <td style="text-align:right;"> 0.7122410 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.1311555 </td>
-   <td style="text-align:right;"> 18.7751266 </td>
+   <td style="text-align:right;"> 0.1296843 </td>
+   <td style="text-align:right;"> 19.3514910 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
@@ -1377,10 +1377,10 @@ describe_posterior(Schroeder_samples,
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> 3.8099354 </td>
+   <td style="text-align:right;"> 3.8115308 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1093359 </td>
-   <td style="text-align:right;"> 4.5119900 </td>
+   <td style="text-align:right;"> 3.1046340 </td>
+   <td style="text-align:right;"> 4.5196585 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -2 </td>
@@ -1390,23 +1390,23 @@ describe_posterior(Schroeder_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> beta (Transcript - Audio) </td>
-   <td style="text-align:right;"> -1.5434728 </td>
+   <td style="text-align:right;"> -1.5424724 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -2.9462864 </td>
-   <td style="text-align:right;"> -0.3186453 </td>
+   <td style="text-align:right;"> -2.9424666 </td>
+   <td style="text-align:right;"> -0.3142420 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -2 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0.7578105 </td>
+   <td style="text-align:right;"> 0.7565158 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 4.7859567 </td>
+   <td style="text-align:right;"> 4.7858435 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 3.1294936 </td>
-   <td style="text-align:right;"> 7.8167807 </td>
+   <td style="text-align:right;"> 3.1408079 </td>
+   <td style="text-align:right;"> 7.8322979 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -2 </td>
@@ -1416,10 +1416,10 @@ describe_posterior(Schroeder_samples,
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.7068879 </td>
+   <td style="text-align:right;"> -0.7054990 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -1.3663736 </td>
-   <td style="text-align:right;"> -0.1392561 </td>
+   <td style="text-align:right;"> -1.3642733 </td>
+   <td style="text-align:right;"> -0.1361937 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -2 </td>
@@ -1429,10 +1429,10 @@ describe_posterior(Schroeder_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.7518447 </td>
+   <td style="text-align:right;"> 0.7514903 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.1139346 </td>
-   <td style="text-align:right;"> 21.9409175 </td>
+   <td style="text-align:right;"> 0.1146488 </td>
+   <td style="text-align:right;"> 22.2803429 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -2 </td>
@@ -1475,10 +1475,10 @@ describe_posterior(Zwaan_samples,
   <tr>
    <td style="text-align:left;"> 3 </td>
    <td style="text-align:left;"> mu </td>
-   <td style="text-align:right;"> -38.8297824 </td>
+   <td style="text-align:right;"> -38.7896097 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -47.5180872 </td>
-   <td style="text-align:right;"> -30.0639623 </td>
+   <td style="text-align:right;"> -47.5006538 </td>
+   <td style="text-align:right;"> -30.0137573 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -10 </td>
@@ -1488,10 +1488,10 @@ describe_posterior(Zwaan_samples,
   <tr>
    <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> sig2 </td>
-   <td style="text-align:right;"> 3146.4897138 </td>
+   <td style="text-align:right;"> 3148.0156838 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2546.2980650 </td>
-   <td style="text-align:right;"> 3950.0342170 </td>
+   <td style="text-align:right;"> 2548.3219822 </td>
+   <td style="text-align:right;"> 3954.3229947 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -10 </td>
@@ -1501,10 +1501,10 @@ describe_posterior(Zwaan_samples,
   <tr>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> delta </td>
-   <td style="text-align:right;"> -0.6924852 </td>
+   <td style="text-align:right;"> -0.6915327 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.8641176 </td>
-   <td style="text-align:right;"> -0.5195398 </td>
+   <td style="text-align:right;"> -0.8646487 </td>
+   <td style="text-align:right;"> -0.5184365 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -10 </td>
@@ -1514,10 +1514,10 @@ describe_posterior(Zwaan_samples,
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> g </td>
-   <td style="text-align:right;"> 0.7080819 </td>
+   <td style="text-align:right;"> 0.7122410 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.1311555 </td>
-   <td style="text-align:right;"> 18.7751266 </td>
+   <td style="text-align:right;"> 0.1296843 </td>
+   <td style="text-align:right;"> 19.3514910 </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -10 </td>
