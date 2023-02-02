@@ -146,7 +146,48 @@ Bastian_data <- Bastian_data %>%
 
 To use the Bayesian version of the t-test, we use similar arguments to the frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
 
-The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The default prior is set to `r hl("medium")`, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like `r hl("medium")`, `r hl("wide")`, and `r hl("ultrawide")` depending on how weak you want the prior to be. 
+The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The figure below demonstrates the difference between a Cauchy and normal distribution for a range of r scale or SD values. 
+
+```{r load cowplot, echo=FALSE}
+library(cowplot)
+```
+
+
+```{r cauchy vs normal plot, echo=FALSE, warning=FALSE}
+
+set.seed(17829)
+
+alpha <- 0.4
+
+cauchy_dat <- data.frame(x = rcauchy(1e5, 0, 0.5),
+                  y = rcauchy(1e5, 0, 0.707),
+                  z = rcauchy(1e5, 0, 1))
+
+cauchy_plot <- cauchy_dat %>% 
+  ggplot() + 
+  geom_density(aes(x = x), fill = "blue", alpha = alpha) + 
+  geom_density(aes(x = y), fill = "red", alpha = alpha) +
+  geom_density(aes(x = z), fill = "green", alpha = alpha) + 
+  scale_x_continuous(limits = c(-5, 5)) + 
+  theme_classic()
+
+normal_dat <- data.frame(x = rnorm(1e5, 0, 0.5),
+                  y = rnorm(1e5, 0, 0.707),
+                  z = rnorm(1e5, 0, 1))
+
+normal_plot <- normal_dat %>% 
+  ggplot() + 
+  geom_density(aes(x = x), fill = "blue", alpha = alpha) + 
+  geom_density(aes(x = y), fill = "red", alpha = alpha) +
+  geom_density(aes(x = z), fill = "green", alpha = alpha) + 
+  scale_x_continuous(limits = c(-5, 5)) + 
+  theme_classic()
+
+plot_grid(cauchy_plot, normal_plot)
+```
+
+
+The default prior is set to `r hl("medium")`, but you could change this depending on your understanding of the area of research. See the function help page for different options here, but medium is equivalent to a value of 0.707 for scaling the Cauchy prior which is the default setting for most statistics software. On a two-tailed test, this means 50% of the distribution covers values between ± 0.707. You can enter a numeric value for the precise scaling or there are a few word presets like `r hl("medium")`, `r hl("wide")`, and `r hl("ultrawide")` depending on how weak you want the prior to be. 
 
 ```{r Bastian ttest}
 Bastian_ttest <- ttestBF(formula = mean_bonding ~ CONDITION,
