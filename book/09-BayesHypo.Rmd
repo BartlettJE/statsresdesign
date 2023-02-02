@@ -54,7 +54,7 @@ If you are trying this on your own, explore changing the prior and data to see h
 
 2. Now set a strong prior (20, 20) over 0.5 with 5 yellows and 10 non-yellows. Despite the observed data showing a proportion of 0.33, the peak of the posterior distribution is slightly higher than 0.4. The posterior is a compromise between the prior and the likelihood, so a stronger prior means you need more data to change your beliefs. For example, imagine we had 10 times more data with 50 yellows and 100 non-yellows. Now, there is greater density between 0.3 and 0.4, to show the posterior is now more convinced of the proportion of yellows. 
 
-In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a conjugate prior, and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
+In this demonstration, note we only have two curves for the prior and posterior, without the likelihood. When the prior and posterior come from the same distribution family, it is known as a [conjugate prior](https://en.wikipedia.org/wiki/Conjugate_prior), and the beta distribution is one of the simplest. We are simply modelling the proportion of successes and failures (here yellows vs non-yellows). 
 
 In section 4 of the app, you can also explore Bayes factors applied to this scenario, working out how much you should shift your belief in favour of the alternative hypothesis compared to the null (here, that the proportion is exactly 0.5). At this point of the lecture, we have not explored Bayes factors yet, so we will not continue with it here. 
 
@@ -84,7 +84,7 @@ To reinforce the lessons from [section 1](#bayes-logic) and the emphasis now on 
 
 3. With more participants / data, there is less uncertainty in the likelihood. Keeping the same inputs as point 2, with 10 participants, the likelihood peaks at d = 1, but easily spans between 0 and 2. As you increase the sample size towards 1000, the uncertainty around the likelihood is lower. More data also overwhelms the prior, so although we had a relatively strong prior that we would have a null effect, with 50 participants, the likelihood and posterior mostly overlap. 
 
-4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or the sample size increases. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (Rouder, 2014, but see Schönbrodt et al. (2017) for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
+4. Focusing on the Bayes factor supporting the experimental hypothesis, if there is an effect, evidence in favour of the experimental hypothesis increases as the observed effect increases or the sample size increases. This is not too dissimilar to frequentist statistical power, but with Bayesian statistics, optional stopping can be less of a problem (@rouder_optional_2014 but see @schonbrodt_sequential_2017 for considerations you must make). So, if we do not have enough data to shift our beliefs towards either hypothesis, we can collect more data and update our beliefs. 
 
 5. If we set the observed effect to 0, the *p*-value is 1 to suggest we cannot reject the null, but remember we cannot support the null. With Bayes factors, we can support the null and see with observed effect = 0, sample size = 50, and SD of prior = 0.5, the data are 2.60 times more likely under the null than the experimental hypothesis. So, we should shift our belief in favour of the null, but it is not very convincing. We can obtain a higher Bayes factor in support of the null by increasing the sample size or increasing the SD of the prior. This last part might sound a little odd at first, but if your prior was very strong in favour of the null (small SD), your beliefs do not need to shift in light of the data. 
 
@@ -104,7 +104,7 @@ cat("This is the opposite of point 5 in the explanation above. Remember Bayes fa
 ```
 `r unhide()`
 
-- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from <a href = <https://psycnet.apa.org/record/2011-01895-001" target="_blank">Wagenmakers et al. (2011)</a>, how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No evidence", answer = "Anecdotal", x = "Substantial", x = "Strong"))`
+- The old rule of thumb in psychology was 20 participants per group would provide sufficient statistical power. Assuming a moderate effect size of d = 0.5 and a prior SD = 1, the difference would be statistically significant (*p* = .049). However, looking at the guidelines provided in the lecture from @wagenmakers_why_2011, how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "No evidence", answer = "Anecdotal", x = "Substantial", x = "Strong"))`
 
 ## Bayes factors for two independent samples {#Bayes-independent-samples}
 
@@ -119,7 +119,7 @@ library(tidyverse)
 
 ```
 
-For this guided example, we will reanalyse data from <a href="http://journals.sagepub.com/doi/10.1177/0956797614545886" target="_blank">Bastian et al. (2014)</a>. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
+For this guided example, we will reanalyse data from @bastian_pain_2014. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity. 
 
 Participants were randomly allocated into two conditions: pain or control. Participants in the pain group experienced mild pain through a cold pressor task (leaving your hand in ice cold water) and a wall squat (sitting against a wall). The control group completed a different task that did not involve pain. The participants then completed a scale to measure how bonded they felt to other participants in the group. Higher values on this scale mean greater bonding. 
 
@@ -250,7 +250,7 @@ There are a bunch of tests and tricks we have not covered here, so check out the
 
 ### Independent activity (Schroeder & Epley, 2015) {#Schroeder-activity}
 
-For an independent activity, we will use data from <a href="https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full" target="_blank">Schroeder and Epley (2015)</a>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech. 
+For an independent activity, we will use data from @schroeder_sound_2015. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech. 
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
@@ -289,7 +289,7 @@ Schroeder_ttest <- NULL
 
 For a paired samples t-test, the process is identical to the independent samples t-test apart from defining the variables. So, we will demonstrate a full example like before with less commentary, then you have an independent data frame to test your understanding. 
 
-The next study we are going to look at is by <a href="http://journals.sagepub.com/doi/10.1177/0956797615626691" target="_blank">Mehr et al. (2016)</a>. They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
+The next study we are going to look at is by @mehr_for_2016. They were interested in whether singing to infants conveyed important information about social affiliation. Infants become familiar with melodies that are repeated in their specific culture. The authors were interested in whether a novel person (someone they had never seen before) could signal to the child that they are a member of the same social group and attract their attention by singing a familiar song to them.
 
 Mehr et al. (2016) invited 32 infants and their parents to participate in a repeated measures experiment. First, the parents were asked to repeatedly sing a previously unfamiliar song to the infants for two weeks. When they returned to the lab, they measured the baseline gaze (where they were looking) of the infants towards two unfamiliar people on a screen who were just silently smiling at them. This was measured as the proportion of time looking at the individual who would later sing the familiar song (0.5 would indicate half the time was spent looking at the familiar singer. Values closer to one indicate looking at them for longer). The two silent people on the screen then took it in turns to sing a lullaby. One of the people sung the song that the infant’s parents had been told to sing for the previous two weeks, and the other one sang a song with the same lyrics and rhythm, but with a different melody. Mehr et al. (2016) then repeated the gaze procedure to the two people at the start of the experiment to provide a second measure of gaze as a proportion of looking at the familiar singer. 
 
@@ -348,7 +348,7 @@ We can see here the median posterior estimate of the mean difference is -.07 wit
 
 ### Independent activity (Zwaan et al., 2020) {#Zwaan-activity}
 
-For your final independent activity, we have data from <a href="http://link.springer.com/10.3758/s13423-017-1348-y" target="_blank">Zwaan et al. (2020)</a> who wanted to see how replicable experiments from cognitive psychology are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task" target="_blank">flanker task</a>.  
+For your final independent activity, we have data from @zwaan_participant_2018 who wanted to see how replicable experiments from cognitive psychology are. For this exercise, we will explore the <a href="https://en.wikipedia.org/wiki/Eriksen_flanker_task" target="_blank">flanker task</a>.  
 
 In short, we have two conditions: congruent and incongruent. In congruent trials, five symbols like arrows are the same and participants must identify the central symbol with a keyboard response. In incongruent trials, the four outer symbols are different to the central symbol. Typically, we find participants respond faster to congruent trials than incongruent trials. The dependent variable here is the mean response time in milliseconds (ms). 
 
@@ -368,7 +368,7 @@ Zwaan_ttest <- NULL
 
 ```
 
-- Looking at the guidelines from Wagenmakers et al. (2015), how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "Substantial", x = "Strong", x = "Very strong", answer = "Extreme"))`
+- Looking at the guidelines from Wagenmakers et al. (2011), how could you describe the evidence in favour of the alternative hypothesis? `r mcq(opts = c(x = "Substantial", x = "Strong", x = "Very strong", answer = "Extreme"))`
 
 `r hide("Explain this answer")`
 ```{r, echo = FALSE, results='asis'}
@@ -388,7 +388,7 @@ cat("The Bayes Factor for this analysis is huge. Unless you edit the settings, R
 
 In sections 9.4 and 9.5, we focused on the Bayesian approach to null hypothesis testing. We compared the alternative hypothesis to the null hypothesis and wanted to know how much we should shift our beliefs. However, there are times when comparing against a point null is uninformative. The same advice applies to frequentist statistics where you can use equivalence testing (see [the bonus section in the appendix](#Frequentist-Equivalence) if you are interested in this). In this setup, you set two boundaries representing your smallest effect size of interest (SESOI) and conduct a two one-sided test: one comparing your sample mean (difference) to the upper bound and one comparing your sample mean (difference) to the lower bound. If both tests are significant, you can conclude the mean was within your bounds and it is practically equivalent to zero. 
 
-In a Bayesian framework, we follow a similar approach by setting an upper and lower bound for the interval we consider practically or theoretically meaningful. This is known as the Region of Practical Equivalence (ROPE). However, we do not perform a two one-sided test, we directly compare the posterior distribution to the ROPE and interpret how much of the ROPE captures our 95% credible interval. This creates three decisions <a href="http://link.springer.com/10.3758/s13423-017-1272-1" target="_blank">(Kruschke & Liddell, 2018)</a> instead of comparing the experimental hypothesis to the point null: 
+In a Bayesian framework, we follow a similar approach by setting an upper and lower bound for the interval we consider practically or theoretically meaningful. This is known as the Region of Practical Equivalence (ROPE). However, we do not perform a two one-sided test, we directly compare the posterior distribution to the ROPE and interpret how much of the ROPE captures our 95% credible interval. This creates three decisions [@kruschke_bayesian_2018-1] instead of comparing the experimental hypothesis to the point null: 
 
 1. HDI completely outside the ROPE: We reject the ROPE as the parameter is larger than the effects we consider too small to be practically/theoretically meaningful. 
 
@@ -477,7 +477,7 @@ Our observed mean difference was a posterior median of -0.07, 95% CI = [-.13, -0
 For this activity, you will need the objects you created in [section 9.5.2](#Zwaan-activity) for the independent activity. Remember it is based on a one-tailed t-test as we expected faster response times to congruent trials than incongruent trials. You will need the samples from the posterior as the only thing you will need to change is the arguments you use in the `r hl(describe_posterior())` function. 
 
 ::: {.try data-latex=""}
-Use the `r hl(describe_posterior())` from [section 9.5.2](#Zwaan-activity), but this time enter values for the ROPE arguments. Set your ROPE to -10-0ms (or 0-10 depending on the order you entered the variables) as these are smaller effects closer to the sampling error we can expect with response time experiments held online [(Reimers & Stewart, 2015)](https://doi.org/10.3758/s13428-014-0471-1). 
+Use the `r hl(describe_posterior())` from [section 9.5.2](#Zwaan-activity), but this time enter values for the ROPE arguments. Set your ROPE to -10-0ms (or 0-10 depending on the order you entered the variables) as these are smaller effects closer to the sampling error we can expect with response time experiments held online [@reimers_presentation_2015]. 
 :::
 
 You can check your attempt to the solutions at [the bottom of the page](#Zwaan-ROPE-solution).
@@ -505,11 +505,11 @@ As with any new skill, practice is the best approach to becoming comfortable in 
 
 For further learning, we recommend the following resources relevant to this chapter:
 
-1. <a href="https://doi.org/10.3758/s13423-020-01798-5" target="_blank">Van Doorn et al. (2021)</a> - Although it focuses on the JASP software, this article provides an accessible introduction to Bayes factors and how you can report your findings. 
+1. @van_doorn_jasp_2021 - Although it focuses on the JASP software, this article provides an accessible introduction to Bayes factors and how you can report your findings. 
 
-2. <a href="https://doi.org/10.3758/s13423-016-1221-4" target="_blank">Kruschke and Liddell (2018)</a> - This article discusses the proposed shift away from dichotomous hypothesis testing towards estimation and how it relates to Bayesian statistics through summarising the posterior and the ROPE procedure. 
+2. @kruschke_bayesian_2018 - This article discusses the proposed shift away from dichotomous hypothesis testing towards estimation and how it relates to Bayesian statistics through summarising the posterior and the ROPE procedure. 
 
-3. <a href="https://psyarxiv.com/86p4k/" target="_blank">Wong et al. (2021)</a> - Although Bayes factors have the potential to help you make more nuanced inferences, they are still prone to misinterpretations. This preprint outlines common errors and misconceptions when researcher report Bayes factors. 
+3. @wong_potential_2021 - Although Bayes factors have the potential to help you make more nuanced inferences, they are still prone to misinterpretations. This preprint outlines common errors and misconceptions when researcher report Bayes factors. 
 
 ## Independent activity solutions
 
