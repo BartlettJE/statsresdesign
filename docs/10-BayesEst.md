@@ -29,7 +29,7 @@ As a reminder, the aim of the study was to investigate whether delivering a shor
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
-For this example, we will focus on the hire rating (variable <code><span class='st'>"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class='st'>"CONDITION"</span></code>). 
+For this example, we will focus on the hire rating (variable <code><span><span class='st'>"Hire_Rating"</span></span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span><span class='st'>"CONDITION"</span></span></code>). 
 
 Remember the key steps of Bayesian modelling from lecture 10 (Heino et al., 2018):
 
@@ -59,7 +59,7 @@ Schroeder_data$CONDITION <- factor(Schroeder_data$CONDITION,
 
 #### 2. Define a descriptive model
 
-The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the [Lindeloev (2019) blog post](https://lindeloev.github.io/tests-as-linear/), common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
+The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the [Lindeloev (2019) blog post](https://lindeloev.github.io/tests-as-linear/), common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span><span class='st'>"CONDITION"</span></span></code> as a single categorical predictor of <code><span><span class='st'>"Hire_Rating"</span></span></code> as our outcome. You can enter this directly in the <code><span><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></span></code> function below, but its normally a good idea to clearly outline each component.  
 
 
 ```r
@@ -217,7 +217,7 @@ Schroeder_fit <- brm(
 When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the code below, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objectives, remember to refit them if you change anything like the priors, model, or data. 
 :::
 
-If you save the model as a .rds file, you can load them again using the <code><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>readr</code> in the <code class='package'>tidyverse</code>. 
+If you save the model as a .rds file, you can load them again using the <code><span><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>readr</code> in the <code class='package'>tidyverse</code>. 
 
 
 ```r
@@ -336,7 +336,7 @@ We then have the median coefficient of 1.56 with a 95% credible interval between
 
 For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS), but we did not explore this in the lecture. 
 
-For a tidier summary of the parameters, we can also use the handy <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>bayestestR</code>. 
+For a tidier summary of the parameters, we can also use the handy <code><span><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>bayestestR</code>. 
 
 
 ```r
@@ -369,12 +369,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.002274 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.0956343 </td>
-   <td style="text-align:right;"> 3.957506 </td>
+   <td style="text-align:right;"> 2.1383382 </td>
+   <td style="text-align:right;"> 3.989010 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1 </td>
-   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> -0.2330343 </td>
+   <td style="text-align:right;"> 0.2330343 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 1.0002836 </td>
    <td style="text-align:right;"> 2999.233 </td>
@@ -384,12 +384,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.563360 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.3956451 </td>
-   <td style="text-align:right;"> 2.679314 </td>
+   <td style="text-align:right;"> 0.4333066 </td>
+   <td style="text-align:right;"> 2.692349 </td>
    <td style="text-align:right;"> 0.99525 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1 </td>
-   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> -0.2330343 </td>
+   <td style="text-align:right;"> 0.2330343 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9993928 </td>
    <td style="text-align:right;"> 3173.220 </td>
@@ -426,7 +426,7 @@ plot(Schroeder_fit)
 
 For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, `brms` uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues. 
 
-These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package which you can use on their own, or wrap them in the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code> function after loading the <code class='package'>see</code> package. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
+These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package which you can use on their own, or wrap them in the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function after loading the <code class='package'>see</code> package. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
 
 
 ```r
@@ -442,7 +442,7 @@ For this to work, you must specify priors in `brms`. It does not work with the p
 
 We can see the pretty wide prior in blue, then the posterior. Almost all of the posterior distribution is above zero to show we're pretty confident that audio is associated with higher hire ratings than transcript. 
 
-The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
+The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
 
 
 ```r
@@ -495,7 +495,7 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ```
 
 ::: {.info data-latex=""}
-We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class='st'>"CONDITIONAudio"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITIONAudio > 0.
+We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span><span class='st'>"CONDITIONAudio"</span></span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITIONAudio > 0.
 :::
 
 The key part of the output is the evidence ratio, but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 9.09 here. 
@@ -560,7 +560,7 @@ Schroeder_fit2 <- brm(
 
 
 
-If we run the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+If we run the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
 
 
 ```r
@@ -609,32 +609,32 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.002274 </td>
-   <td style="text-align:right;"> 2.0956343 </td>
-   <td style="text-align:right;"> 3.957506 </td>
+   <td style="text-align:right;"> 2.1383382 </td>
+   <td style="text-align:right;"> 3.989010 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.563360 </td>
-   <td style="text-align:right;"> 0.3956451 </td>
-   <td style="text-align:right;"> 2.679314 </td>
+   <td style="text-align:right;"> 0.4333066 </td>
+   <td style="text-align:right;"> 2.692349 </td>
    <td style="text-align:right;"> 0.99525 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 2.903251 </td>
-   <td style="text-align:right;"> 1.8855461 </td>
-   <td style="text-align:right;"> 3.930462 </td>
+   <td style="text-align:right;"> 1.9052542 </td>
+   <td style="text-align:right;"> 3.942468 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_CONDITIONAudio </td>
    <td style="text-align:right;"> 1.838562 </td>
-   <td style="text-align:right;"> 0.3318538 </td>
-   <td style="text-align:right;"> 3.237537 </td>
+   <td style="text-align:right;"> 0.4885740 </td>
+   <td style="text-align:right;"> 3.365554 </td>
    <td style="text-align:right;"> 0.98900 </td>
   </tr>
 </tbody>
@@ -648,7 +648,7 @@ For an independent activity, we will use data from the study by [Brandt et al. (
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome is their perception of how bright the room was (<code><span class='st'>"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (<code><span><span class='st'>"ExpCond"</span></span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome is their perception of how bright the room was (<code><span><span class='st'>"WellLitSca"</span></span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
 Use your understanding of the design to address the research question. If you follow the link to Brandt et al. above, the means and standard deviations of the original study are included in Table 2. This might be useful for thinking about your priors, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
@@ -685,7 +685,7 @@ Brandt_model1 <- NULL
 
 For the second guided example we covered in the lecture, we will explore the model included in [Heino et al. (2018)](https://doi.org/10.1080/21642850.2018.1428102) for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
 
-They randomised participants into two groups (<code><span class='st'>"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class='st'>"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class='st'>"time"</span></code>).
+They randomised participants into two groups (<code><span><span class='st'>"intervention"</span></span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span><span class='st'>"time"</span></span></code>).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
 
@@ -703,7 +703,7 @@ Part of their tutorial discusses a bigger multilevel model considering different
 
 #### 2. Define a descriptive model
 
-I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span class='st'>"value"</span></code>) and we want to look at the interaction between <code><span class='st'>"intervention"</span></code> and <code><span class='st'>"time"</span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
+I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) and we want to look at the interaction between <code><span><span class='st'>"intervention"</span></span></code> and <code><span><span class='st'>"time"</span></span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
 ::: {.info data-latex=""}
 By default, R includes a fixed intercept (the `1 +` part) in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.
@@ -1013,23 +1013,23 @@ For an independent activity, we will use data from the study by [Coleman et al. 
 
 The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are: 
 
-1. <code><span class='st'>"Age"</span></code> - Measured in years
+1. <code><span><span class='st'>"Age"</span></span></code> - Measured in years
 
-2. <code><span class='st'>"Gender"</span></code> - 0 = male; 1 = female
+2. <code><span><span class='st'>"Gender"</span></span></code> - 0 = male; 1 = female
 
-3. <code><span class='st'>"Week_med"</span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
+3. <code><span><span class='st'>"Week_med"</span></span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
 
-4. <code><span class='st'>"Time_session"</span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
+4. <code><span><span class='st'>"Time_session"</span></span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
 
-5. <code><span class='st'>"Absorption_SUM"</span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
+5. <code><span><span class='st'>"Absorption_SUM"</span></span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
 
-6. <code><span class='st'>"EQ_SUM"</span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
+6. <code><span><span class='st'>"EQ_SUM"</span></span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
 
-7. <code><span class='st'>"Mscale_SUM"</span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
+7. <code><span><span class='st'>"Mscale_SUM"</span></span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
 
-Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) as they were the main contributors, with the other variables as covariates.
+Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How does absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) affect mystical experiences (<code><span class='st'>"Mscale_SUM"</span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+Our research question is: How does absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) affect mystical experiences (<code><span><span class='st'>"Mscale_SUM"</span></span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
 
 Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
