@@ -144,7 +144,7 @@ Bastian_data <- Bastian_data %>%
 
 ```
 
-To use the Bayesian version of the t-test, we use similar arguments to the frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
+This chapter will predominantly use the `r pkg("BayesFactor")` package [@MoreyRouder2022] and its functions applied to t-tests. To use the Bayesian version of the t-test, we use similar arguments to the base frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
 
 The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The figure below visualises the difference between a Cauchy and normal distribution for the same range of r scale and SD values. 
 
@@ -293,7 +293,7 @@ The second and fourth plots are what we are mainly interested in for a t-test. O
 
 The plot provides the posterior distribution of different statistics based on sampling 10,000 times. For beta, we can see the peak of the distribution is around -0.5, spanning from above 0 to -1. For delta, we can see the peak of the distribution is around -0.5, and spans from above 0 to -1 again. 
 
-For a more fine-tuned description of the posterior distribution, we can use handy functions from the `r pkg("bayestestR")` package. We will use this much more in chapter 10 as there are some great plotting functions, but these functions work for BayesFactor objects. To get the point estimates of each parameter, we can use the `r hl(point_estimate)` function: 
+For a more fine-tuned description of the posterior distribution, we can use handy functions from the `r pkg("bayestestR")` package [@Makowski2019]. We will use this much more in chapter 10 as there are some great plotting functions, but these functions work for BayesFactor objects. To get the point estimates of each parameter, we can use the `r hl(point_estimate)` function: 
 
 ```{r Bastian estimates}
 
