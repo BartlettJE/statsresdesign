@@ -146,7 +146,13 @@ Bastian_data <- Bastian_data %>%
 
 This chapter will predominantly use the `r pkg("BayesFactor")` package [@MoreyRouder2022] and its functions applied to t-tests. To use the Bayesian version of the t-test, we use similar arguments to the base frequentist version by stating our design with a formula and which data frame you are referring to. For this study, we want to predict the bonding rating by the group they were allocated into: `mean_bonding ~ CONDITION`. 
 
-The main new argument here is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The figure below visualises the difference between a Cauchy and normal distribution for the same range of r scale and SD values. 
+::: {.warning data-latex=""}
+As we are using t-tests, keep in mind we are still applying a linear model to the data despite using Bayesian rather than frequentist statistics to model uncertainty. We are not going to cover it in this chapter, but you would still check your data for parametric assumptions like normal residuals and influential cases / outliers. 
+:::
+
+In the Bayesian t-test, we are comparing the null hypothesis of 0 against an alternative hypothesis. For our data in an independent samples t-test, we have the difference between our two groups. The prior for the null is a point-null hypothesis assuming the difference is 0, while the prior for the alternative is modelled as a Cauchy distribution. The Bayes factor tells you how much you should shift your belief towards one hypothesis compared to another, either in favour of the alternative or null hypothesis. 
+
+In the Bayesian t-test function, the main new argument is `rscale` which sets the width of the prior distribution around the alternative hypothesis. T-tests use a [Cauchy prior](https://en.wikipedia.org/wiki/Cauchy_distribution) which is similar to a normal distribution but with fatter tails and you only have to define one parameter: the r scale. The figure below visualises the difference between a Cauchy and normal distribution for the same range of r scale and SD values. 
 
 ```{r load cowplot, echo=FALSE}
 library(cowplot)
@@ -208,7 +214,9 @@ Bastian_ttest
 Don't worry about the warning, there were just previous issues with using tibbles in the `r pkg("BayesFactor")` package. Now the package converts tibbles to normal R data frames before doing its thing.
 :::
 
-With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011), this is quite weak anecdotal evidence.
+With the medium prior, we have a Bayes factor of 1.45 ($BF$$_1$$_0$ = 1.45), suggesting the experimental hypothesis is 1.45 times more likely than the point null hypothesis. By the guidelines from Wagenmakers et al. (2011), this is quite weak anecdotal evidence. 
+
+There is also a percentage next to the Bayes factor. This is the proportional error estimate and tells you the error in estimating the Bayes factor value. Less error is better and a rough rule of thumb is less than 20% is acceptable [@van_doorn_jasp_2021]. In this example, the error estimate is 0.01%, so very small. This means we could expect the Bayes factor to range between 1.44 and 1.45 which makes little impact on the conclusion. 
 
 This will be more important for modelling in the next chapter, but it is good practice to check the sensitivity of your results to your choice of prior. You would exercise caution if your choice of prior affects the conclusions you are making, such as weak evidence turning into strong evidence. If the qualitative conclusions do not change across plausible priors, then your findings are robust. For example, the Bayes factor for the Bastian et al. example decreases as the prior r scale increases.
 
