@@ -16,6 +16,10 @@ step-2---update-to-a-posterior
 Bayes-factors
 Bayes-independent-samples
 guided-example-bastian-et-al.-2014
+robustness-check
+one--vs-two-tailed-tests
+parameter-estimation
+reporting-your-findings
 Schroeder-activity
 Bayes-dependent-samples
 guided-example-mehr-et-al.-2016
