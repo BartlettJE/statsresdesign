@@ -16,7 +16,7 @@ In this chapter, we will be exploring how you can perform hypothesis testing und
 
 To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/09_data.zip).
 
-Credit for sourcing three of the data sets goes to the <a href="https://sites.google.com/view/openstatslab/home?authuser=0" target="_blank">Open Stats Lab</a>Open Stats Lab and its creator Dr. Kevin McIntyre. The project provides a great resource for teaching exercises using open data.  
+Credit for sourcing three of the data sets goes to the <a href="https://sites.google.com/view/openstatslab/home?authuser=0" target="_blank">Open Stats Lab</a> and its creator Dr. Kevin McIntyre. The project provides a great resource for teaching exercises using open data.  
 
 ## The Logic Behind Bayesian Inference {#bayes-logic}
 
