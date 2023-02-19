@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 10 Introduction to Bayesian Estimation | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
-<meta name="description" content="In this chapter...  10.1 Learning objectives  To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. In this chapter, we need...">
+<meta name="description" content="In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the brms package (Bürkner, 2017). This is the most flexible approach to modelling as...">
 <meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 10 Introduction to Bayesian Estimation | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-bayesian-estimation.html">
 <meta property="og:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
-<meta property="og:description" content="In this chapter...  10.1 Learning objectives  To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. In this chapter, we need...">
+<meta property="og:description" content="In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the brms package (Bürkner, 2017). This is the most flexible approach to modelling as...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 10 Introduction to Bayesian Estimation | Statistics and Research Design">
-<meta name="twitter:description" content="In this chapter...  10.1 Learning objectives  To follow along to this chapter and try the code yourself, please download the data files we will be using in this zip file. In this chapter, we need...">
+<meta name="twitter:description" content="In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the brms package (Bürkner, 2017). This is the most flexible approach to modelling as...">
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -106,16 +106,20 @@
 <h1>
 <span class="header-section-number">10</span> Introduction to Bayesian Estimation<a class="anchor" aria-label="anchor" href="#introduction-to-bayesian-estimation"><i class="fas fa-link"></i></a>
 </h1>
-<p>In this chapter...</p>
+<p>In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the <code class="package">brms</code> package <span class="citation">(<a href="references.html#ref-burkner_brms_2017" role="doc-biblioref">Bürkner, 2017</a>)</span>. This is the most flexible approach to modelling as you can select your relevant outcome and predictors rather than relying on out-of-the-box statistical tests. We will be focusing on estimation and exploring the posterior of your model to make inferences. You will build on the skills you learnt in chapter 9, but extending it to more flexible priors and statistical models. We are mainly going to focus on simple and multiple linear regression in this chapter, but the final section outlines further resources to learn about more advanced distribution families and models.</p>
 <div id="learning-objectives-1" class="section level2" number="10.1">
 <h2>
 <span class="header-section-number">10.1</span> Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives-1"><i class="fas fa-link"></i></a>
 </h2>
+<p>By the end of this chapter, you should be able to:</p>
 <ol style="list-style-type: decimal">
-<li>
+<li><p>Understand the steps involved in fitting and exploring Bayesian regression models.</p></li>
+<li><p>Apply these steps to simple linear regression using continuous and categorical predictors.</p></li>
+<li><p>Apply these steps to multiple linear regression and interactions.</p></li>
+<li><p>Create data visualisation to graphically communication the results of your Bayesian regression models.</p></li>
 </ol>
 <p>To follow along to this chapter and try the code yourself, please download the data files we will be using in <a href="data/10_data.zip">this zip file</a>.</p>
-<p>In this chapter, we need a few packages for the things we will cover. There is a separate appendix section (add) we have prepared to help install the <code class="package">brms</code> package as it can sometimes be pretty awkward since it uses Stan and you need a C++ compiler. If you are really struggling or its very slow on your computer, brms is available on the R Studio server. See the course overview page for a link if you have never used it before.</p>
+<p>In this chapter, we need a few extra packages. The one most likely to cause trouble is the main <code class="package">brms</code> package since it uses Stan and you need a C++ compiler. See the <a href="installing-r.html#installing-r">installing R appendix</a> for guidance. If you are really struggling or its very slow on your computer, <code class="package">brms</code> is available on the R Studio server. See the course overview page for a link if you have never used it before.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span> <span class="co">#fitting Bayesian models</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/bayestestR/">bayestestR</a></span><span class="op">)</span> <span class="co">#helper functions for plotting and understanding the models</span>
@@ -131,11 +135,11 @@
 <h3>
 <span class="header-section-number">10.2.1</span> Guided example (Schroeder &amp; Epley, 2015)<a class="anchor" aria-label="anchor" href="#guided-example-schroeder-epley-2015"><i class="fas fa-link"></i></a>
 </h3>
-<p>For this guided activity, we will use data from the study by <a href="https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full">Schroeder and Epley (2015)</a>. We used this in the chapter 9 for the independent activity, so we will explore the data set as the guided example in this chapter to see how we can refit it as a Bayesian regression model.</p>
+<p>For this guided activity, we will use data from the study by <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015" role="doc-biblioref">2015</a>)</span>. We used this in the chapter 9 for the independent activity, so we will explore the data set as the guided example in this chapter to see how we can refit it as a Bayesian regression model.</p>
 <p>As a reminder, the aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read or an audio recording of them reading the speech.</p>
 <p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
 <p>For this example, we will focus on the hire rating (variable <code><span class="st">"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class="st">"CONDITION"</span></code>).</p>
-<p>Remember the key steps of Bayesian modelling from lecture 10 (Heino et al., 2018):</p>
+<p>Remember the key steps of Bayesian modelling from lecture 10 <span class="citation">(<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">Heino et al., 2018</a>)</span>:</p>
 <ol style="list-style-type: decimal">
 <li><p>Identify data relevant to the research question</p></li>
 <li><p>Define a descriptive model, whose parameters capture the research question</p></li>
@@ -160,7 +164,7 @@
 <h4>
 <span class="header-section-number">10.2.1.2</span> 2. Define a descriptive model<a class="anchor" aria-label="anchor" href="#define-a-descriptive-model"><i class="fas fa-link"></i></a>
 </h4>
-<p>The next step is to define a descriptive model. In chapter 9, we used the <code class="package">BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/">Lindeloev (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class="st">"CONDITION"</span></code> as a single categorical predictor of <code><span class="st">"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class="fu">brm</span><span class="op">(</span><span class="op">)</span></code> function below, but its normally a good idea to clearly outline each component.</p>
+<p>The next step is to define a descriptive model. In chapter 9, we used the <code class="package">BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class="st">"CONDITION"</span></code> as a single categorical predictor of <code><span class="st">"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class="fu">brm</span><span class="op">(</span><span class="op">)</span></code> function below, but its normally a good idea to clearly outline each component.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Schroeder_model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">Hire_Rating</span> <span class="op">~</span> <span class="va">CONDITION</span><span class="op">)</span></code></pre></div>
 </div>
@@ -651,7 +655,7 @@ b_CONDITIONAudio
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20parameters%20and%20trace-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, <code>brms</code> uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues.</p>
-<p>These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class="package">bayestestR</code> package which you can use on their own, or wrap them in the <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code> function after loading the <code class="package">see</code> package. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class="fu">p_direction</span><span class="op">(</span><span class="op">)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0.</p>
+<p>These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class="package">bayestestR</code> package <span class="citation">(<a href="references.html#ref-Makowski2019" role="doc-biblioref">Makowski et al., 2019</a>)</span> which you can use on their own, or wrap them in the <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code> function after loading the <code class="package">see</code> package <span class="citation">(<a href="references.html#ref-Luedecke2021" role="doc-biblioref">Lüdecke et al., 2021</a>)</span>. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class="fu">p_direction</span><span class="op">(</span><span class="op">)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span>, 
      priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </code></pre></div>
@@ -677,7 +681,7 @@ b_CONDITIONAudio
           range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># What is the ROPE range for your smallest effects of interest? </span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20ROPE-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.</p>
-<p>Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as <code>brms</code> has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0.</p>
+<p>Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as <code>brms</code> has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html" target="_blank">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/hypothesis.brmsfit.html">hypothesis</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># brms model we fitted earlier</span>
            hypothesis <span class="op">=</span> <span class="st">"CONDITIONAudio = 0"</span><span class="op">)</span> </code></pre></div>
@@ -709,6 +713,11 @@ b_CONDITIONAudio
 ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
 ## for two-sided hypotheses, the value tested against lies outside the 95%-CI.
 ## Posterior probabilities of point hypotheses assume equal prior probabilities.</code></pre>
+<p>Calculating / plotting conditional effects</p>
+<ul>
+<li><p>Show how to use emmeans with model</p></li>
+<li><p>Show conditional effects with plot: <a href="http://paul-buerkner.github.io/brms/reference/conditional_effects.html" class="uri">http://paul-buerkner.github.io/brms/reference/conditional_effects.html</a></p></li>
+</ul>
 </div>
 <div id="model-checking" class="section level4" number="10.2.1.5">
 <h4>
@@ -870,7 +879,7 @@ b_CONDITIONAudio
 <h3>
 <span class="header-section-number">10.2.2</span> Independent activity (Brandt et al., 2014)<a class="anchor" aria-label="anchor" href="#independent-activity-brandt-et-al.-2014"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use data from the study by <a href="https://econtent.hogrefe.com/doi/full/10.1027/1864-9335/a000191">Brandt et al. (2014)</a>. The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness.</p>
+<p>For an independent activity, we will use data from the study by <span class="citation">(<a href="references.html#ref-brandt_does_2014" role="doc-biblioref">Brandt et al., 2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness.</p>
 <p>In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results.</p>
 <p>Participants were randomly allocated (<code><span class="st">"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome is their perception of how bright the room was (<code><span class="st">"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
 <p>Use your understanding of the design to address the research question. If you follow the link to Brandt et al. above, the means and standard deviations of the original study are included in Table 2. This might be useful for thinking about your priors, but keep in mind how sensitive your conclusions are to your choice of prior.</p>
@@ -906,7 +915,10 @@ b_CONDITIONAudio
 <h4>
 <span class="header-section-number">10.3.1.1</span> 1. Identify data<a class="anchor" aria-label="anchor" href="#identify-data-1"><i class="fas fa-link"></i></a>
 </h4>
-<p>For the second guided example we covered in the lecture, we will explore the model included in <a href="https://doi.org/10.1080/21642850.2018.1428102">Heino et al. (2018)</a> for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents.</p>
+<ul>
+<li>Replace with Troy et al. replication from Aimi and Rhonda.</li>
+</ul>
+<p>For the second guided example we covered in the lecture, we will explore the model included in <span class="citation">Heino et al. (<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">2018</a>)</span> for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents.</p>
 <p>They randomised participants into two groups (<code><span class="st">"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class="st">"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class="st">"time"</span></code>).</p>
 <p>Their research question was: To what extent does the intervention affect autonomous motivation?</p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
@@ -1244,7 +1256,7 @@ default
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20plots-4.png" width="100%" style="display: block; margin: auto;"></div>
 <p>Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention.</p>
-<p>As a bonus extra, you can also use the <code class="package">emmeans</code> package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future.</p>
+<p>As a bonus extra, you can also use the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022" role="doc-biblioref">Lenth, 2022</a>)</span> to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future.</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Surround with brackets to both save and output</span>
 <span class="op">(</span><span class="va">Heino_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">Heino_fit</span>, <span class="co"># add the model object  </span>
@@ -1296,7 +1308,7 @@ default
 <h3>
 <span class="header-section-number">10.3.2</span> Independent activity (Coleman et al., 2014)<a class="anchor" aria-label="anchor" href="#independent-activity-coleman-et-al.-2014"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use data from the study by <a href="https://psyarxiv.com/k5fp8/">Coleman et al. (2014)</a>. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.</p>
+<p>For an independent activity, we will use data from the study by <span class="citation">Coleman et al. (<a href="references.html#ref-coleman_absorption_2019" role="doc-biblioref">2019</a>)</span>. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.</p>
 <p>The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are:</p>
 <ol style="list-style-type: decimal">
 <li><p><code><span class="st">"Age"</span></code> - Measured in years</p></li>
@@ -1317,6 +1329,31 @@ default
 </div>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Coleman_model</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></code></pre></div>
+</div>
+</div>
+<div id="summary-1" class="section level2" number="10.4">
+<h2>
+<span class="header-section-number">10.4</span> Summary<a class="anchor" aria-label="anchor" href="#summary-1"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="taking-this-further" class="section level2" number="10.5">
+<h2>
+<span class="header-section-number">10.5</span> Taking this further<a class="anchor" aria-label="anchor" href="#taking-this-further"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="independent-activity-solutions-1" class="section level2" number="10.6">
+<h2>
+<span class="header-section-number">10.6</span> Independent activity solutions<a class="anchor" aria-label="anchor" href="#independent-activity-solutions-1"><i class="fas fa-link"></i></a>
+</h2>
+<div id="brandt-et-al.-2014" class="section level3" number="10.6.1">
+<h3>
+<span class="header-section-number">10.6.1</span> Brandt et al. (2014)<a class="anchor" aria-label="anchor" href="#brandt-et-al.-2014"><i class="fas fa-link"></i></a>
+</h3>
+</div>
+<div id="coleman-et-al.-2019" class="section level3" number="10.6.2">
+<h3>
+<span class="header-section-number">10.6.2</span> Coleman et al. (2019)<a class="anchor" aria-label="anchor" href="#coleman-et-al.-2019"><i class="fas fa-link"></i></a>
+</h3>
 
 </div>
 </div>
@@ -1342,6 +1379,14 @@ default
 <a class="nav-link" href="#multiple-linear-regression"><span class="header-section-number">10.3</span> Multiple Linear Regression</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#guided-example-heino-et-al.-2018"><span class="header-section-number">10.3.1</span> Guided example (Heino et al., 2018)</a></li>
 <li><a class="nav-link" href="#independent-activity-coleman-et-al.-2014"><span class="header-section-number">10.3.2</span> Independent activity (Coleman et al., 2014)</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#summary-1"><span class="header-section-number">10.4</span> Summary</a></li>
+<li><a class="nav-link" href="#taking-this-further"><span class="header-section-number">10.5</span> Taking this further</a></li>
+<li>
+<a class="nav-link" href="#independent-activity-solutions-1"><span class="header-section-number">10.6</span> Independent activity solutions</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#brandt-et-al.-2014"><span class="header-section-number">10.6.1</span> Brandt et al. (2014)</a></li>
+<li><a class="nav-link" href="#coleman-et-al.-2019"><span class="header-section-number">10.6.2</span> Coleman et al. (2019)</a></li>
 </ul>
 </li>
 </ul>
@@ -1564,7 +1609,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-02-15.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-02-16.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -53,11 +53,17 @@ specify-prior-probability-of-parameters-1
 update-prior-to-posterior
 model-check
 independent-activity-coleman-et-al.-2014
+summary-1
+taking-this-further
+independent-activity-solutions-1
+brandt-et-al.-2014
+coleman-et-al.-2019
 installing-r
 installing-base-r
 installing-rstudio
 rstudio-settings
 installing-latex
+installing-the-brms-package
 Frequentist-Equivalence
 conventions
 webexercises

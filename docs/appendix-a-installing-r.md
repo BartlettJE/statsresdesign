@@ -34,7 +34,6 @@ You may also want to change the settings in the Code tab. Foe example, Lisa pref
 <p class="caption">(\#fig:settings-code)RStudio Code settings</p>
 </div>
 
-
 ## Installing LaTeX
 
 You can install the LaTeX typesetting system to produce PDF reports from RStudio. Without this additional installation, you will be able to produce reports in HTML but not PDF. This course will not require you to make PDFs. To generate PDF reports, you will additionally need to install <code class='package'>tinytex</code> [@R-tinytex] and run the following code:
@@ -43,3 +42,19 @@ You can install the LaTeX typesetting system to produce PDF reports from RStudio
 ```r
 tinytex::install_tinytex()
 ```
+
+## Installing the `brms` package
+
+In chapter 10, you will use the <code class='package'>brms</code> to fit Bayesian regression models. Behind the scenes, this package uses a programming language called <a href="https://mc-stan.org/" target="_blank">Stan</a> which requires a C++ compiler. Unlike other packages, you cannot just use the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='op'>)</span></code> function to install it, there are a few steps to follow.
+
+The best place to start is referring to the FAQs on the <a href="https://github.com/paul-buerkner/brms#how-do-i-install-brms" target="_blank">package Github page</a>. 
+
+First, if you have a Windows computer, you should install Rtools. If you have a Mac, then you should install Xcode. 
+
+Once you have the program relevant to your computer, then you can install <code class='package'>brms</code> as usual: 
+
+
+```r
+install.packages("brms")
+```
+

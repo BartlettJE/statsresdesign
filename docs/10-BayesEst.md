@@ -1,14 +1,22 @@
 # Introduction to Bayesian Estimation
 
-In this chapter...
+In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the <code class='package'>brms</code> package [@burkner_brms_2017]. This is the most flexible approach to modelling as you can select your relevant outcome and predictors rather than relying on out-of-the-box statistical tests. We will be focusing on estimation and exploring the posterior of your model to make inferences. You will build on the skills you learnt in chapter 9, but extending it to more flexible priors and statistical models. We are mainly going to focus on simple and multiple linear regression in this chapter, but the final section outlines further resources to learn about more advanced distribution families and models.   
 
 ## Learning objectives
 
-1. 
+By the end of this chapter, you should be able to: 
+
+1. Understand the steps involved in fitting and exploring Bayesian regression models. 
+
+2. Apply these steps to simple linear regression using continuous and categorical predictors. 
+
+3. Apply these steps to multiple linear regression and interactions. 
+
+4. Create data visualisation to graphically communication the results of your Bayesian regression models. 
 
 To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/10_data.zip).
 
-In this chapter, we need a few packages for the things we will cover. There is a separate appendix section (add) we have prepared to help install the <code class='package'>brms</code> package as it can sometimes be pretty awkward since it uses Stan and you need a C++ compiler. If you are really struggling or its very slow on your computer, brms is available on the R Studio server. See the course overview page for a link if you have never used it before. 
+In this chapter, we need a few extra packages. The one most likely to cause trouble is the main <code class='package'>brms</code> package since it uses Stan and you need a C++ compiler. See the [installing R appendix](#installing-r) for guidance. If you are really struggling or its very slow on your computer, <code class='package'>brms</code> is available on the R Studio server. See the course overview page for a link if you have never used it before. 
 
 
 ```r
@@ -23,7 +31,7 @@ library(emmeans) #Handy function for calculating (marginal) effect sizes
 
 ### Guided example (Schroeder & Epley, 2015)
 
-For this guided activity, we will use data from the study by [Schroeder and Epley (2015)](https://journals.sagepub.com/stoken/default+domain/PhtK6MPtXvkgnYRrnGbA/full). We used this in the chapter 9 for the independent activity, so we will explore the data set as the guided example in this chapter to see how we can refit it as a Bayesian regression model. 
+For this guided activity, we will use data from the study by @schroeder_sound_2015. We used this in the chapter 9 for the independent activity, so we will explore the data set as the guided example in this chapter to see how we can refit it as a Bayesian regression model. 
 
 As a reminder, the aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read or an audio recording of them reading the speech. 
 
@@ -31,7 +39,7 @@ The recruiters then rated the applicants on perceived intellect, their impressio
 
 For this example, we will focus on the hire rating (variable <code><span class='st'>"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class='st'>"CONDITION"</span></code>). 
 
-Remember the key steps of Bayesian modelling from lecture 10 (Heino et al., 2018):
+Remember the key steps of Bayesian modelling from lecture 10 [@heino_bayesian_2018]:
 
 1. Identify data relevant to the research question 
 
@@ -59,7 +67,7 @@ Schroeder_data$CONDITION <- factor(Schroeder_data$CONDITION,
 
 #### 2. Define a descriptive model
 
-The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the [Lindeloev (2019) blog post](https://lindeloev.github.io/tests-as-linear/), common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
+The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
 
 
 ```r
@@ -426,7 +434,7 @@ plot(Schroeder_fit)
 
 For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, `brms` uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues. 
 
-These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package which you can use on their own, or wrap them in the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code> function after loading the <code class='package'>see</code> package. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
+These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package [@Makowski2019] which you can use on their own, or wrap them in the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code> function after loading the <code class='package'>see</code> package [@Luedecke2021]. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
 
 
 ```r
@@ -473,7 +481,7 @@ plot(rope(Schroeder_fit,
 
 For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.
 
-Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the [brms documentation online](https://paul-buerkner.github.io/brms/reference/hypothesis.html) for the function. Here, we will test the coefficient/slope against a point-null of 0. 
+Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html" target="_blank">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0. 
 
 
 ```r
@@ -520,6 +528,12 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ## for two-sided hypotheses, the value tested against lies outside the 95%-CI.
 ## Posterior probabilities of point hypotheses assume equal prior probabilities.
 ```
+
+Calculating / plotting conditional effects
+
+- Show how to use emmeans with model 
+
+- Show conditional effects with plot: http://paul-buerkner.github.io/brms/reference/conditional_effects.html
 
 #### 5. Model checking 
 
@@ -644,7 +658,7 @@ To make it easier to compare, we can isolate the key information from each model
 
 ### Independent activity (Brandt et al., 2014)
 
-For an independent activity, we will use data from the study by [Brandt et al. (2014)](https://econtent.hogrefe.com/doi/full/10.1027/1864-9335/a000191). The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness. 
+For an independent activity, we will use data from the study by [@brandt_does_2014]. The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness. 
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
@@ -683,7 +697,9 @@ Brandt_model1 <- NULL
 
 #### 1. Identify data
 
-For the second guided example we covered in the lecture, we will explore the model included in [Heino et al. (2018)](https://doi.org/10.1080/21642850.2018.1428102) for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
+- Replace with Troy et al. replication from Aimi and Rhonda. 
+
+For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
 
 They randomised participants into two groups (<code><span class='st'>"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class='st'>"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class='st'>"time"</span></code>).
 
@@ -943,7 +959,7 @@ plot(hdi(Heino_fit))
 
 Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra, you can also use the <code class='package'>emmeans</code> package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
+As a bonus extra, you can also use the <code class='package'>emmeans</code> package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 
 ```r
@@ -1009,7 +1025,7 @@ If you scroll to the end of the Heino et al. article, they demonstrate how you c
 
 ### Independent activity (Coleman et al., 2014)
 
-For an independent activity, we will use data from the study by [Coleman et al. (2014)](https://psyarxiv.com/k5fp8/). Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.  
+For an independent activity, we will use data from the study by @coleman_absorption_2019. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.  
 
 The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are: 
 
@@ -1047,3 +1063,12 @@ From here, apply what you learnt in the first guided example to this new indepen
 Coleman_model <- NULL
 ```
 
+## Summary 
+
+## Taking this further
+
+## Independent activity solutions 
+
+### Brandt et al. (2014)
+
+### Coleman et al. (2019)

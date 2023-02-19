@@ -4,6 +4,8 @@ In this chapter, we will be exploring how you can perform hypothesis testing und
 
 ## Learning objectives
 
+By the end of this chapter, you should be able to: 
+
 1. Understand the logic behind [Bayesian inference](#bayes-logic) using the sweet example and Shiny app. 
 
 2. Use the online visualisation to explore what impacts [Bayes factors](#Bayes-factors).
@@ -16,7 +18,7 @@ In this chapter, we will be exploring how you can perform hypothesis testing und
 
 To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/09_data.zip).
 
-Credit for sourcing three of the data sets goes to the <a href="https://sites.google.com/view/openstatslab/home?authuser=0" target="_blank">Open Stats Lab</a>Open Stats Lab and its creator Dr. Kevin McIntyre. The project provides a great resource for teaching exercises using open data.  
+Credit for sourcing three of the data sets goes to the <a href="https://sites.google.com/view/openstatslab/home?authuser=0" target="_blank">Open Stats Lab</a> and its creator Dr. Kevin McIntyre. The project provides a great resource for teaching exercises using open data.  
 
 ## The Logic Behind Bayesian Inference {#bayes-logic}
 
