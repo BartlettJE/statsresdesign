@@ -20,11 +20,12 @@ In this chapter, we need a few extra packages. The one most likely to cause trou
 
 
 ```r
-library(brms) #fitting Bayesian models
-library(bayestestR) #helper functions for plotting and understanding the models
+library(brms) # fitting Bayesian models
+library(bayestestR) # helper functions for plotting and understanding the models
+library(tidybayes) # helper functions for combining plotting and tidy data from models
 library(tidyverse)
-library(see) #helper functions for plotting objects from bayestestR
-library(emmeans) #Handy function for calculating (marginal) effect sizes
+library(see) # helper functions for plotting objects from bayestestR
+library(emmeans) # Handy function for calculating (marginal) effect sizes
 ```
 
 ## Simple Linear Regression 
@@ -152,9 +153,17 @@ get_prior(Schroeder_model1, # Model we defined above
 
 This tells us which priors we can set and what the default settings are. We have the prior, the class of prior, relevant coefficients, and the source which will all be default for now. The prior tells you what the default is. For example, there are flat uninformative priors on coefficients. When we set priors, we can either set priors for a whole class, or specific to each coefficient. With one predictor, there is only one coefficient prior to set, so it makes no difference. But when you have multiple predictors like later in chapter 10, it becomes more useful. 
 
-The intercept and sigma are assigned student t distributions for priors. These are both pretty wide to be weak priors. 
+Coefficient are assigned flat priors, meaning anything is possible between minus infinity and infinity. The intercept and sigma are assigned student t distributions for priors. These are both pretty wide weak priors to have minimal influence. We can visualise the priors to see what they expect one-by-one. You will see how you can plot the priors yourself shortly. 
 
-For our example, we will use information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
+The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
+
+<img src="10-BayesEst_files/figure-html/plot default intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
+
+The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0.  
+
+<img src="10-BayesEst_files/figure-html/plot default sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
+
+For our example, we can define our own informative priors using information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
 
 Focusing on hire rating, they found: "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
 
@@ -164,33 +173,47 @@ It is normally a good idea to visualise this process to check the numbers you en
 
 
 ```r
-set.seed(1928) # set seed to be reproducible
+priors <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
 
-hist(rnorm(100, # how many samples?
-           3, # What mean? 
-           3)) # What SD?
+priors %>% 
+  parse_dist() %>% # Function from tidybayes/ggdist to turn prior into a dataframe
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) + # Fill in details from prior and add fill
+  stat_slab(normalize = "panels") + # ggdist layer to visualise distributions
+  scale_fill_viridis_d(option = "plasma", end = 0.9) + # Add colour scheme
+  guides(fill = "none") + # Remove legend for fill
+  labs(x = "Value", y = "Density", title = "normal(3, 3), class = Intercept") +
+  theme_classic()
 ```
 
-<img src="10-BayesEst_files/figure-html/plot prior 1-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/plot SE intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
-This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a conservative estimate of what we expect the reference group to be. 
+This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a conservative estimate of what we expect the reference group to be.
 
-For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% CI was quite wide from 0.22 to 2.34, so we can set a relatively weak prior expecting a normally distributed coefficient with a mean and SD of 1:.  
+**Note on the visualisation**: Credit to the visualisation method goes to Andrew Heiss who shared some <a href="https://gist.github.com/andrewheiss/a4e0c0ab2d735625ac17ec8a081f0f32" target="_blank">code on a Github Gist</a> to visualise different priors. I adapted the code to use here to help you visualise the priors you enter. You can adapt the code to show any kind of prior used in brms models. All you need to do is specify the distribution family and parameters. Like the original code, you can even present a bunch of options to compare side by side. 
+
+For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% CI was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (*SD* = 0.5) vs a weaker prior (*SD* = 1). 
 
 
 ```r
-set.seed(1928)
+priors <- c(prior(normal(1, 0.5), class = b),
+            prior(normal(1, 1), class = b)) # Set prior and class
 
-hist(rnorm(100, 
-           1, 
-           1))
+priors %>% 
+  parse_dist() %>% # Function from tidybayes/ggdist to turn prior into a dataframe
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) + # Fill in details from prior and add fill
+  stat_slab(normalize = "panels") + # ggdist layer to visualise distributions
+  scale_fill_viridis_d(option = "plasma", end = 0.9) + # Add colour scheme
+  guides(fill = "none") + # Remove legend for fill
+  facet_wrap(~prior) + # Split into a different panel for each prior
+  labs(x = "Value", y = "Density") +
+  theme_classic()
 ```
 
-<img src="10-BayesEst_files/figure-html/plot prior 2-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/plot coefficient priors-1.png" width="100%" style="display: block; margin: auto;" />
 
-The distribution here shows we are expecting the most likely value for the coefficient to peak around 1, but it could span from -1 (transcript to be higher than audio) to around 3 (audio to be much higher than transcript). 
+The stronger prior on the left shows we are expecting mainly positive effects with a peak over 1 but ranges between around -0.5 (transcript to be higher than audio) and 2 (audio to be higher than transcript). The weaker prior on the right shows we are still expecting the peak over 1, but it could span from -1.5 to around 3.5. 
 
-Now we have our priors, we can save them to a new object:
+Lets say we think both positive and negatives effects are plausible but we expect the most likely outcome to be similar to study 1 from Schroeder and Epley. So, for this example we will go with the weaker prior. Now we have our priors, we can save them to a new object:
 
 
 ```r
@@ -454,7 +477,7 @@ The next useful plot is seeing the 95% HDI / credible interval. On its own, <cod
 
 
 ```r
-plot(hdi(Schroeder_fit))
+plot(bayestestR::hdi(Schroeder_fit)) # Specify package to avoid clash with ggdist
 ```
 
 <img src="10-BayesEst_files/figure-html/Schroeder HDI-1.png" width="100%" style="display: block; margin: auto;" />
@@ -952,7 +975,7 @@ plot(p_direction(Heino_fit),
 <img src="10-BayesEst_files/figure-html/Heino plots-3.png" width="100%" style="display: block; margin: auto;" />
 
 ```r
-plot(hdi(Heino_fit))
+plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
 ```
 
 <img src="10-BayesEst_files/figure-html/Heino plots-4.png" width="100%" style="display: block; margin: auto;" />
