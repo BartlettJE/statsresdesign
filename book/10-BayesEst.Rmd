@@ -288,7 +288,7 @@ The next useful plot is seeing the 95% HDI / credible interval. On its own, `r h
 
 ```{r Schroeder HDI, warning=FALSE, message=FALSE}
 
-plot(hdi(Schroeder_fit))
+plot(bayestestR::hdi(Schroeder_fit)) # Specify package to avoid clash with ggdist
 
 ```
 
@@ -548,7 +548,7 @@ plot(Heino_fit)
 plot(p_direction(Heino_fit), 
      priors = TRUE) # plot the priors
 
-plot(hdi(Heino_fit))
+plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
 
 ```
 
