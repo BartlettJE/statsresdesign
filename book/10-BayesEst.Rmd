@@ -445,7 +445,7 @@ Brandt_model1 <- NULL
 
 #### 1. Identify data
 
-- Replace with Troy et al. replication from Aimi and Rhonda. 
+- Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
 
 For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
 
