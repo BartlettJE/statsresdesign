@@ -87,70 +87,103 @@ get_prior(Schroeder_model1, # Model we defined above
 
 This tells us which priors we can set and what the default settings are. We have the prior, the class of prior, relevant coefficients, and the source which will all be default for now. The prior tells you what the default is. For example, there are flat uninformative priors on coefficients. When we set priors, we can either set priors for a whole class, or specific to each coefficient. With one predictor, there is only one coefficient prior to set, so it makes no difference. But when you have multiple predictors like later in chapter 10, it becomes more useful. 
 
-Coefficient are assigned flat priors, meaning anything is possible between minus infinity and infinity. The intercept and sigma are assigned student t distributions for priors. These are both pretty wide weak priors to have minimal influence. We can visualise the priors to see what they expect one-by-one. You will see how you can plot the priors yourself shortly. 
+Coefficients are assigned flat priors, meaning anything is possible between minus infinity and infinity. We can visualise the priors to see what they expect one-by-one. You will see how you can plot the priors yourself shortly. 
 
-The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
+```{r default flat prior, echo=FALSE}
+# Visualise default flat prior on coefficient
+prior <- prior(normal(0, 10000), class = b) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% # Function from tidybayes/ggdist to turn prior into a dataframe
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) + # Fill in details from prior and add fill
+  stat_slab(normalize = "panels") + # ggdist layer to visualise distributions
+  scale_fill_viridis_d(option = "plasma", end = 0.9) + # Add colour scheme
+  scale_x_continuous(breaks = c(-100, 0, 100), labels = c(expression(-infinity), 0, expression(infinity))) + 
+  guides(fill = "none") + # Remove legend for fill
+  labs(x = "Value", y = "Density", subtitle = "b: flat") +
+  theme_classic() + 
+  coord_cartesian(xlim = c(-100, 100)) # Trick to show flat prior - across a huge range but limit to smaller scale
+```
+
+The intercept and sigma are assigned student t distributions for priors. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
 
 ```{r plot default intercept prior, echo=FALSE}
 
-priors <- c(prior(student_t(3, 4, 3), class = Intercept))
+prior <- c(prior(student_t(3, 4, 3), class = Intercept))
 
-priors %>% 
+prior %>% 
   parse_dist() %>% 
   ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
   stat_slab(normalize = "panels") +
   scale_fill_viridis_d(option = "plasma", end = 0.9) +
   guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = "student_t(3, 4, 3), class = Intercept") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
   theme_classic()
 
 ```
 
-The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0.  
+The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0, so this definitely does not factor in parameter knowledge.   
 
 ```{r plot default sigma prior, echo=FALSE}
 
-priors <- c(prior(student_t(3, 0, 3), class = Intercept))
+prior <- c(prior(student_t(3, 0, 3), class = sigma))
 
-priors %>% 
+prior %>% 
   parse_dist() %>% 
   ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
   stat_slab(normalize = "panels") +
   scale_fill_viridis_d(option = "plasma", end = 0.9) +
   guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = "student_t(3, 0, 3), class = Intercept") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
   theme_classic()
 
 ```
 
 For our example, we can define our own informative priors using information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
 
-Focusing on hire rating, they found: "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
+Focusing on hire rating, they found: 
 
-So, for our intercept and reference group, we can set a normally distributed prior around a mean of 3 and SD of 3 for the transcript group. Note the rounded values since these are approximations for what we expect about the measures and manipulations. 
+> "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
+
+So, for our intercept and reference group, we can set a normally distributed prior around a mean of 3 and SD of 3 for the transcript group. Note the rounded values since these are approximations for what we expect about the measures and manipulations. We are factoring in what we know about the parameters from our topic and method knowledge.  
 
 It is normally a good idea to visualise this process to check the numbers you enter match your expectations. For the intercept, a mean and SD of 3 look like this when generating the numbers from a normal distribution:
 
-```{r plot SE intercept prior}
+```{r plot SE intercept prior, echo=FALSE}
 
-priors <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
+prior <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
 
-priors %>% 
-  parse_dist() %>% # Function from tidybayes/ggdist to turn prior into a dataframe
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) + # Fill in details from prior and add fill
-  stat_slab(normalize = "panels") + # ggdist layer to visualise distributions
-  scale_fill_viridis_d(option = "plasma", end = 0.9) + # Add colour scheme
-  guides(fill = "none") + # Remove legend for fill
-  labs(x = "Value", y = "Density", title = "normal(3, 3), class = Intercept") +
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
   theme_classic()
 
 ```
 
-This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a conservative estimate of what we expect the reference group to be.
+This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a lenient estimate of what we expect the reference group to be.
+
+We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. Values closer to zero cover a wider range, while larger values cover a smaller range. 
+
+```{r user sigma prior, echo=FALSE}
+prior <- c(prior(exponential(1), class = sigma)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+```
 
 **Note on the visualisation**: Credit to the visualisation method goes to Andrew Heiss who shared some <a href="https://gist.github.com/andrewheiss/a4e0c0ab2d735625ac17ec8a081f0f32" target="_blank">code on a Github Gist</a> to visualise different priors. I adapted the code to use here to help you visualise the priors you enter. You can adapt the code to show any kind of prior used in brms models. All you need to do is specify the distribution family and parameters. Like the original code, you can even present a bunch of options to compare side by side. 
 
-For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% CI was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (*SD* = 0.5) vs a weaker prior (*SD* = 1). 
+For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% confidence interval was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (*SD* = 0.5) vs a weaker prior (*SD* = 1). 
 
 ```{r plot coefficient priors}
 
@@ -174,13 +207,14 @@ The stronger prior on the left shows we are expecting mainly positive effects wi
 Lets say we think both positive and negatives effects are plausible but we expect the most likely outcome to be similar to study 1 from Schroeder and Epley. So, for this example we will go with the weaker prior. Now we have our priors, we can save them to a new object:
 
 ```{r Schroeder prior}
-prior <- set_prior("normal(1, 1)", class = "b") + 
-  set_prior("normal(3, 3)", class = "Intercept")
+priors <- set_prior("normal(1, 1)", class = "b") + 
+  set_prior("normal(3, 3)", class = "Intercept") + 
+  set_prior("exponential(1)", class = "sigma")
 
 ```
 
 ::: {.info data-latex=""}
-Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults.
+Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults. Normally it is the opposite way around and using uninformative priors first, but I did not want to put off thinking about the priors. 
 :::
 
 #### Update the prior to the posterior
@@ -195,7 +229,7 @@ Schroeder_fit <- brm(
   formula = Schroeder_model1, # formula we defined above 
   data = Schroeder_data, # Data frame we're using 
   family = gaussian(), # What distribution family do we want for the likelihood function? Many examples we use in psychology are Gaussian, but check the documentation for options
-  prior = prior, # priors we stated above
+  prior = priors, # priors we stated above
   sample_prior = TRUE, # Setting this to true includes the prior in the object, so we can include it on plots later
   seed = 1908,
   file = "Models/Schroeder_model1" #Save the model as a .rds file
@@ -204,16 +238,16 @@ Schroeder_fit <- brm(
 ```
 
 ::: {.info data-latex=""}
-When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the code below, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objectives, remember to refit them if you change anything like the priors, model, or data. 
+When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the brm function, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objects, remember to refit them if you change anything like the priors, model, or data. If the file already exists though, it will not be overwritten unless you use the `file_refit` argument. 
 :::
 
-If you save the model as a .rds file, you can load them again using the `r hl(read_rds())` function from `r pkg("readr")` in the `r pkg("tidyverse")`. 
+If you save the model as a .rds file, you can load them again using the `r hl(read_rds())` function from `r pkg("readr")` in the tidyverse. 
 
 ```{r load Schroeder model 1}
 Schroeder_fit <- read_rds("Models/Schroeder_model1.rds")
 ```
 
-There will be a lot of output here to explain the fitting and sampling process. The lecture references includes longer explanations of how MCMC sampling works, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
+There will be a lot of output here to explain the fitting and sampling process. For a longer explanation of how MCMC sampling works, see @van_ravenzwaaij_simple_2018, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
 
 Now we have fitted the model, we can also double check the priors you set are what you wanted. You will see the source for the priors you set switched from default to user. 
 
@@ -223,9 +257,10 @@ prior_summary(Schroeder_fit)
 
 ```
 
-Now we have our model, we can get a model summary like any old linear model. 
+Now we have our model, we can get a model summary like any old linear model in R. 
 
 ```{r Schroeder posterior}
+
 summary(Schroeder_fit)
 
 ```
@@ -234,9 +269,9 @@ At the top, we have information on the model fitting process, like the family, d
 
 Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.10 and 3.96. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
 
-We then have the median coefficient of 1.56 with a 95% credible interval between 0.40 and 2.68. This means our best guess for the mean difference / slope is an increase of 1.56 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the main conclusions should be the same. 
+We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
-For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS), but we did not explore this in the lecture. 
+For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should at least be in the hundreds [@flores_beforeafter_2022] for both the bulk and tail to ensure the model has worked around the parameter space and has not missed key features of the posterior distribution. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
 For a tidier summary of the parameters, we can also use the handy `r hl(describe_posterior())` function from `r pkg("bayestestR")`. 
 
@@ -246,9 +281,9 @@ describe_posterior(Schroeder_fit)
 
 ```
 
-We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect. 
+We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect (how much of the posterior is above or below zero). 
 
-This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome your predictor(s) explain. 
+This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain, which is 12.6% here. 
 
 ```{r Schroeder R2}
 
@@ -315,7 +350,7 @@ Following from chapter 9, we saw we can also use Bayesian statistics to test hyp
 ```{r Schroeder hypothesis}
 
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITIONAudio = 0") 
+           hypothesis = "CONDITION = 0") 
 
 ```
 
@@ -330,7 +365,7 @@ Alternatively, you can calculate the posterior odds by stating regions of the po
 ```{r Schroeder positive hypothesis}
 
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITIONAudio > 0") 
+           hypothesis = "CONDITION > 0") 
 
 ```
 
