@@ -1,6 +1,8 @@
 # Introduction to Bayesian Estimation
 
-In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the <code class='package'>brms</code> package [@burkner_brms_2017]. This is the most flexible approach to modelling as you can select your relevant outcome and predictors rather than relying on out-of-the-box statistical tests. We will be focusing on estimation and exploring the posterior of your model to make inferences. You will build on the skills you learnt in chapter 9, but extending it to more flexible priors and statistical models. We are mainly going to focus on simple and multiple linear regression in this chapter, but the final section outlines further resources to learn about more advanced distribution families and models.   
+In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the <code class='package'>brms</code> package [@burkner_brms_2017]. This is the most flexible approach to modelling as you can select your relevant outcome and predictors rather than relying on out-of-the-box statistical tests. We will be focusing on estimation and exploring the posterior of your model to make inferences. You will build on the skills you learnt in chapter 9, but extending it to more flexible priors and statistical models. We are mainly going to focus on simple and multiple linear regression in this chapter, but the final section outlines further resources to learn about more advanced distribution families and models.
+
+You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
 
 ## Learning objectives
 
@@ -52,21 +54,16 @@ Remember the key steps of Bayesian modelling from lecture 10 [@heino_bayesian_20
 
 5. Check your model against data, and identify potential problems
 
-#### 1. Identify data
+#### Identify data
 
-For this example, we have the data from Schroeder and Epley, and we can label the conditions to be more intuitive. 
+For this example, we have the data from Schroeder and Epley with one outcome and one categorical predictor. The data are coded 0 for those in the transcript group and 1 for those in the audio group. 
 
 
 ```r
 Schroeder_data <- read_csv("data/Schroeder_hiring.csv")
-
-# Relabel condition to be more intuitive which group is which 
-Schroeder_data$CONDITION <- factor(Schroeder_data$CONDITION, 
-                                   levels = c(0, 1), 
-                                   labels = c("Transcript", "Audio"))
 ```
 
-#### 2. Define a descriptive model
+#### Define a descriptive model
 
 The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
 
@@ -75,7 +72,7 @@ The next step is to define a descriptive model. In chapter 9, we used the <code 
 Schroeder_model1 <- bf(Hire_Rating ~ CONDITION)
 ```
 
-#### 3. Specify prior probability of parameters
+#### Specify prior probability of parameters
 
 Once you get used to the <code class='package'>brms</code> package, you start to learn which priors you need for simple cases, but now we have stated a model, we can see which parameters can be assigned a prior. 
 
@@ -116,7 +113,7 @@ get_prior(Schroeder_model1, # Model we defined above
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITIONAudio </td>
+   <td style="text-align:left;"> CONDITION </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -153,45 +150,67 @@ get_prior(Schroeder_model1, # Model we defined above
 
 This tells us which priors we can set and what the default settings are. We have the prior, the class of prior, relevant coefficients, and the source which will all be default for now. The prior tells you what the default is. For example, there are flat uninformative priors on coefficients. When we set priors, we can either set priors for a whole class, or specific to each coefficient. With one predictor, there is only one coefficient prior to set, so it makes no difference. But when you have multiple predictors like later in chapter 10, it becomes more useful. 
 
-Coefficient are assigned flat priors, meaning anything is possible between minus infinity and infinity. The intercept and sigma are assigned student t distributions for priors. These are both pretty wide weak priors to have minimal influence. We can visualise the priors to see what they expect one-by-one. You will see how you can plot the priors yourself shortly. 
+Coefficients are assigned flat priors, meaning anything is possible between minus infinity and infinity. We can visualise the priors to see what they expect one-by-one. You will see how you can plot the priors yourself shortly. 
 
-The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
+<img src="10-BayesEst_files/figure-html/default flat prior-1.png" width="100%" style="display: block; margin: auto;" />
+
+The intercept and sigma are assigned student t distributions for priors. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
 
 <img src="10-BayesEst_files/figure-html/plot default intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
-The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0.  
+The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0, so this definitely does not factor in parameter knowledge.   
 
 <img src="10-BayesEst_files/figure-html/plot default sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
 
 For our example, we can define our own informative priors using information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
 
-Focusing on hire rating, they found: "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
+Focusing on hire rating, they found: 
 
-So, for our intercept and reference group, we can set a normally distributed prior around a mean of 3 and SD of 3 for the transcript group. Note the rounded values since these are approximations for what we expect about the measures and manipulations. 
+> "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
+
+So, for our intercept and reference group, we can set a normally distributed prior around a mean of 3 and SD of 3 for the transcript group. Note the rounded values since these are approximations for what we expect about the measures and manipulations. We are factoring in what we know about the parameters from our topic and method knowledge.  
 
 It is normally a good idea to visualise this process to check the numbers you enter match your expectations. For the intercept, a mean and SD of 3 look like this when generating the numbers from a normal distribution:
 
 
 ```r
-priors <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
+prior <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
 
-priors %>% 
-  parse_dist() %>% # Function from tidybayes/ggdist to turn prior into a dataframe
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) + # Fill in details from prior and add fill
-  stat_slab(normalize = "panels") + # ggdist layer to visualise distributions
-  scale_fill_viridis_d(option = "plasma", end = 0.9) + # Add colour scheme
-  guides(fill = "none") + # Remove legend for fill
-  labs(x = "Value", y = "Density", title = "normal(3, 3), class = Intercept") +
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
   theme_classic()
 ```
 
 <img src="10-BayesEst_files/figure-html/plot SE intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
-This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a conservative estimate of what we expect the reference group to be.
+This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a lenient estimate of what we expect the reference group to be.
+
+We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. Values closer to zero cover a wider range, while larger values cover a smaller range. 
+
+
+```r
+prior <- c(prior(exponential(1), class = sigma)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+```
+
+<img src="10-BayesEst_files/figure-html/user sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
 
 **Note on the visualisation**: Credit to the visualisation method goes to Andrew Heiss who shared some <a href="https://gist.github.com/andrewheiss/a4e0c0ab2d735625ac17ec8a081f0f32" target="_blank">code on a Github Gist</a> to visualise different priors. I adapted the code to use here to help you visualise the priors you enter. You can adapt the code to show any kind of prior used in brms models. All you need to do is specify the distribution family and parameters. Like the original code, you can even present a bunch of options to compare side by side. 
 
-For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% CI was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (*SD* = 0.5) vs a weaker prior (*SD* = 1). 
+For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% confidence interval was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (*SD* = 0.5) vs a weaker prior (*SD* = 1). 
 
 
 ```r
@@ -217,15 +236,16 @@ Lets say we think both positive and negatives effects are plausible but we expec
 
 
 ```r
-prior <- set_prior("normal(1, 1)", class = "b") + 
-  set_prior("normal(3, 3)", class = "Intercept")
+priors <- set_prior("normal(1, 1)", class = "b") + 
+  set_prior("normal(3, 3)", class = "Intercept") + 
+  set_prior("exponential(1)", class = "sigma")
 ```
 
 ::: {.info data-latex=""}
-Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults.
+Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults. Normally it is the opposite way around and using uninformative priors first, but I did not want to put off thinking about the priors. 
 :::
 
-#### 4. Update the prior to the posterior
+#### Update the prior to the posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
@@ -237,7 +257,7 @@ Schroeder_fit <- brm(
   formula = Schroeder_model1, # formula we defined above 
   data = Schroeder_data, # Data frame we're using 
   family = gaussian(), # What distribution family do we want for the likelihood function? Many examples we use in psychology are Gaussian, but check the documentation for options
-  prior = prior, # priors we stated above
+  prior = priors, # priors we stated above
   sample_prior = TRUE, # Setting this to true includes the prior in the object, so we can include it on plots later
   seed = 1908,
   file = "Models/Schroeder_model1" #Save the model as a .rds file
@@ -245,17 +265,17 @@ Schroeder_fit <- brm(
 ```
 
 ::: {.info data-latex=""}
-When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the code below, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objectives, remember to refit them if you change anything like the priors, model, or data. 
+When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the brm function, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objects, remember to refit them if you change anything like the priors, model, or data. If the file already exists though, it will not be overwritten unless you use the `file_refit` argument. 
 :::
 
-If you save the model as a .rds file, you can load them again using the <code><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>readr</code> in the <code class='package'>tidyverse</code>. 
+If you save the model as a .rds file, you can load them again using the <code><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>readr</code> in the tidyverse. 
 
 
 ```r
 Schroeder_fit <- read_rds("Models/Schroeder_model1.rds")
 ```
 
-There will be a lot of output here to explain the fitting and sampling process. The lecture references includes longer explanations of how MCMC sampling works, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
+There will be a lot of output here to explain the fitting and sampling process. For a longer explanation of how MCMC sampling works, see @van_ravenzwaaij_simple_2018, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of `brms` is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later. 
 
 Now we have fitted the model, we can also double check the priors you set are what you wanted. You will see the source for the priors you set switched from default to user. 
 
@@ -295,7 +315,7 @@ prior_summary(Schroeder_fit)
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITIONAudio </td>
+   <td style="text-align:left;"> CONDITION </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -315,7 +335,7 @@ prior_summary(Schroeder_fit)
    <td style="text-align:left;"> user </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> student_t(3, 0, 3) </td>
+   <td style="text-align:left;"> exponential(1) </td>
    <td style="text-align:left;"> sigma </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -323,14 +343,14 @@ prior_summary(Schroeder_fit)
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
+   <td style="text-align:left;"> user </td>
   </tr>
 </tbody>
 </table>
 
 </div>
 
-Now we have our model, we can get a model summary like any old linear model. 
+Now we have our model, we can get a model summary like any old linear model in R. 
 
 
 ```r
@@ -346,13 +366,13 @@ summary(Schroeder_fit)
 ##          total post-warmup draws = 4000
 ## 
 ## Population-Level Effects: 
-##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept          3.01      0.47     2.10     3.96 1.00     3021     2438
-## CONDITIONAudio     1.56      0.58     0.40     2.68 1.00     3234     2810
+##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept     3.01      0.47     2.09     3.94 1.00     3402     2862
+## CONDITION     1.57      0.57     0.46     2.66 1.00     3449     2879
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     2.22      0.27     1.77     2.82 1.00     3744     3065
+## sigma     2.17      0.25     1.74     2.71 1.00     3617     2850
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -363,9 +383,9 @@ At the top, we have information on the model fitting process, like the family, d
 
 Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.10 and 3.96. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
 
-We then have the median coefficient of 1.56 with a 95% credible interval between 0.40 and 2.68. This means our best guess for the mean difference / slope is an increase of 1.56 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the main conclusions should be the same. 
+We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
-For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS), but we did not explore this in the lecture. 
+For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should at least be in the hundreds [@flores_beforeafter_2022] for both the bulk and tail to ensure the model has worked around the parameter space and has not missed key features of the posterior distribution. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
 For a tidier summary of the parameters, we can also use the handy <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>bayestestR</code>. 
 
@@ -398,41 +418,41 @@ describe_posterior(Schroeder_fit)
   <tr>
    <td style="text-align:left;"> 2 </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.002274 </td>
+   <td style="text-align:right;"> 3.006929 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.0956343 </td>
-   <td style="text-align:right;"> 3.957506 </td>
+   <td style="text-align:right;"> 2.0932902 </td>
+   <td style="text-align:right;"> 3.942043 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.0002836 </td>
-   <td style="text-align:right;"> 2999.233 </td>
+   <td style="text-align:right;"> 0.9999234 </td>
+   <td style="text-align:right;"> 3382.849 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> 1 </td>
-   <td style="text-align:left;"> b_CONDITIONAudio </td>
-   <td style="text-align:right;"> 1.563360 </td>
+   <td style="text-align:left;"> b_CONDITION </td>
+   <td style="text-align:right;"> 1.567213 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.3956451 </td>
-   <td style="text-align:right;"> 2.679314 </td>
-   <td style="text-align:right;"> 0.99525 </td>
+   <td style="text-align:right;"> 0.4562219 </td>
+   <td style="text-align:right;"> 2.657129 </td>
+   <td style="text-align:right;"> 0.99625 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> -0.1 </td>
    <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0.9993928 </td>
-   <td style="text-align:right;"> 3173.220 </td>
+   <td style="text-align:right;"> 0.9999724 </td>
+   <td style="text-align:right;"> 3426.619 </td>
   </tr>
 </tbody>
 </table>
 
 </div>
 
-We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect. 
+We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect (how much of the posterior is above or below zero). 
 
-This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome your predictor(s) explain. 
+This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain, which is 12.6% here. 
 
 
 ```r
@@ -440,8 +460,8 @@ bayes_R2(Schroeder_fit)
 ```
 
 ```
-##     Estimate  Est.Error        Q2.5     Q97.5
-## R2 0.1257941 0.07223518 0.007817001 0.2775261
+##     Estimate  Est.Error       Q2.5     Q97.5
+## R2 0.1262071 0.07090139 0.01058625 0.2746032
 ```
 
 Until now, we have focused on point-estimates and intervals of the posterior, but the main strength of Bayesian statistics is summarising the parameters as a whole posterior probability distribution, so we will now turn to the various plotting options. 
@@ -509,15 +529,15 @@ Following from chapter 9, we saw we can also use Bayesian statistics to test hyp
 
 ```r
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITIONAudio = 0") 
+           hypothesis = "CONDITION = 0") 
 ```
 
 ```
 ## Hypothesis Tests for class b:
-##             Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio
-## 1 (CONDITIONAudio) = 0     1.56      0.58      0.4     2.68       0.11
-##   Post.Prob Star
-## 1       0.1    *
+##        Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
+## 1 (CONDITION) = 0     1.57      0.57     0.46     2.66       0.08      0.08
+##   Star
+## 1    *
 ## ---
 ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
 ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -536,15 +556,15 @@ Alternatively, you can calculate the posterior odds by stating regions of the po
 
 ```r
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITIONAudio > 0") 
+           hypothesis = "CONDITION > 0") 
 ```
 
 ```
 ## Hypothesis Tests for class b:
-##             Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio
-## 1 (CONDITIONAudio) > 0     1.56      0.58      0.6      2.5     209.53
-##   Post.Prob Star
-## 1         1    *
+##        Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
+## 1 (CONDITION) > 0     1.57      0.57     0.63      2.5     265.67         1
+##   Star
+## 1    *
 ## ---
 ## 'CI': 90%-CI for one-sided and 95%-CI for two-sided hypotheses.
 ## '*': For one-sided hypotheses, the posterior probability exceeds 95%;
@@ -558,7 +578,7 @@ Calculating / plotting conditional effects
 
 - Show conditional effects with plot: http://paul-buerkner.github.io/brms/reference/conditional_effects.html
 
-#### 5. Model checking 
+#### Model checking 
 
 Finally, we have our model checking procedure. We already looked at some information for this such as Rhat and the trace plots. This suggests the model fitted OK. We also want to check the model reflects the properties of the data. This does not mean we want it exactly the same and overfit to the data, but it should follow a similar pattern to show our model captures the features of the data. 
 
@@ -645,18 +665,18 @@ To make it easier to compare, we can isolate the key information from each model
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.002274 </td>
-   <td style="text-align:right;"> 2.0956343 </td>
-   <td style="text-align:right;"> 3.957506 </td>
+   <td style="text-align:right;"> 3.006929 </td>
+   <td style="text-align:right;"> 2.0932902 </td>
+   <td style="text-align:right;"> 3.942043 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_CONDITIONAudio </td>
-   <td style="text-align:right;"> 1.563360 </td>
-   <td style="text-align:right;"> 0.3956451 </td>
-   <td style="text-align:right;"> 2.679314 </td>
-   <td style="text-align:right;"> 0.99525 </td>
+   <td style="text-align:left;"> b_CONDITION </td>
+   <td style="text-align:right;"> 1.567213 </td>
+   <td style="text-align:right;"> 0.4562219 </td>
+   <td style="text-align:right;"> 2.657129 </td>
+   <td style="text-align:right;"> 0.99625 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
@@ -718,9 +738,9 @@ Brandt_model1 <- NULL
 
 ### Guided example (Heino et al., 2018)
 
-#### 1. Identify data
+#### Identify data
 
-- Replace with Troy et al. replication from Aimi and Rhonda. 
+- Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
 
 For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
 
@@ -740,7 +760,7 @@ Heino_data <- read_csv("data/Heino-2018.csv") %>%
 Part of their tutorial discusses a bigger multilevel model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation.
 :::
 
-#### 2. Define a descriptive model
+#### Define a descriptive model
 
 I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span class='st'>"value"</span></code>) and we want to look at the interaction between <code><span class='st'>"intervention"</span></code> and <code><span class='st'>"time"</span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
@@ -753,7 +773,7 @@ By default, R includes a fixed intercept (the `1 +` part) in the model, so you w
 Heino_model <- bf(value ~ 1 + time * intervention + (1 | ID))
 ```
 
-#### 3. Specify prior probability of parameters
+#### Specify prior probability of parameters
 
 Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma. 
 
@@ -898,7 +918,7 @@ Heino_priors <- prior(normal(0, 5), class = "b") +
   prior(cauchy(0, 2), class = "sigma")
 ```
 
-#### 4. Update prior to posterior
+#### Update prior to posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
@@ -1030,7 +1050,7 @@ contrast(Heino_means)
 ## HPD interval probability: 0.95
 ```
 
-#### 5. Model check
+#### Model check
 
 As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
 
