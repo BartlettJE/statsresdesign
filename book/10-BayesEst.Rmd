@@ -54,20 +54,17 @@ Remember the key steps of Bayesian modelling from lecture 10 [@heino_bayesian_20
 
 5. Check your model against data, and identify potential problems
 
-#### 1. Identify data
+#### Identify data
 
-For this example, we have the data from Schroeder and Epley, and we can label the conditions to be more intuitive. 
+For this example, we have the data from Schroeder and Epley with one outcome and one categorical predictor. The data are coded 0 for those in the transcript group and 1 for those in the audio group. 
 
 ```{r Schroeder data,  warning=FALSE, message=FALSE}
+
 Schroeder_data <- read_csv("data/Schroeder_hiring.csv")
 
-# Relabel condition to be more intuitive which group is which 
-Schroeder_data$CONDITION <- factor(Schroeder_data$CONDITION, 
-                                   levels = c(0, 1), 
-                                   labels = c("Transcript", "Audio"))
 ```
 
-#### 2. Define a descriptive model
+#### Define a descriptive model
 
 The next step is to define a descriptive model. In chapter 9, we used the `r pkg("BayesFactor")` package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using `r hl("CONDITION")` as a single categorical predictor of `r hl("Hire_Rating")` as our outcome. You can enter this directly in the `r hl(brm())` function below, but its normally a good idea to clearly outline each component.  
 
@@ -77,7 +74,7 @@ Schroeder_model1 <- bf(Hire_Rating ~ CONDITION)
 
 ```
 
-#### 3. Specify prior probability of parameters
+#### Specify prior probability of parameters
 
 Once you get used to the `r pkg("brms")` package, you start to learn which priors you need for simple cases, but now we have stated a model, we can see which parameters can be assigned a prior. 
 
@@ -186,7 +183,7 @@ prior <- set_prior("normal(1, 1)", class = "b") +
 Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults.
 :::
 
-#### 4. Update the prior to the posterior
+#### Update the prior to the posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
@@ -343,7 +340,7 @@ Calculating / plotting conditional effects
 
 - Show conditional effects with plot: http://paul-buerkner.github.io/brms/reference/conditional_effects.html
 
-#### 5. Model checking 
+#### Model checking 
 
 Finally, we have our model checking procedure. We already looked at some information for this such as Rhat and the trace plots. This suggests the model fitted OK. We also want to check the model reflects the properties of the data. This does not mean we want it exactly the same and overfit to the data, but it should follow a similar pattern to show our model captures the features of the data. 
 
@@ -445,7 +442,7 @@ Brandt_model1 <- NULL
 
 ### Guided example (Heino et al., 2018)
 
-#### 1. Identify data
+#### Identify data
 
 - Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
 
@@ -468,7 +465,7 @@ Heino_data <- read_csv("data/Heino-2018.csv") %>%
 Part of their tutorial discusses a bigger multilevel model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation.
 :::
 
-#### 2. Define a descriptive model
+#### Define a descriptive model
 
 I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (`r hl("value")`) and we want to look at the interaction between `r hl("intervention")` and `r hl("time")`. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
@@ -482,7 +479,7 @@ Heino_model <- bf(value ~ 1 + time * intervention + (1 | ID))
 
 ```
 
-#### 3. Specify prior probability of parameters
+#### Specify prior probability of parameters
 
 Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma. 
 
@@ -504,7 +501,7 @@ Heino_priors <- prior(normal(0, 5), class = "b") +
 
 ```
 
-#### 4. Update prior to posterior
+#### Update prior to posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
@@ -576,7 +573,7 @@ contrast(Heino_means)
 
 ```
 
-#### 5. Model check
+#### Model check
 
 As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
 
