@@ -60,7 +60,8 @@ For this example, we have the data from Schroeder and Epley with one outcome and
 
 
 ```r
-Schroeder_data <- read_csv("data/Schroeder_hiring.csv")
+Schroeder_data <- read_csv("data/Schroeder_hiring.csv") %>% 
+  mutate(CONDITION = as.factor(CONDITION))
 ```
 
 #### Define a descriptive model
@@ -113,7 +114,7 @@ get_prior(Schroeder_model1, # Model we defined above
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITION </td>
+   <td style="text-align:left;"> CONDITION1 </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -172,39 +173,11 @@ So, for our intercept and reference group, we can set a normally distributed pri
 
 It is normally a good idea to visualise this process to check the numbers you enter match your expectations. For the intercept, a mean and SD of 3 look like this when generating the numbers from a normal distribution:
 
-
-```r
-prior <- c(prior(normal(3, 3), class = Intercept)) # Set prior and class
-
-prior %>% 
-  parse_dist() %>% 
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
-  stat_slab(normalize = "panels") +
-  scale_fill_viridis_d(option = "plasma", end = 0.9) +
-  guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
-  theme_classic()
-```
-
 <img src="10-BayesEst_files/figure-html/plot SE intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
 This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a lenient estimate of what we expect the reference group to be.
 
 We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. Values closer to zero cover a wider range, while larger values cover a smaller range. 
-
-
-```r
-prior <- c(prior(exponential(1), class = sigma)) # Set prior and class
-
-prior %>% 
-  parse_dist() %>% 
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
-  stat_slab(normalize = "panels") +
-  scale_fill_viridis_d(option = "plasma", end = 0.9) +
-  guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
-  theme_classic()
-```
 
 <img src="10-BayesEst_files/figure-html/user sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
 
@@ -315,7 +288,7 @@ prior_summary(Schroeder_fit)
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITION </td>
+   <td style="text-align:left;"> CONDITION1 </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -366,9 +339,9 @@ summary(Schroeder_fit)
 ##          total post-warmup draws = 4000
 ## 
 ## Population-Level Effects: 
-##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept     3.01      0.47     2.09     3.94 1.00     3402     2862
-## CONDITION     1.57      0.57     0.46     2.66 1.00     3449     2879
+##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept      3.01      0.47     2.09     3.94 1.00     3402     2862
+## CONDITION1     1.57      0.57     0.46     2.66 1.00     3449     2879
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
@@ -381,7 +354,7 @@ summary(Schroeder_fit)
 
 At the top, we have information on the model fitting process, like the family, data, and draws from the posterior summarising the chain iterations. 
 
-Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.10 and 3.96. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
+Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.09 and 3.94. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
 
 We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
@@ -432,7 +405,7 @@ describe_posterior(Schroeder_fit)
   </tr>
   <tr>
    <td style="text-align:left;"> 1 </td>
-   <td style="text-align:left;"> b_CONDITION </td>
+   <td style="text-align:left;"> b_CONDITION1 </td>
    <td style="text-align:right;"> 1.567213 </td>
    <td style="text-align:right;"> 0.95 </td>
    <td style="text-align:right;"> 0.4562219 </td>
@@ -529,13 +502,13 @@ Following from chapter 9, we saw we can also use Bayesian statistics to test hyp
 
 ```r
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITION = 0") 
+           hypothesis = "CONDITION1 = 0") 
 ```
 
 ```
 ## Hypothesis Tests for class b:
-##        Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-## 1 (CONDITION) = 0     1.57      0.57     0.46     2.66       0.08      0.08
+##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
+## 1 (CONDITION1) = 0     1.57      0.57     0.46     2.66       0.08      0.08
 ##   Star
 ## 1    *
 ## ---
@@ -546,23 +519,23 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ```
 
 ::: {.info data-latex=""}
-We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class='st'>"CONDITIONAudio"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITIONAudio > 0.
+We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class='st'>"CONDITION"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
 :::
 
-The key part of the output is the evidence ratio, but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 9.09 here. 
+The key part of the output is the evidence ratio (`Evid.Ratio`), but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 12.5 here. 
 
-Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITIONAudio > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 209 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
+Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITION1 > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 265.7 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
 
 
 ```r
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITION > 0") 
+           hypothesis = "CONDITION1 > 0") 
 ```
 
 ```
 ## Hypothesis Tests for class b:
-##        Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
-## 1 (CONDITION) > 0     1.57      0.57     0.63      2.5     265.67         1
+##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
+## 1 (CONDITION1) > 0     1.57      0.57     0.63      2.5     265.67         1
 ##   Star
 ## 1    *
 ## ---
@@ -597,7 +570,7 @@ pp_check(Schroeder_fit,
 For this example, it does an OK job at capturing the pattern of data and the bulk of the observed data follows the generated curves. However, you can see the data are quite flat compared to the predicted values. As we expect a Gaussian distribution, the model will happily produce normal curves. The model also happily expects values beyond the range of data as our scale is bound to 0 and 10. This is hugely common in psychological research as we expect Gaussian distributions from ordinal bound data. So, while this model does an OK job, we could potentially improve it by focusing on an ordinal regression model so we can factor in the bounded nature of the measure. 
 
 ::: {.try data-latex=""}
-If you want to challenge yourself, I recommend working through [Bürkner and Vuorre (2019)](https://doi.org/10.1177/2515245918823199) and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
+If you want to challenge yourself, I recommend working through @burkner_ordinal_2019 and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
 :::
 
 The final thing we will check for this model is how sensitive it is to the choice of prior. A justifiable informative prior is a key strength of Bayesian statistics, but it is important to check the model under at least two sets of priors. For this example, we will compare the model output under the default package priors and our user defined priors we used all along.
@@ -633,9 +606,9 @@ summary(Schroeder_fit2)
 ##          total post-warmup draws = 4000
 ## 
 ## Population-Level Effects: 
-##                Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept          2.90      0.52     1.89     3.93 1.00     3369     2457
-## CONDITIONAudio     1.82      0.73     0.33     3.24 1.00     3578     2469
+##            Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept      2.90      0.52     1.89     3.93 1.00     3369     2457
+## CONDITION1     1.82      0.73     0.33     3.24 1.00     3578     2469
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
@@ -671,14 +644,6 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_CONDITION </td>
-   <td style="text-align:right;"> 1.567213 </td>
-   <td style="text-align:right;"> 0.4562219 </td>
-   <td style="text-align:right;"> 2.657129 </td>
-   <td style="text-align:right;"> 0.99625 </td>
-  </tr>
-  <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 2.903251 </td>
@@ -687,8 +652,16 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_CONDITION1 </td>
+   <td style="text-align:right;"> 1.567213 </td>
+   <td style="text-align:right;"> 0.4562219 </td>
+   <td style="text-align:right;"> 2.657129 </td>
+   <td style="text-align:right;"> 0.99625 </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_CONDITIONAudio </td>
+   <td style="text-align:left;"> b_CONDITION1 </td>
    <td style="text-align:right;"> 1.838562 </td>
    <td style="text-align:right;"> 0.3318538 </td>
    <td style="text-align:right;"> 3.237537 </td>
@@ -701,38 +674,72 @@ To make it easier to compare, we can isolate the key information from each model
 
 ### Independent activity (Brandt et al., 2014)
 
-For an independent activity, we will use data from the study by [@brandt_does_2014]. The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness. 
+For an independent activity, we will use data from the study by [@brandt_does_2014]. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness. 
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome is their perception of how bright the room was (<code><span class='st'>"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span class='st'>"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
-Use your understanding of the design to address the research question. If you follow the link to Brandt et al. above, the means and standard deviations of the original study are included in Table 2. This might be useful for thinking about your priors, but keep in mind how sensitive your conclusions are to your choice of prior. 
+In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
+
+
+```r
+knitr::kable(
+  tribble(~"Condition", ~"Mean (SD)",
+          "Unethical", "4.71 (0.85)",
+          "Ethical", "5.30 (0.97)")
+)
+```
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Condition </th>
+   <th style="text-align:left;"> Mean (SD) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Unethical </td>
+   <td style="text-align:left;"> 4.71 (0.85) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ethical </td>
+   <td style="text-align:left;"> 5.30 (0.97) </td>
+  </tr>
+</tbody>
+</table>
+
+::: {.try data-latex=""}
+Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
+:::
+
+You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
 
 
 ```r
 Brandt_data <- read_csv("data/Brandt_unlit.csv")
 
 # Recode to dummy coding 
+# Turn to factor after recoding so we're working with groups
+
+# 0 = Ethical
+# 1 = Unethical
+
 Brandt_data <- Brandt_data %>% 
-  dplyr::mutate(ExpCond = dplyr::case_when(ExpCond == 1 ~ 0,
-                             ExpCond == -1 ~ 1))
-
-# Relabel condition to be more intuitive which group is which 
-# Ethical is the reference group
-Brandt_data$ExpCond <- factor(Brandt_data$ExpCond, 
-                                   levels = c(0, 1), 
-                                   labels = c("Ethical", "Unethical"))
+  mutate(ExpCond = as.factor(case_when(ExpCond == 1 ~ 0,
+                             ExpCond == -1 ~ 1)))
 ```
 
-::: {.try data-latex=""}
-From here, apply what you learnt in the first guided example to this new independent activity. 
-:::
+- What would your choice of prior be for the intercept, coefficient, and sigma? 
 
+- Is the coefficient positive or negative? 
 
-```r
-Brandt_model1 <- NULL
-```
+- Can we be confident in the direction of the coefficient? 
+
+- What would your conclusion be for the research question? 
+
+- Does the normal model capture the features of the data? 
 
 ## Multiple Linear Regression 
 
@@ -1112,6 +1119,388 @@ Coleman_model <- NULL
 
 ## Independent activity solutions 
 
-### Brandt et al. (2014)
+### Brandt et al. (2014) {#Brandt-solution}
+
+Step 1. Identify data relevant to the research question
+
+Step 2. Define a descriptive model
+
+
+```r
+Brandt_model <- bf(welllit ~ ExpCond)
+
+get_prior(Brandt_model,
+          data = Brandt_data)
+```
+
+<div class="kable-table">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> prior </th>
+   <th style="text-align:left;"> class </th>
+   <th style="text-align:left;"> coef </th>
+   <th style="text-align:left;"> group </th>
+   <th style="text-align:left;"> resp </th>
+   <th style="text-align:left;"> dpar </th>
+   <th style="text-align:left;"> nlpar </th>
+   <th style="text-align:left;"> bound </th>
+   <th style="text-align:left;"> source </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;"> ExpCond1 </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> student_t(3, 5.5, 2.5) </td>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> student_t(3, 0, 2.5) </td>
+   <td style="text-align:left;"> sigma </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+Step 3. Specify prior probability distribution on model parameters
+
+For the intercept, we know the scale ranges from 1 to 7, and for our reference group of ethical priming, the mean (SD) from Banerjee et al. was 5.3 (0.97). This means we can expect the intercept to be somewhat in the middle of the scale, so after some tweaking, you could use a prior of: 
+
+
+```r
+prior <- c(prior(normal(4, 1.2), class = Intercept)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  scale_x_continuous(breaks = seq(1, 7, 1)) + 
+  theme_classic()
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
+
+For the coefficient, the brightness rating was 0.59 units lower in the unethical priming group compared to the ethical priming group. This is quite a small effect and whether you favour an effect in one direction or the other depends on how convinced you are in the manipulation. I set the prior as a normal distribution over 0 with an SD of 0.5. This means 0 is the most likely value and most of the mass is between -1 and 1 to consider effects in a positive or negative direction. 
+
+
+```r
+prior <- c(prior(normal(0, 0.5), class = b)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt coefficient prior-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+```r
+Brandt_priors <- set_prior("normal(4, 1.2)", class = "Intercept") + 
+  set_prior("normal(0, 0.5)", class = "b") + 
+  set_prior("exponential(1)", class = "sigma")
+```
+
+Step 4. Update the prior to a posterior distribution 
+
+For the first model, I will just use the default priors to have minimal influence on the parameters. 
+
+
+```r
+Brandt_fit1 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = gaussian(),
+  seed = 80323,
+  file = "Models/Brandt_model1"
+)
+```
+
+To summarise the first model, the effects are seemingly in the opposite direction. In this default prior model, the unethical group was 0.21 units higher on the posterior median than the ethical group. This means the unethical group perceived the room as brighter, but there is a lot of uncertainty with the mass of the posterior spanning across negative and positive values. 
+
+
+
+
+```r
+summary(Brandt_fit1)
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: welllit ~ ExpCond 
+##    Data: Brandt_data (Number of observations: 100) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept     5.16      0.18     4.79     5.52 1.00     4095     3013
+## ExpCond1      0.21      0.25    -0.29     0.69 1.00     3879     3192
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     1.29      0.10     1.11     1.49 1.00     3722     2380
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+Now, we can fit a second model using our informed priors. 
+
+
+```r
+Brandt_fit2 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = gaussian(),
+  prior = Brandt_priors,
+  sample_prior = TRUE,
+  seed = 80323,
+  file = "Models/Brandt_model2"
+)
+```
+
+
+
+Using our informed priors, we get very similar results. The intercept estimates are almost identical and the coefficient estimates are marginally smaller than our default priors. This means our inferences are robust to the choice of priors. Apart from when we compare the estimates from each model, we will focus on the second model and our informed priors. 
+
+
+```r
+summary(Brandt_fit2)
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: welllit ~ ExpCond 
+##    Data: Brandt_data (Number of observations: 100) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept     5.16      0.17     4.84     5.48 1.00     4136     2989
+## ExpCond1      0.17      0.22    -0.26     0.61 1.00     4246     2923
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     1.28      0.09     1.12     1.48 1.00     3232     2918
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+
+```r
+plot(p_direction(Brandt_fit2), 
+     priors = TRUE) 
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt model 2 prior plot-1.png" width="100%" style="display: block; margin: auto;" />
+
+
+```r
+plot(bayestestR::hdi(Brandt_fit2)) # Specify package to avoid clash with ggdist
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt model 2 HDI plot-1.png" width="100%" style="display: block; margin: auto;" />
+
+Step 5. Check your model against the data
+
+Our model diagnostics all looked respectable. Rhat values were all 1 and ESS were in the thousands. If we compare our two models, we get similar estimates from our default and informed priors. 
+
+
+```r
+model1 <- describe_posterior(Brandt_fit1) %>% 
+  dplyr::mutate(Model = "User prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+model2 <- describe_posterior(Brandt_fit2) %>% 
+  dplyr::mutate(Model = "Default prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+bind_rows(model1, model2) %>% 
+  arrange(desc(Parameter))
+```
+
+<div class="kable-table">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Model </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 5.1593417 </td>
+   <td style="text-align:right;"> 4.7926584 </td>
+   <td style="text-align:right;"> 5.5172109 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 5.1564121 </td>
+   <td style="text-align:right;"> 4.8412631 </td>
+   <td style="text-align:right;"> 5.4821084 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_ExpCond1 </td>
+   <td style="text-align:right;"> 0.2073589 </td>
+   <td style="text-align:right;"> -0.2910827 </td>
+   <td style="text-align:right;"> 0.6920747 </td>
+   <td style="text-align:right;"> 0.79625 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_ExpCond1 </td>
+   <td style="text-align:right;"> 0.1776579 </td>
+   <td style="text-align:right;"> -0.2597102 </td>
+   <td style="text-align:right;"> 0.6131311 </td>
+   <td style="text-align:right;"> 0.78800 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model. 
+
+
+```r
+pp_check(Brandt_fit2,
+         ndraws = 100)
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt pp check-1.png" width="100%" style="display: block; margin: auto;" />
+
+#### Ordinal model of Brandt et al.
+
+In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increase delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. 
+
+
+```r
+Brandt_fit3 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = cumulative("probit"), # cumulative probit model for ordinal values
+  seed = 80323,
+  file = "Models/Brandt_model3",
+  control = list(adapt_delta = 0.99) # Change from default to decrease divergent transitions 
+)
+```
+
+
+
+
+
+```r
+summary(Brandt_fit3)
+```
+
+```
+##  Family: cumulative 
+##   Links: mu = probit; disc = identity 
+## Formula: welllit ~ ExpCond 
+##    Data: Brandt_data (Number of observations: 100) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##              Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept[1]    -2.55      0.45    -3.51    -1.79 1.00     2415     2405
+## Intercept[2]    -2.26      0.38    -3.10    -1.60 1.00     3239     2753
+## Intercept[3]    -1.06      0.18    -1.42    -0.71 1.00     4224     2850
+## Intercept[4]    -0.65      0.17    -1.00    -0.33 1.00     3871     3024
+## Intercept[5]     0.09      0.16    -0.24     0.40 1.00     3756     2812
+## Intercept[6]     1.18      0.19     0.82     1.55 1.00     3825     3134
+## ExpCond1         0.16      0.21    -0.26     0.58 1.00     3555     2854
+## 
+## Family Specific Parameters: 
+##      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## disc     1.00      0.00     1.00     1.00   NA       NA       NA
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+For this model, we can look at the posterior predictive check. Compared to the normal model, this represents the data much better and we are capturing the ordinal features when we draw from the posterior. 
+
+
+```r
+pp_check(Brandt_fit3, 
+         ndraws = 100)
+```
+
+<img src="10-BayesEst_files/figure-html/Brandt model 3 pp check-1.png" width="100%" style="display: block; margin: auto;" />
+
+What does this type of model look like visually? We can get the conditional effects for the response options by the experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
+
+
+```r
+conditional_effects(x = Brandt_fit3, 
+                    effects = "ExpCond", 
+                    categorical = TRUE)
+```
+
+<img src="10-BayesEst_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
 ### Coleman et al. (2019)

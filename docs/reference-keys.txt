@@ -56,7 +56,8 @@ independent-activity-coleman-et-al.-2014
 summary-1
 taking-this-further
 independent-activity-solutions-1
-brandt-et-al.-2014
+Brandt-solution
+ordinal-model-of-brandt-et-al.
 coleman-et-al.-2019
 installing-r
 installing-base-r
