@@ -60,7 +60,8 @@ For this example, we have the data from Schroeder and Epley with one outcome and
 
 ```{r Schroeder data,  warning=FALSE, message=FALSE}
 
-Schroeder_data <- read_csv("data/Schroeder_hiring.csv")
+Schroeder_data <- read_csv("data/Schroeder_hiring.csv") %>% 
+  mutate(CONDITION = as.factor(CONDITION))
 
 ```
 
@@ -267,7 +268,7 @@ summary(Schroeder_fit)
 
 At the top, we have information on the model fitting process, like the family, data, and draws from the posterior summarising the chain iterations. 
 
-Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.10 and 3.96. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
+Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.09 and 3.94. This is what we expect the mean of the reference group to be, i.e., the transcript group. 
 
 We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
@@ -350,22 +351,22 @@ Following from chapter 9, we saw we can also use Bayesian statistics to test hyp
 ```{r Schroeder hypothesis}
 
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITION = 0") 
+           hypothesis = "CONDITION1 = 0") 
 
 ```
 
 ::: {.info data-latex=""}
-We must state a character hypothesis which requires you to select a parameter. Here, we focus on the `r hl("CONDITIONAudio")` parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITIONAudio > 0.
+We must state a character hypothesis which requires you to select a parameter. Here, we focus on the `r hl("CONDITION")` parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
 :::
 
-The key part of the output is the evidence ratio, but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 9.09 here. 
+The key part of the output is the evidence ratio (`Evid.Ratio`), but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 12.5 here. 
 
-Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITIONAudio > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 209 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
+Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITION1 > 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 265.7 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.
 
 ```{r Schroeder positive hypothesis}
 
 hypothesis(Schroeder_fit, # brms model we fitted earlier
-           hypothesis = "CONDITION > 0") 
+           hypothesis = "CONDITION1 > 0") 
 
 ```
 
@@ -393,7 +394,7 @@ pp_check(Schroeder_fit,
 For this example, it does an OK job at capturing the pattern of data and the bulk of the observed data follows the generated curves. However, you can see the data are quite flat compared to the predicted values. As we expect a Gaussian distribution, the model will happily produce normal curves. The model also happily expects values beyond the range of data as our scale is bound to 0 and 10. This is hugely common in psychological research as we expect Gaussian distributions from ordinal bound data. So, while this model does an OK job, we could potentially improve it by focusing on an ordinal regression model so we can factor in the bounded nature of the measure. 
 
 ::: {.try data-latex=""}
-If you want to challenge yourself, I recommend working through [Bürkner and Vuorre (2019)](https://doi.org/10.1177/2515245918823199) and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
+If you want to challenge yourself, I recommend working through @burkner_ordinal_2019 and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
 :::
 
 The final thing we will check for this model is how sensitive it is to the choice of prior. A justifiable informative prior is a key strength of Bayesian statistics, but it is important to check the model under at least two sets of priors. For this example, we will compare the model output under the default package priors and our user defined priors we used all along.
@@ -434,44 +435,61 @@ model2 <- describe_posterior(Schroeder_fit2) %>%
   dplyr::mutate(Model = "Default prior") %>% 
   dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
 
-dplyr::bind_rows(model1, model2)
+dplyr::bind_rows(model1, model2) %>% 
+  arrange(desc(Parameter))
 
 ```
 
 ### Independent activity (Brandt et al., 2014)
 
-For an independent activity, we will use data from the study by [@brandt_does_2014]. The aim of Brandt et al. was to replicate a relatively famous social psychology study on the effect of recalling unethical behaviour on the perception of brightness. 
+For an independent activity, we will use data from the study by [@brandt_does_2014]. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness. 
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (`r hl("ExpCond")`) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome is their perception of how bright the room was (`r hl("WellLitSca")`), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (`r hl("ExpCond")`) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (`r hl("WellLitSca")`), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
-Use your understanding of the design to address the research question. If you follow the link to Brandt et al. above, the means and standard deviations of the original study are included in Table 2. This might be useful for thinking about your priors, but keep in mind how sensitive your conclusions are to your choice of prior. 
+In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
+
+```{r Brandt descriptive table}
+
+knitr::kable(
+  tribble(~"Condition", ~"Mean (SD)",
+          "Unethical", "4.71 (0.85)",
+          "Ethical", "5.30 (0.97)")
+)
+
+```
+
+::: {.try data-latex=""}
+Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
+:::
+
+You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
 
 ```{r Brandt data,  warning=FALSE, message=FALSE}
 Brandt_data <- read_csv("data/Brandt_unlit.csv")
 
 # Recode to dummy coding 
+# Turn to factor after recoding so we're working with groups
+
+# 0 = Ethical
+# 1 = Unethical
+
 Brandt_data <- Brandt_data %>% 
-  dplyr::mutate(ExpCond = dplyr::case_when(ExpCond == 1 ~ 0,
-                             ExpCond == -1 ~ 1))
-
-# Relabel condition to be more intuitive which group is which 
-# Ethical is the reference group
-Brandt_data$ExpCond <- factor(Brandt_data$ExpCond, 
-                                   levels = c(0, 1), 
-                                   labels = c("Ethical", "Unethical"))
-```
-
-::: {.try data-latex=""}
-From here, apply what you learnt in the first guided example to this new independent activity. 
-:::
-
-```{r Brandt model}
-
-Brandt_model1 <- NULL
+  mutate(ExpCond = as.factor(case_when(ExpCond == 1 ~ 0,
+                             ExpCond == -1 ~ 1)))
 
 ```
+
+- What would your choice of prior be for the intercept, coefficient, and sigma? 
+
+- Is the coefficient positive or negative? 
+
+- Can we be confident in the direction of the coefficient? 
+
+- What would your conclusion be for the research question? 
+
+- Does the normal model capture the features of the data? 
 
 ## Multiple Linear Regression 
 
@@ -669,6 +687,190 @@ Coleman_model <- NULL
 
 ## Independent activity solutions 
 
-### Brandt et al. (2014)
+### Brandt et al. (2014) {#Brandt-solution}
+
+Step 1. Identify data relevant to the research question
+
+Step 2. Define a descriptive model
+
+```{r Brandt model and prior options}
+Brandt_model <- bf(welllit ~ ExpCond)
+
+get_prior(Brandt_model,
+          data = Brandt_data)
+```
+
+Step 3. Specify prior probability distribution on model parameters
+
+For the intercept, we know the scale ranges from 1 to 7, and for our reference group of ethical priming, the mean (SD) from Banerjee et al. was 5.3 (0.97). This means we can expect the intercept to be somewhat in the middle of the scale, so after some tweaking, you could use a prior of: 
+
+```{r Brandt intercept prior}
+prior <- c(prior(normal(4, 1.2), class = Intercept)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  scale_x_continuous(breaks = seq(1, 7, 1)) + 
+  theme_classic()
+```
+
+For the coefficient, the brightness rating was 0.59 units lower in the unethical priming group compared to the ethical priming group. This is quite a small effect and whether you favour an effect in one direction or the other depends on how convinced you are in the manipulation. I set the prior as a normal distribution over 0 with an SD of 0.5. This means 0 is the most likely value and most of the mass is between -1 and 1 to consider effects in a positive or negative direction. 
+
+```{r Brandt coefficient prior}
+
+prior <- c(prior(normal(0, 0.5), class = b)) # Set prior and class
+
+prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_viridis_d(option = "plasma", end = 0.9) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+
+```
+
+```{r}
+Brandt_priors <- set_prior("normal(4, 1.2)", class = "Intercept") + 
+  set_prior("normal(0, 0.5)", class = "b") + 
+  set_prior("exponential(1)", class = "sigma")
+```
+
+Step 4. Update the prior to a posterior distribution 
+
+For the first model, I will just use the default priors to have minimal influence on the parameters. 
+
+```{r Brandt model 1, eval=FALSE, warning=FALSE, message=FALSE}
+
+Brandt_fit1 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = gaussian(),
+  seed = 80323,
+  file = "Models/Brandt_model1"
+)
+
+```
+
+To summarise the first model, the effects are seemingly in the opposite direction. In this default prior model, the unethical group was 0.21 units higher on the posterior median than the ethical group. This means the unethical group perceived the room as brighter, but there is a lot of uncertainty with the mass of the posterior spanning across negative and positive values. 
+
+```{r read Brandt model 1, echo=FALSE}
+Brandt_fit1 <- read_rds("Models/Brandt_model1.rds")
+```
+
+```{r Brandt model 1 summary}
+summary(Brandt_fit1)
+```
+
+Now, we can fit a second model using our informed priors. 
+
+```{r Brandt model 2, eval=FALSE, warning=FALSE, message=FALSE}
+
+Brandt_fit2 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = gaussian(),
+  prior = Brandt_priors,
+  sample_prior = TRUE,
+  seed = 80323,
+  file = "Models/Brandt_model2"
+)
+
+```
+
+```{r read Brandt model 2, echo=FALSE}
+Brandt_fit2 <- read_rds("Models/Brandt_model2.rds")
+```
+
+Using our informed priors, we get very similar results. The intercept estimates are almost identical and the coefficient estimates are marginally smaller than our default priors. This means our inferences are robust to the choice of priors. Apart from when we compare the estimates from each model, we will focus on the second model and our informed priors. 
+
+```{r Brandt model 2 summary}
+
+summary(Brandt_fit2)
+
+```
+
+```{r Brandt model 2 prior plot}
+plot(p_direction(Brandt_fit2), 
+     priors = TRUE) 
+```
+
+```{r Brandt model 2 HDI plot}
+plot(bayestestR::hdi(Brandt_fit2)) # Specify package to avoid clash with ggdist
+```
+
+Step 5. Check your model against the data
+
+Our model diagnostics all looked respectable. Rhat values were all 1 and ESS were in the thousands. If we compare our two models, we get similar estimates from our default and informed priors. 
+
+```{r Brandt compare models}
+model1 <- describe_posterior(Brandt_fit1) %>% 
+  dplyr::mutate(Model = "User prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+model2 <- describe_posterior(Brandt_fit2) %>% 
+  dplyr::mutate(Model = "Default prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+bind_rows(model1, model2) %>% 
+  arrange(desc(Parameter))
+```
+
+However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model. 
+
+```{r Brandt pp check}
+
+pp_check(Brandt_fit2,
+         ndraws = 100)
+
+```
+
+#### Ordinal model of Brandt et al.
+
+In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increase delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. 
+
+```{r Brandt ordinal model, eval=FALSE}
+Brandt_fit3 <- brm(
+  formula = Brandt_model,
+  data = Brandt_data,
+  family = cumulative("probit"), # cumulative probit model for ordinal values
+  seed = 80323,
+  file = "Models/Brandt_model3",
+  control = list(adapt_delta = 0.99) # Change from default to decrease divergent transitions 
+)
+```
+
+```{r read Brandt ordinal, echo=FALSE}
+
+Brandt_fit3 <- read_rds("Models/Brandt_model3.rds")
+
+```
+
+
+```{r Brandt ordinal summary}
+
+summary(Brandt_fit3)
+
+```
+
+For this model, we can look at the posterior predictive check. Compared to the normal model, this represents the data much better and we are capturing the ordinal features when we draw from the posterior. 
+
+```{r Brandt model 3 pp check}
+pp_check(Brandt_fit3, 
+         ndraws = 100)
+```
+
+What does this type of model look like visually? We can get the conditional effects for the response options by the experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
+
+```{r}
+conditional_effects(x = Brandt_fit3, 
+                    effects = "ExpCond", 
+                    categorical = TRUE)
+```
 
 ### Coleman et al. (2019)
