@@ -10,9 +10,9 @@ By the end of this chapter, you should be able to:
 
 1. Understand the steps involved in fitting and exploring Bayesian regression models. 
 
-2. Apply these steps to simple linear regression using continuous and categorical predictors. 
+2. Apply these steps to [simple linear regression](#simpleregression). 
 
-3. Apply these steps to multiple linear regression and interactions. 
+3. Apply these steps to [multiple linear regression](#multipleregression). 
 
 4. Create data visualisation to graphically communication the results of your Bayesian regression models. 
 
@@ -30,7 +30,7 @@ library(emmeans) # Handy function for calculating (marginal) effect sizes
 
 ```
 
-## Simple Linear Regression 
+## Simple Linear Regression {#simpleregression}
 
 ### Guided example (Schroeder & Epley, 2015)
 
@@ -142,7 +142,7 @@ prior %>%
 
 For our example, we can define our own informative priors using information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
 
-Focusing on hire rating, they found: 
+Focusing on hire rating, they found (pg. 881): 
 
 > "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
 
@@ -167,7 +167,7 @@ prior %>%
 
 This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a lenient estimate of what we expect the reference group to be.
 
-We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. Values closer to zero cover a wider range, while larger values cover a smaller range. 
+We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. There is only one value to enter for an exponential distribution: the rate parameter. Values closer to zero cover a wider range, while larger values cover a smaller range. For this, a value of 1 means we peak at 0 and it drops off by 2 and beyond. 
 
 ```{r user sigma prior, echo=FALSE}
 prior <- c(prior(exponential(1), class = sigma)) # Set prior and class
@@ -491,7 +491,7 @@ Brandt_data <- Brandt_data %>%
 
 - Does the normal model capture the features of the data? 
 
-## Multiple Linear Regression 
+## Multiple Linear Regression {#multipleregression}
 
 ### Guided example (Heino et al., 2018)
 
@@ -689,9 +689,15 @@ Coleman_model <- NULL
 
 ### Brandt et al. (2014) {#Brandt-solution}
 
+There will be some minor variation in the values of your output since it is based on semi-random numbers, particularly if your priors are different to below. The important thing is being internally consistent to your output and process. The conclusions and answers to the questions in the independent activity should be the same, but you can see the output below to check your answers against. 
+
 Step 1. Identify data relevant to the research question
 
+To follow the modelling process, you should have read in the data from Brandt et al.
+
 Step 2. Define a descriptive model
+
+For this model, we are again working with simple linear regression. We have one outcome of `welllit` and one categorical predictor of `ExpCond`. We can also check what priors we can specify: 
 
 ```{r Brandt model and prior options}
 Brandt_model <- bf(welllit ~ ExpCond)
@@ -704,7 +710,7 @@ Step 3. Specify prior probability distribution on model parameters
 
 For the intercept, we know the scale ranges from 1 to 7, and for our reference group of ethical priming, the mean (SD) from Banerjee et al. was 5.3 (0.97). This means we can expect the intercept to be somewhat in the middle of the scale, so after some tweaking, you could use a prior of: 
 
-```{r Brandt intercept prior}
+```{r Brandt intercept prior, echo=FALSE}
 prior <- c(prior(normal(4, 1.2), class = Intercept)) # Set prior and class
 
 prior %>% 
@@ -720,7 +726,7 @@ prior %>%
 
 For the coefficient, the brightness rating was 0.59 units lower in the unethical priming group compared to the ethical priming group. This is quite a small effect and whether you favour an effect in one direction or the other depends on how convinced you are in the manipulation. I set the prior as a normal distribution over 0 with an SD of 0.5. This means 0 is the most likely value and most of the mass is between -1 and 1 to consider effects in a positive or negative direction. 
 
-```{r Brandt coefficient prior}
+```{r Brandt coefficient prior, echo=FALSE}
 
 prior <- c(prior(normal(0, 0.5), class = b)) # Set prior and class
 
