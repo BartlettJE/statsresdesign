@@ -836,9 +836,11 @@ pp_check(Brandt_fit2,
 
 ```
 
-#### Ordinal model of Brandt et al.
+#### Bonus: Ordinal model of Brandt et al.
 
-In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increase delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. 
+Instead of assuming a Gaussian distribution, we can fit a cumulative probit model, assuming there is some normally distributed latent variable behind the ordinal item. For this demonstration, we will just use default priors and see @burkner_ordinal_2019 for a full discussion of Bayesian ordinal regression models. Almost all the other arguments are identical to our previous models, apart from one feature. 
+
+In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increasing delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. At least on my computer, increasing delta to 0.99 fixed the warnings. 
 
 ```{r Brandt ordinal model, eval=FALSE}
 Brandt_fit3 <- brm(
@@ -857,6 +859,9 @@ Brandt_fit3 <- read_rds("Models/Brandt_model3.rds")
 
 ```
 
+Now we have our model, we can get a summary like before. This might look a little different as we no longer have just one intercept and one coefficient for this model. Our scale has 7 response options, so for the cumulative probit model, we get successive thresholds between the response options. 
+
+We then have our primary estimate of interest which is the coefficient for experimental condition. We have a categorical predictor, so this represents the shift in our latent outcome from ethical (0) to unethical (1). It is expressed in standard deviations, so the unethical group lead to a 0.16 increase in brightness rating, but the 95% credible interval ranges between -0.26 and 0.58, meaning we have a lot of uncertainty and we would not conclude experimental condition led to a difference in brightness ratings.
 
 ```{r Brandt ordinal summary}
 
@@ -864,14 +869,14 @@ summary(Brandt_fit3)
 
 ```
 
-For this model, we can look at the posterior predictive check. Compared to the normal model, this represents the data much better and we are capturing the ordinal features when we draw from the posterior. 
+For this model, we can look at the posterior predictive check to see if it represents the data better. Compared to the normal model, this is much better and we are capturing the ordinal features when we draw from the posterior. 
 
 ```{r Brandt model 3 pp check}
 pp_check(Brandt_fit3, 
          ndraws = 100)
 ```
 
-What does this type of model look like visually? We can get the conditional effects for the response options by the experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
+After the model summary, we can think about what the model looks like visually. We can get the conditional effects for the response options by experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
 
 ```{r}
 conditional_effects(x = Brandt_fit3, 
