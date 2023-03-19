@@ -272,7 +272,7 @@ Population-level effects is our main area of interest. This is where we have the
 
 We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
-For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should at least be in the hundreds [@flores_beforeafter_2022] for both the bulk and tail to ensure the model has worked around the parameter space and has not missed key features of the posterior distribution. We will return to a final indicator of model fitting soon when we check the trace plots. 
+For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should in the thousands, or at the very least in the hundreds [@flores_beforeafter_2022] for both the bulk and tail. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
 For a tidier summary of the parameters, we can also use the handy `r hl(describe_posterior())` function from `r pkg("bayestestR")`. 
 
@@ -284,13 +284,7 @@ describe_posterior(Schroeder_fit)
 
 We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect (how much of the posterior is above or below zero). 
 
-This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain, which is 12.6% here. 
-
-```{r Schroeder R2}
-
-bayes_R2(Schroeder_fit)
-
-```
+##### Plotting the posterior distributions
 
 Until now, we have focused on point-estimates and intervals of the posterior, but the main strength of Bayesian statistics is summarising the parameters as a whole posterior probability distribution, so we will now turn to the various plotting options. 
 
@@ -346,6 +340,8 @@ plot(rope(Schroeder_fit,
 
 For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.
 
+##### Hypothesis testing in `r pkg("brms")`
+
 Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html" target="_blank">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0. 
 
 ```{r Schroeder hypothesis}
@@ -370,7 +366,7 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 
 ```
 
-Calculating / plotting conditional effects
+##### Calculating and plotting conditional effects
 
 - Show how to use emmeans with model 
 
@@ -450,7 +446,7 @@ Participants were randomly allocated (`r hl("ExpCond")`) to recall an unethical 
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
-```{r Brandt descriptive table}
+```{r Brandt descriptive table, echo = FALSE}
 
 knitr::kable(
   tribble(~"Condition", ~"Mean (SD)",
@@ -500,7 +496,6 @@ Brandt_data <- Brandt_data %>%
 - Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
 
 For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
-
 They randomised participants into two groups (`r hl("intervention")`) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (`r hl("value")`) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; `r hl("time")`).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
@@ -510,6 +505,8 @@ Their research question was: To what extent does the intervention affect autonom
 Heino_data <- read_csv("data/Heino-2018.csv") %>% 
   group_by(ID, intervention, time) %>% 
   summarise(value = mean(value, na.rm = TRUE)) %>% 
+  mutate(intervention = factor(intervention, levels = c(0, 1)),
+         time = factor(time, levels = c(0, 1))) %>% 
   ungroup()
 
 ```
@@ -591,6 +588,14 @@ The model summary is very similar to the examples in the simple linear regressio
 
 Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
 
+When it comes to comparing models and building multiple regression models, there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain.
+
+```{r Heino R2}
+
+bayes_R2(Heino_fit)
+
+```
+
 This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on. 
 
 ```{r Heino plots}
@@ -626,6 +631,24 @@ contrast(Heino_means)
 
 ```
 
+```{r Heino conditional effects}
+
+conditional_plot <- conditional_effects(Heino_fit, 
+                    effects = "time:intervention")
+
+plot(conditional_plot, 
+     plot = FALSE, 
+     cat_args = list(show.legend = F))[[1]] + 
+  theme_classic() + 
+  scale_y_continuous(limits = c(1, 5), breaks = seq(1, 5, 1)) + 
+  scale_x_discrete(labels = c("Baseline", "Six weeks")) + 
+  labs(x = "Time", y = "Autonomous Motivation") + 
+  scale_color_viridis_d(option = "D", begin = 0.1, end = 0.7, 
+                        name = "Group", labels = c("Control", "Intervention"))
+
+```
+
+
 #### Model check
 
 As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
@@ -639,7 +662,7 @@ pp_check(Heino_fit,
 If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data. 
 :::
 
-### Independent activity (Coleman et al., 2014)
+### Independent activity (Coleman et al., 2019)
 
 For an independent activity, we will use data from the study by @coleman_absorption_2019. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.  
 
@@ -661,7 +684,7 @@ The data set contains a range of variables used for the full model in the paper.
 
 Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How does absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) affect mystical experiences (`r hl("Mscale_SUM")`) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+Our research question is: How are absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) related to mystical experiences (`r hl("Mscale_SUM")`) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
 
 Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
