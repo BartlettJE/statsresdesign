@@ -155,11 +155,11 @@ Coefficients are assigned flat priors, meaning anything is possible between minu
 
 <img src="10-BayesEst_files/figure-html/default flat prior-1.png" width="100%" style="display: block; margin: auto;" />
 
-The intercept and sigma are assigned student t distributions for priors. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
+The intercept and sigma are assigned student t distributions for priors, full for the intercept and a half student t for sigma. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
 
 <img src="10-BayesEst_files/figure-html/plot default intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
-The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0, so this definitely does not factor in parameter knowledge.   
+The default prior for sigma is a half student t distribution which peaks at 0. This plot demonstrates the full student t distribution, but sigma cannot be smaller than 0, so it would extend from 0 to the positive values.     
 
 <img src="10-BayesEst_files/figure-html/plot default sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
 
@@ -539,13 +539,56 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 
 ##### Calculating and plotting conditional effects
 
-- Show how to use emmeans with model 
+For the final part of exploring the posterior, you might be interested in the estimates for each group or condition in your predictor. When you only have two groups, you can calculate the point estimate using the intercept and slope, but we can use the <code class='package'>emmeans</code> package [@Lenth2022] to calculate conditional effects on the posterior distribution. 
 
-- Show conditional effects with plot: http://paul-buerkner.github.io/brms/reference/conditional_effects.html
+
+```r
+# Surround with brackets to both save and output
+(Schroeder_means <- emmeans(Schroeder_fit, # add the model object  
+        ~ CONDITION)) # What predictor do you want marginal means of? 
+```
+
+```
+##  CONDITION emmean lower.HPD upper.HPD
+##  0           3.01      2.06      3.91
+##  1           4.58      3.75      5.42
+## 
+## Point estimate displayed: median 
+## HPD interval probability: 0.95
+```
+
+This provides the median and 95% HDI values for the posterior for each group. The <code class='package'>brms</code> package also comes with a function called <code><span class='fu'>conditional_effects</span><span class='op'>(</span><span class='op'>)</span></code> which you can use to plot the conditional effects. 
+
+
+```r
+conditional_effects(Schroeder_fit)
+```
+
+<img src="10-BayesEst_files/figure-html/Schroeder conditional effects plot-1.png" width="100%" style="display: block; margin: auto;" />
+
+By default, it plots the median of the posterior for each group and the error bars represent the 95% HDI around the median. Behind the scenes, it uses ggplot, so you can customise the graphs to make them better suited for a report. 
+
+::: {.warning data-latex=""}
+When you use the `conditional_effects()` function, the type of plot it produces will depend on the data type. All the way back when we read the data in, we turned CONDITION into a factor. If you left it numeric, all the modelling would work the same, but the plot here would be more of a scatterplot. There are additional arguments you can use, so [see the function help](http://paul-buerkner.github.io/brms/reference/conditional_effects.html) for further customisation options. 
+:::
+
+
+```r
+conditional_plot <- conditional_effects(Schroeder_fit)
+
+plot(conditional_plot, 
+     plot = FALSE)[[1]] + #I don't know why you need this, but it doesn't work without
+  theme_classic() + 
+  scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, 2)) + 
+  scale_x_discrete(labels = c("Transcript", "Audio")) + 
+  labs(x = "Speech Group", y = "Mean Hire Rating")
+```
+
+<img src="10-BayesEst_files/figure-html/Conditional effects customisation-1.png" width="100%" style="display: block; margin: auto;" />
 
 #### Model checking 
 
-Finally, we have our model checking procedure. We already looked at some information for this such as Rhat and the trace plots. This suggests the model fitted OK. We also want to check the model reflects the properties of the data. This does not mean we want it exactly the same and overfit to the data, but it should follow a similar pattern to show our model captures the features of the data. 
+Finally, we have our model checking procedure. We already looked at some information for this such as Rhat, effect sample size, and the trace plots. This suggests the model fitted OK. We also want to check the model reflects the properties of the data. This does not mean we want it exactly the same and overfit to the data, but it should follow a similar pattern to show our model captures the features of the data. 
 
 Bayesian models are generative, which means once they are fitted, we can use them to sample values from the posterior and make predictions from it. One key process is called a posterior predictive check which takes the model and uses is to generate new samples. This shows how you have conditioned the model and what it expects. 
 
@@ -559,11 +602,9 @@ pp_check(Schroeder_fit,
 
 <img src="10-BayesEst_files/figure-html/Schroeder model check-1.png" width="100%" style="display: block; margin: auto;" />
 
-For this example, it does an OK job at capturing the pattern of data and the bulk of the observed data follows the generated curves. However, you can see the data are quite flat compared to the predicted values. As we expect a Gaussian distribution, the model will happily produce normal curves. The model also happily expects values beyond the range of data as our scale is bound to 0 and 10. This is hugely common in psychological research as we expect Gaussian distributions from ordinal bound data. So, while this model does an OK job, we could potentially improve it by focusing on an ordinal regression model so we can factor in the bounded nature of the measure. 
+For this example, it does an OK job at capturing the pattern of data and the bulk of the observed data follows the generated curves. However, you can see the data are quite flat compared to the predicted values. As we expect a Gaussian distribution, the model will happily produce normal curves. The model also happily expects values beyond the range of data as our scale is bound to 0 and 10. This is hugely common in psychological research as we expect Gaussian distributions from ordinal bound data. So, while this model does an OK job, we could potentially improve it by focusing on an ordinal regression model so we can factor in the bounded nature of the measure if we had the raw measures. 
 
-::: {.try data-latex=""}
-If you want to challenge yourself, I recommend working through @burkner_ordinal_2019 and applying your understanding to this task. This is going to be a common theme in the examples you see in the independent activities as psychology articles (myself included) often use metric models to analyse arguably ordinal data.
-:::
+##### Check model sensitivity to different priors
 
 The final thing we will check for this model is how sensitive it is to the choice of prior. A justifiable informative prior is a key strength of Bayesian statistics, but it is important to check the model under at least two sets of priors. For this example, we will compare the model output under the default package priors and our user defined priors we used all along.
 
@@ -714,15 +755,34 @@ Brandt_data <- Brandt_data %>%
                              ExpCond == -1 ~ 1)))
 ```
 
-- What would your choice of prior be for the intercept, coefficient, and sigma? 
+- Is the coefficient positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
 
-- Is the coefficient positive or negative? 
+- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_DPCSYBKPRH'><label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
 
-- Can we be confident in the direction of the coefficient? 
+- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_PNTRUJRPIY'><label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
 
-- What would your conclusion be for the research question? 
 
-- Does the normal model capture the features of the data? 
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_UFLXAMEWIT'><label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
+
+- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_IMDGRDNIDO'><label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
+
+
+<div class='webex-solution'><button>Explain these answers</button>
+
+
+1. The experimental condition coefficient is a positive but small value.
+
+2. Although the coefficient is positive, there is substantial overlap across 0.
+
+3. Given the uncertainty around the coefficient, we would not be confident in the effect of experimental condition on perceived brightness. 
+
+4. The results should be robust to the choice of prior if you based it on the means and SDs from the original Banerjee et al. study. There was little difference in my user and default priors. 
+
+5. In contrast to the Schroeder and Epley data where the ordinal data was approximately normal, there is no getting away from the characteristic ordinal distribution with peaks at each integer. Really, we would need to explore something like ordinal regression to capture the properties of the data. It is not something we covered in the Bayesian lectures or activites, but [see the bonus section](#Brandt-bonus) showing what an ordinal model would look like applied to these data. 
+
+
+</div>
+
 
 ## Multiple Linear Regression {#multipleregression}
 
@@ -1005,7 +1065,7 @@ plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
 
 Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra, you can also use the <code class='package'>emmeans</code> package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
+As a bonus extra since its not included in Heino et al., you can also use the <code class='package'>emmeans</code> package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 
 ```r
@@ -1423,7 +1483,7 @@ pp_check(Brandt_fit2,
 
 <img src="10-BayesEst_files/figure-html/Brandt pp check-1.png" width="100%" style="display: block; margin: auto;" />
 
-#### Bonus: Ordinal model of Brandt et al.
+#### Bonus: Ordinal model of Brandt et al. {#Brandt-bonus}
 
 Instead of assuming a Gaussian distribution, we can fit a cumulative probit model, assuming there is some normally distributed latent variable behind the ordinal item. For this demonstration, we will just use default priors and see @burkner_ordinal_2019 for a full discussion of Bayesian ordinal regression models. Almost all the other arguments are identical to our previous models, apart from one feature. 
 

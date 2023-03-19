@@ -47,6 +47,7 @@ plotting-the-posterior-distributions
 hypothesis-testing-in-brms
 calculating-and-plotting-conditional-effects
 model-checking
+check-model-sensitivity-to-different-priors
 independent-activity-brandt-et-al.-2014
 multipleregression
 guided-example-heino-et-al.-2018
@@ -60,7 +61,7 @@ summary-1
 taking-this-further
 independent-activity-solutions-1
 Brandt-solution
-bonus-ordinal-model-of-brandt-et-al.
+Brandt-bonus
 coleman-et-al.-2019
 installing-r
 installing-base-r
