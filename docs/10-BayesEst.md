@@ -10,9 +10,9 @@ By the end of this chapter, you should be able to:
 
 1. Understand the steps involved in fitting and exploring Bayesian regression models. 
 
-2. Apply these steps to simple linear regression using continuous and categorical predictors. 
+2. Apply these steps to [simple linear regression](#simpleregression). 
 
-3. Apply these steps to multiple linear regression and interactions. 
+3. Apply these steps to [multiple linear regression](#multipleregression). 
 
 4. Create data visualisation to graphically communication the results of your Bayesian regression models. 
 
@@ -30,7 +30,7 @@ library(see) # helper functions for plotting objects from bayestestR
 library(emmeans) # Handy function for calculating (marginal) effect sizes
 ```
 
-## Simple Linear Regression 
+## Simple Linear Regression {#simpleregression}
 
 ### Guided example (Schroeder & Epley, 2015)
 
@@ -165,7 +165,7 @@ The default prior for sigma peaks at 0 and most likely between -10 and 10. Just 
 
 For our example, we can define our own informative priors using information from Schroeder and Epley. Their paper contains four studies and our data set focuses on the fourth where they apply their findings to professional recruiters. Study 1 preceded this and used students, so we can pretend we are the researchers and use this as a source of our priors for the "later" study. 
 
-Focusing on hire rating, they found: 
+Focusing on hire rating, they found (pg. 881): 
 
 > "Evaluators who heard pitches also reported being significantly more likely to hire the candidates (*M* = 4.34, *SD* = 2.26) than did evaluators who read exactly the same pitches (*M* = 3.06, *SD* = 3.15), *t*(156) = 2.49, *p* = .01, 95% CI of the difference = [0.22, 2.34], *d* = 0.40 (see Fig. 1)". 
 
@@ -177,7 +177,7 @@ It is normally a good idea to visualise this process to check the numbers you en
 
 This turns out to be quite a weak prior since the distribution extends below 0 (which is not possible for this scale) all the way to 10 which is the upper limit of this scale. It covers pretty much the entire measurement scale with the peak around 3, so it represents a lenient estimate of what we expect the reference group to be.
 
-We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. Values closer to zero cover a wider range, while larger values cover a smaller range. 
+We can set something more informative for the sigma prior knowing what we do about standard deviations. A common prior for the standard deviation is using an exponential distribution as it cannot be lower than 0. This means the largest density is around zero and the density decreases across more positive values. There is only one value to enter for an exponential distribution: the rate parameter. Values closer to zero cover a wider range, while larger values cover a smaller range. For this, a value of 1 means we peak at 0 and it drops off by 2 and beyond. 
 
 <img src="10-BayesEst_files/figure-html/user sigma prior-1.png" width="100%" style="display: block; margin: auto;" />
 
@@ -358,7 +358,7 @@ Population-level effects is our main area of interest. This is where we have the
 
 We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same. 
 
-For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should at least be in the hundreds [@flores_beforeafter_2022] for both the bulk and tail to ensure the model has worked around the parameter space and has not missed key features of the posterior distribution. We will return to a final indicator of model fitting soon when we check the trace plots. 
+For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should in the thousands, or at the very least in the hundreds [@flores_beforeafter_2022] for both the bulk and tail. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
 For a tidier summary of the parameters, we can also use the handy <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>bayestestR</code>. 
 
@@ -425,17 +425,7 @@ describe_posterior(Schroeder_fit)
 
 We can use this as a way to create ROPE regions for the effects and it tells us useful things like the probability of direction for the effect (how much of the posterior is above or below zero). 
 
-This will be more useful when it comes to comparing models and building multiple regression models, but there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain, which is 12.6% here. 
-
-
-```r
-bayes_R2(Schroeder_fit)
-```
-
-```
-##     Estimate  Est.Error       Q2.5     Q97.5
-## R2 0.1262071 0.07090139 0.01058625 0.2746032
-```
+##### Plotting the posterior distributions
 
 Until now, we have focused on point-estimates and intervals of the posterior, but the main strength of Bayesian statistics is summarising the parameters as a whole posterior probability distribution, so we will now turn to the various plotting options. 
 
@@ -497,6 +487,8 @@ plot(rope(Schroeder_fit,
 
 For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.
 
+##### Hypothesis testing in <code class='package'>brms</code>
+
 Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as `brms` has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html" target="_blank">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0. 
 
 
@@ -545,7 +537,7 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ## Posterior probabilities of point hypotheses assume equal prior probabilities.
 ```
 
-Calculating / plotting conditional effects
+##### Calculating and plotting conditional effects
 
 - Show how to use emmeans with model 
 
@@ -682,15 +674,6 @@ Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></c
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
-
-```r
-knitr::kable(
-  tribble(~"Condition", ~"Mean (SD)",
-          "Unethical", "4.71 (0.85)",
-          "Ethical", "5.30 (0.97)")
-)
-```
-
 <table>
  <thead>
   <tr>
@@ -741,7 +724,7 @@ Brandt_data <- Brandt_data %>%
 
 - Does the normal model capture the features of the data? 
 
-## Multiple Linear Regression 
+## Multiple Linear Regression {#multipleregression}
 
 ### Guided example (Heino et al., 2018)
 
@@ -750,7 +733,6 @@ Brandt_data <- Brandt_data %>%
 - Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
 
 For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
-
 They randomised participants into two groups (<code><span class='st'>"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class='st'>"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class='st'>"time"</span></code>).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
@@ -760,6 +742,8 @@ Their research question was: To what extent does the intervention affect autonom
 Heino_data <- read_csv("data/Heino-2018.csv") %>% 
   group_by(ID, intervention, time) %>% 
   summarise(value = mean(value, na.rm = TRUE)) %>% 
+  mutate(intervention = factor(intervention, levels = c(0, 1)),
+         time = factor(time, levels = c(0, 1))) %>% 
   ungroup()
 ```
 
@@ -824,7 +808,7 @@ get_prior(Heino_model, data = Heino_data)
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> intervention </td>
+   <td style="text-align:left;"> intervention1 </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -835,7 +819,7 @@ get_prior(Heino_model, data = Heino_data)
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> time </td>
+   <td style="text-align:left;"> time1 </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -846,7 +830,7 @@ get_prior(Heino_model, data = Heino_data)
   <tr>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> time:intervention </td>
+   <td style="text-align:left;"> time1:intervention1 </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -966,11 +950,11 @@ summary(Heino_fit)
 ## sd(Intercept)     0.71      0.10     0.53     0.92 1.00      817     1710
 ## 
 ## Population-Level Effects: 
-##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept             3.70      0.20     3.29     4.09 1.00      810     1328
-## time                  0.08      0.14    -0.19     0.37 1.00     2170     2694
-## intervention         -0.08      0.26    -0.59     0.43 1.00      762     1446
-## time:intervention     0.10      0.18    -0.25     0.44 1.00     2203     2552
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               3.70      0.20     3.29     4.09 1.00      810     1328
+## time1                   0.08      0.14    -0.19     0.37 1.00     2170     2694
+## intervention1          -0.08      0.26    -0.59     0.43 1.00      762     1446
+## time1:intervention1     0.10      0.18    -0.25     0.44 1.00     2203     2552
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
@@ -984,6 +968,18 @@ summary(Heino_fit)
 The model summary is very similar to the examples in the simple linear regression section, but we also have a new section for group-level effects since we added a random intercept for participants.
 
 Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
+
+When it comes to comparing models and building multiple regression models, there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain.
+
+
+```r
+bayes_R2(Heino_fit)
+```
+
+```
+##     Estimate  Est.Error      Q2.5     Q97.5
+## R2 0.8037073 0.05385016 0.6720168 0.8781995
+```
 
 This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on. 
 
@@ -1021,13 +1017,13 @@ As a bonus extra, you can also use the <code class='package'>emmeans</code> pack
 ```
 ## intervention = 0:
 ##  time emmean lower.HPD upper.HPD
-##     0   3.69      3.32      4.11
-##     1   3.78      3.39      4.18
+##  0      3.69      3.32      4.11
+##  1      3.78      3.39      4.18
 ## 
 ## intervention = 1:
 ##  time emmean lower.HPD upper.HPD
-##     0   3.61      3.27      3.91
-##     1   3.79      3.46      4.12
+##  0      3.61      3.27      3.91
+##  1      3.79      3.46      4.12
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95
@@ -1057,6 +1053,25 @@ contrast(Heino_means)
 ## HPD interval probability: 0.95
 ```
 
+
+```r
+conditional_plot <- conditional_effects(Heino_fit, 
+                    effects = "time:intervention")
+
+plot(conditional_plot, 
+     plot = FALSE, 
+     cat_args = list(show.legend = F))[[1]] + 
+  theme_classic() + 
+  scale_y_continuous(limits = c(1, 5), breaks = seq(1, 5, 1)) + 
+  scale_x_discrete(labels = c("Baseline", "Six weeks")) + 
+  labs(x = "Time", y = "Autonomous Motivation") + 
+  scale_color_viridis_d(option = "D", begin = 0.1, end = 0.7, 
+                        name = "Group", labels = c("Control", "Intervention"))
+```
+
+<img src="10-BayesEst_files/figure-html/Heino conditional effects-1.png" width="100%" style="display: block; margin: auto;" />
+
+
 #### Model check
 
 As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
@@ -1073,7 +1088,7 @@ pp_check(Heino_fit,
 If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data. 
 :::
 
-### Independent activity (Coleman et al., 2014)
+### Independent activity (Coleman et al., 2019)
 
 For an independent activity, we will use data from the study by @coleman_absorption_2019. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.  
 
@@ -1095,7 +1110,7 @@ The data set contains a range of variables used for the full model in the paper.
 
 Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How does absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) affect mystical experiences (<code><span class='st'>"Mscale_SUM"</span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+Our research question is: How are absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) related to mystical experiences (<code><span class='st'>"Mscale_SUM"</span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
 
 Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
@@ -1121,9 +1136,15 @@ Coleman_model <- NULL
 
 ### Brandt et al. (2014) {#Brandt-solution}
 
+There will be some minor variation in the values of your output since it is based on semi-random numbers, particularly if your priors are different to below. The important thing is being internally consistent to your output and process. The conclusions and answers to the questions in the independent activity should be the same, but you can see the output below to check your answers against. 
+
 Step 1. Identify data relevant to the research question
 
+To follow the modelling process, you should have read in the data from Brandt et al.
+
 Step 2. Define a descriptive model
+
+For this model, we are again working with simple linear regression. We have one outcome of `welllit` and one categorical predictor of `ExpCond`. We can also check what priors we can specify: 
 
 
 ```r
@@ -1203,38 +1224,9 @@ Step 3. Specify prior probability distribution on model parameters
 
 For the intercept, we know the scale ranges from 1 to 7, and for our reference group of ethical priming, the mean (SD) from Banerjee et al. was 5.3 (0.97). This means we can expect the intercept to be somewhat in the middle of the scale, so after some tweaking, you could use a prior of: 
 
-
-```r
-prior <- c(prior(normal(4, 1.2), class = Intercept)) # Set prior and class
-
-prior %>% 
-  parse_dist() %>% 
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
-  stat_slab(normalize = "panels") +
-  scale_fill_viridis_d(option = "plasma", end = 0.9) +
-  guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
-  scale_x_continuous(breaks = seq(1, 7, 1)) + 
-  theme_classic()
-```
-
 <img src="10-BayesEst_files/figure-html/Brandt intercept prior-1.png" width="100%" style="display: block; margin: auto;" />
 
 For the coefficient, the brightness rating was 0.59 units lower in the unethical priming group compared to the ethical priming group. This is quite a small effect and whether you favour an effect in one direction or the other depends on how convinced you are in the manipulation. I set the prior as a normal distribution over 0 with an SD of 0.5. This means 0 is the most likely value and most of the mass is between -1 and 1 to consider effects in a positive or negative direction. 
-
-
-```r
-prior <- c(prior(normal(0, 0.5), class = b)) # Set prior and class
-
-prior %>% 
-  parse_dist() %>% 
-  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
-  stat_slab(normalize = "panels") +
-  scale_fill_viridis_d(option = "plasma", end = 0.9) +
-  guides(fill = "none") +
-  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
-  theme_classic()
-```
 
 <img src="10-BayesEst_files/figure-html/Brandt coefficient prior-1.png" width="100%" style="display: block; margin: auto;" />
 
@@ -1431,9 +1423,11 @@ pp_check(Brandt_fit2,
 
 <img src="10-BayesEst_files/figure-html/Brandt pp check-1.png" width="100%" style="display: block; margin: auto;" />
 
-#### Ordinal model of Brandt et al.
+#### Bonus: Ordinal model of Brandt et al.
 
-In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increase delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. 
+Instead of assuming a Gaussian distribution, we can fit a cumulative probit model, assuming there is some normally distributed latent variable behind the ordinal item. For this demonstration, we will just use default priors and see @burkner_ordinal_2019 for a full discussion of Bayesian ordinal regression models. Almost all the other arguments are identical to our previous models, apart from one feature. 
+
+In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increasing delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. At least on my computer, increasing delta to 0.99 fixed the warnings. 
 
 
 ```r
@@ -1449,6 +1443,9 @@ Brandt_fit3 <- brm(
 
 
 
+Now we have our model, we can get a summary like before. This might look a little different as we no longer have just one intercept and one coefficient for this model. Our scale has 7 response options, so for the cumulative probit model, we get successive thresholds between the response options. 
+
+We then have our primary estimate of interest which is the coefficient for experimental condition. We have a categorical predictor, so this represents the shift in our latent outcome from ethical (0) to unethical (1). It is expressed in standard deviations, so the unethical group lead to a 0.16 increase in brightness rating, but the 95% credible interval ranges between -0.26 and 0.58, meaning we have a lot of uncertainty and we would not conclude experimental condition led to a difference in brightness ratings.
 
 
 ```r
@@ -1482,7 +1479,7 @@ summary(Brandt_fit3)
 ## scale reduction factor on split chains (at convergence, Rhat = 1).
 ```
 
-For this model, we can look at the posterior predictive check. Compared to the normal model, this represents the data much better and we are capturing the ordinal features when we draw from the posterior. 
+For this model, we can look at the posterior predictive check to see if it represents the data better. Compared to the normal model, this is much better and we are capturing the ordinal features when we draw from the posterior. 
 
 
 ```r
@@ -1492,7 +1489,7 @@ pp_check(Brandt_fit3,
 
 <img src="10-BayesEst_files/figure-html/Brandt model 3 pp check-1.png" width="100%" style="display: block; margin: auto;" />
 
-What does this type of model look like visually? We can get the conditional effects for the response options by the experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
+After the model summary, we can think about what the model looks like visually. We can get the conditional effects for the response options by experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better. 
 
 
 ```r
