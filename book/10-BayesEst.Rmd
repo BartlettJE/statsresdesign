@@ -106,7 +106,7 @@ prior %>%
   coord_cartesian(xlim = c(-100, 100)) # Trick to show flat prior - across a huge range but limit to smaller scale
 ```
 
-The intercept and sigma are assigned student t distributions for priors. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
+The intercept and sigma are assigned student t distributions for priors, full for the intercept and a half student t for sigma. These are both quite weak priors to have minimal influence on the model, but they do not factor in your knowledge about the parameters. The default prior for the intercept peaks slightly above 0 and most likely between -5 and 15. 
 
 ```{r plot default intercept prior, echo=FALSE}
 
@@ -123,7 +123,7 @@ prior %>%
 
 ```
 
-The default prior for sigma peaks at 0 and most likely between -10 and 10. Just keep in mind sigma as the standard deviation cannot be smaller than 0, so this definitely does not factor in parameter knowledge.   
+The default prior for sigma is a half student t distribution which peaks at 0. This plot demonstrates the full student t distribution, but sigma cannot be smaller than 0, so it would extend from 0 to the positive values.     
 
 ```{r plot default sigma prior, echo=FALSE}
 
@@ -368,9 +368,42 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 
 ##### Calculating and plotting conditional effects
 
-- Show how to use emmeans with model 
+For the final part of exploring the posterior, you might be interested in the estimates for each group or condition in your predictor. When you only have two groups, you can calculate the point estimate using the intercept and slope, but we can use the `r pkg("emmeans")` package [@Lenth2022] to calculate conditional effects on the posterior distribution. 
 
-- Show conditional effects with plot: http://paul-buerkner.github.io/brms/reference/conditional_effects.html
+```{r Schroeder marginal}
+
+# Surround with brackets to both save and output
+(Schroeder_means <- emmeans(Schroeder_fit, # add the model object  
+        ~ CONDITION)) # What predictor do you want marginal means of? 
+
+```
+
+This provides the median and 95% HDI values for the posterior for each group. The `r pkg("brms")` package also comes with a function called `r hl(conditional_effects()` which you can use to plot the conditional effects. 
+
+```{r Schroeder conditional effects plot}
+
+conditional_effects(Schroeder_fit)
+
+```
+
+By default, it plots the median of the posterior for each group and the error bars represent the 95% HDI around the median. Behind the scenes, it uses ggplot, so you can customise the graphs to make them better suited for a report. 
+
+::: {.warning data-latex=""}
+When you use the `conditional_effects()` function, the type of plot it produces will depend on the data type. All the way back when we read the data in, we turned CONDITION into a factor. If you left it numeric, all the modelling would work the same, but the plot here would be more of a scatterplot. There are additional arguments you can use, so [see the function help](http://paul-buerkner.github.io/brms/reference/conditional_effects.html) for further customisation options. 
+:::
+
+```{r Heino conditional effects}
+
+conditional_plot <- conditional_effects(Schroeder_fit)
+
+plot(conditional_plot, 
+     plot = FALSE)[[1]] + #I don't know why you need this, but it doesn't work without
+  theme_classic() + 
+  scale_y_continuous(limits = c(0, 10), breaks = seq(0, 10, 2)) + 
+  scale_x_discrete(labels = c("Transcript", "Audio")) + 
+  labs(x = "Speech Group", y = "Mean Hire Rating")
+
+```
 
 #### Model checking 
 
@@ -611,7 +644,7 @@ plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
 
 Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra, you can also use the `r pkg("emmeans")` package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
+As a bonus extra since its not included in Heino et al., you can also use the `r pkg("emmeans")` package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 ```{r Heino marginal}
 
