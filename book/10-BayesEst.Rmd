@@ -372,9 +372,8 @@ For the final part of exploring the posterior, you might be interested in the es
 
 ```{r Schroeder marginal}
 
-# Surround with brackets to both save and output
-(Schroeder_means <- emmeans(Schroeder_fit, # add the model object  
-        ~ CONDITION)) # What predictor do you want marginal means of? 
+emmeans(Schroeder_fit, # add the model object  
+        ~ CONDITION) # What predictor do you want marginal means of? 
 
 ```
 
