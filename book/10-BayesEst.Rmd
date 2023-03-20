@@ -463,7 +463,9 @@ model2 <- describe_posterior(Schroeder_fit2) %>%
   dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
 
 dplyr::bind_rows(model1, model2) %>% 
-  arrange(desc(Parameter))
+  arrange(desc(Parameter)) %>% 
+  knitr::kable(digits = 2,
+               col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI", "Prob Direction"))
 
 ```
 
@@ -878,14 +880,16 @@ To make it easier to compare, we can isolate the key information from each model
 
 model1 <- describe_posterior(Heino_fit) %>% 
   dplyr::mutate(Model = "User priors") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 model2 <- describe_posterior(Heino_fit3) %>% 
   dplyr::mutate(Model = "Default priors") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 dplyr::bind_rows(model1, model2) %>% 
-  arrange(Parameter)
+  arrange(Parameter) %>% 
+  knitr::kable(digits = 2,
+               col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI"))
 
 ```
 
