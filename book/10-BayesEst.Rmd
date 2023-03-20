@@ -921,19 +921,15 @@ Use your understanding of the design to address the research question. If you fo
 
 ```{r Coleman data, warning=FALSE, message=FALSE}
 
-Coleman_data <- read_csv("data/Coleman_2019.csv")
+Coleman_data <- read_csv("data/Coleman_2019.csv") %>% 
+  mutate(Absorption_SUM = Absorption_SUM - mean(Absorption_SUM), # Mean center the predictors
+         EQ_SUM = EQ_SUM - mean(EQ_SUM))
 
 ```
 
 ::: {.try data-latex=""}
 From here, apply what you learnt in the first guided example to this new independent task. 
 :::
-
-```{r Coleman model}
-
-Coleman_model <- NULL
-
-```
 
 ## Summary 
 
@@ -1169,3 +1165,179 @@ conditional_effects(x = Brandt_fit3,
 ```
 
 ### Coleman et al. (2019)
+
+There will be some minor variation in the values of your output since it is based on semi-random numbers, particularly if your priors are different to below. The important thing is being internally consistent to your output and process. The conclusions and answers to the questions in the independent activity should be the same, but you can see the output below to check your answers against. 
+
+Step 1. Identify data relevant to the research question
+
+To follow the modelling process, you should have read in the data from Coleman et al.
+
+Step 2. Define a descriptive model
+
+For this demonstration, we're going to predict mystical experiences from theory of mind and absorption, then the interaction in a second model. The interaction here is the primary focus, so we will fit that model first, then update it to see the impact of removing the interaction. 
+
+```{r Coleman model}
+
+# Predicting mystical experiences from the interaction between theory of mind and absorption
+
+Coleman_model <- bf(Mscale_SUM ~ Absorption_SUM * EQ_SUM) 
+
+```
+
+Step 3. Specify prior probability distribution on model parameters
+
+```{r Coleman prior options}
+# What priors can we specify? 
+get_prior(Coleman_model, data = Coleman_data)
+
+```
+
+For the intercept, we know the mystical experiences scale ranges from 40 to 160. The intercept in Coleman et al. study two was 109 with a 95% confidence interval ranging from 104 to 113. With some playing around with the prior plots, a normal distribution of 109 (SD = 17) has the peak over the study two intercept as the most likely value, then the tails cut off around the minimum and maximum scale range. 
+
+For the coefficients, the variables are centered, so we can think about their unit change with the outcome. The largest predictor was 0.42 units and the largest side of the 95% confidence interval was 0.54. Therefore, we can set a prior over 0 for the peak to express smaller effects are more likely, but accept larger values in each direction with a SD of 1. 
+
+Finally, for sigma, we can use a relatively weak exponential prior with a change parameter of 1 since the estimate for the model SD was not reported in Coleman et al. We can plot all of these options below and piece them together with patchwork. 
+
+```{r Coleman plot priors, echo=FALSE}
+colours <- viridis::plasma(3, end = 0.9)
+
+prior <- c(prior(normal(0, 1), class = "b"))
+
+b_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[1]) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+
+prior <- c(prior(normal(109, 17), class = "Intercept"))
+
+Intercept_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[2])+
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+
+prior <- c(prior(exponential(1), class = "sigma"))
+
+sigma_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[3]) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+
+Intercept_plot + b_plot + sigma_plot + plot_layout(ncol = 2)
+
+```
+
+We can then enter these values as our informed priors. 
+
+```{r Coleman set priors}
+
+Coleman_priors <- prior("normal(0, 1)", class = "b") + 
+  prior("normal(109, 17)", class = "Intercept") + 
+  prior("exponential(1)", class = "sigma") 
+
+```
+
+Step 4. Update the prior to a posterior distribution 
+
+Now we have our model and priors, we can fit the first model including the interaction.
+
+```{r Coleman fit, eval=FALSE}
+
+Coleman_fit <- brm(
+  formula = Coleman_model,
+  data = Coleman_data,
+  family = gaussian(),
+  prior = Coleman_priors,
+  seed = 200323,
+  file = "Models/Coleman_model1"
+)
+
+```
+
+```{r Read Coleman model, echo=FALSE}
+
+Coleman_fit <- read_rds("Models/Coleman_model1.rds")
+
+```
+
+Lets have a look at the first summary of the model output. 
+
+```{r Coleman summary}
+
+summary(Coleman_fit)
+
+```
+
+The population level effects are relatively consistent with our priors. The intercept is slightly higher at 120 and both individual coefficients are positive predictors of mystical experiences. For the partial effects, we expect higher mystical experiences with both higher values of theory of mind and absorption. They are both clearly positive predictors with the 95% HDI no where near zero. 
+
+For the interaction, this is always hard to interpret as a single coefficient. We will return to interpreting this when we plot the conditional effects soon.   
+
+For now, lets explore some plots of the model and coefficients. First, the trace plots look well mixed and we can see an overview of the posterior distributions. 
+
+```{r Coleman trace plots}
+
+plot(Coleman_fit)
+
+```
+
+Looking at the probability of direction plots with the prior superimposed, we can see the decent sized sample produces a narrow posterior compared to the prior. We were open to effects in either direction, but the data dominates to produce consistently positive individual predictors. 
+
+```{r}
+
+plot(p_direction(Coleman_fit), 
+     priors = TRUE) # plot the priors
+
+```
+
+We can look at this further by plotting the distribution 95% HDI. We can see the 95% HDI clearly excludes 0 and absorption is the  partial predictor with less uncertainty. 
+
+```{r}
+
+plot(bayestestR::hdi(Coleman_fit))
+
+```
+
+Next, we can finally made sense of the interaction between theory of mind and absorption. 
+
+```{r Coleman basic conditional}
+conditional_effects(Coleman_fit)
+```
+
+For a bonus extra you were not expected to know about, [Kurz demonstrated](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/interactions.html) a slightly different way of plotting the continuous interaction. The key differences here are requesting the spaghetti plot and drawing from the posterior. Unlike solid bands for the default, this samples from the posterior and generates regression lines between mystical experiences and theory of mind for each level of the simple slopes for absorption. The slope gets ever so slightly weaker (flatter) at higher values of absorption. We then have some additional options to tidy things up and show the underlying data points.  
+
+```{r Coleman conditional fancy}
+Coleman_conditional <- conditional_effects(Coleman_fit,
+                    effects = "EQ_SUM:Absorption_SUM", 
+                    spaghetti = T, 
+                    ndraws = 150)
+
+plot(Coleman_conditional, 
+     plot = FALSE, 
+     cat_args = list(show.legend = F),
+     points = T,
+     point_args = c(alpha = 0.5, size = 1), 
+     mean = T)[[1]] + 
+  theme_classic() + 
+  labs(y = "Mystical Experiences", x = "Empathizing Quotient")
+```
+
+
+Finally, lets look at the posterior predictive check.
+
+```{r Coleman pp check}
+pp_check(Coleman_fit, 
+         ndraws = 100) # 100 draws from the model
+```
+
+The upward part of the curve is not too far off, but there is clearly something we are not capturing for the upper values of the outcome. This is probably another case of the model going beyond the limits of the data as the sum M scale has a maximum value of 160. We're telling the model to apply a normal distribution, so it will happily accept values towards 200 which is beyond the scale. For this example, we cannot really apply an ordinal model as the range of data is too big, but we could consider alternate distribution families.
