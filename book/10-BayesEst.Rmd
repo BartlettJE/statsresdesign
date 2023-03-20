@@ -913,11 +913,26 @@ The data set contains a range of variables used for the full model in the paper.
 
 7. `r hl("Mscale_SUM")` - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
 
-Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) as they were the main contributors, with the other variables as covariates.
+Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (`r hl("Absorption_SUM")`) and theory of mind (`r hl("EQ_SUM")`) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How are absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) related to mystical experiences (`r hl("Mscale_SUM")`) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Keep in mind they are partial effects since there are more predictors in the model, but these are the key parameters apart from the interaction. The interaction was not statistically significant, so it was not retained in the model or reported in the final table.   
 
-Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
+```{r Coleman descriptive table, echo = FALSE}
+
+knitr::kable(
+  tribble(~"Parameter", ~"Estimate", ~"95% Confidence Interval",
+          "Intercept", "108.64", "103.81 - 113.46", 
+          "Absorption", "0.42", "0.29 - 0.54",
+          "Theory of Mind", "0.22", "-0.11 - 0.55")
+)
+
+```
+
+Our research question is: How are absorption (`r hl("Absorption_SUM")`) and mentalizing (`r hl("EQ_SUM")`) related to mystical experiences (`r hl("Mscale_SUM")`) as an outcome? The interaction was of theoretical interest here, so focus on the interaction first. 
+
+::: {.try data-latex=""}
+Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least three models: one using the default priors, one using informative priors, and one removing the interaction term. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
+:::
 
 ```{r Coleman data, warning=FALSE, message=FALSE}
 
@@ -927,9 +942,64 @@ Coleman_data <- read_csv("data/Coleman_2019.csv") %>%
 
 ```
 
-::: {.try data-latex=""}
-From here, apply what you learnt in the first guided example to this new independent task. 
-:::
+- Is the coefficient for absorption positive or negative? `r mcq(opts = c(answer = "Positive", x = "Negative"))`
+
+- Is the coefficient for theory of mind positive or negative? `r mcq(opts = c(answer = "Positive", x = "Negative"))`
+
+```{r Coleman Q3, echo=FALSE, results='asis'}
+
+opts = c(x = "No, the 95% HDI of both coefficients contain 0.",
+         x = "The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.",
+         x = "The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.",
+         answer = "Yes, both individual predictors are positive and their 95% HDI excludes 0.")
+
+cat("- Can we be confident in the direction of the individual predictors?", longmcq(opts))
+```
+
+```{r Coleman Q4, echo=FALSE, results='asis'}
+
+opts = c(x = "There is no clear interaction.", 
+         answer = "For lower values of theory of mind, the slope becomes more positive.",
+         x = "For lower values of theory of mind, the slope becomes more negative.")
+
+cat("- How can you interpret the interaction?", longmcq(opts))
+```
+
+**Hint: ** You will need to look at the conditional effects plot and see how one predictor moderates the effect of the other predictor. 
+
+```{r Coleman Q5, echo=FALSE, results='asis'}
+
+opts = c(x = "The model with the interaction term clearly has the better fit.",
+         x = "The model without the interaction term clearly has the better fit.",
+         answer = "There is little difference between the two models, but we would retain the interaction for theoretical interest.")
+
+cat("- Comparing the models with and without the interaction term, which would you retain?", longmcq(opts))
+```
+
+```{r Coleman Q6, echo=FALSE, results='asis'}
+
+opts = c(x = "Yes, there is a qualitative difference in our conclusions and the parameters change substantially.",
+         answer = "No, there is almost no difference in the parameters and our conclusions do not change.")
+
+cat("- Are the results sensitive to the choice between default and user priors?", longmcq(opts))
+```
+
+`r hide("Explain these answers")`
+
+1. The partial effect of absorption is a positive predictor of mystical experiences. 
+
+2. The partial effect of theory of mind is a positive predictor of mystical experiences. 
+
+3. For both partial effects, they are positive and the 95% HDI clearly excludes zero. Particularly for absorption, we have little uncertainty and its a marginally stronger effect compared to theory of mind. 
+4. This is more of a complicated one and I would accept saying there is no clear interaction. Its difficult to interpret an interaction between two continuous predictors and you are relying on the conditional effects plot. The slope between mystical experiences and absorption is more positive for lower values of theory of mind, but the highest density intervals overlap particularly for higher values of absorption. 
+
+5. The key concept here is the interaction is of theoretical interest. There is little difference between the two models - at least by their $R^2$ estimates - but we are interested in the interaction and it had the slightly larger estimate. 
+
+6. We have a lot of data here for three predictors, so the choice of prior has very little impact. The posterior is entirely dominated by the data and we only get variation in the second or third decimal place. 
+
+`r unhide()`
+
+You can check your attempt to the solutions at [the bottom of the page](#Coleman-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
 
 ## Summary 
 
@@ -1164,7 +1234,7 @@ conditional_effects(x = Brandt_fit3,
                     categorical = TRUE)
 ```
 
-### Coleman et al. (2019)
+### Coleman et al. (2019) {#Coleman-solution}
 
 There will be some minor variation in the values of your output since it is based on semi-random numbers, particularly if your priors are different to below. The important thing is being internally consistent to your output and process. The conclusions and answers to the questions in the independent activity should be the same, but you can see the output below to check your answers against. 
 
@@ -1196,7 +1266,7 @@ For the intercept, we know the mystical experiences scale ranges from 40 to 160.
 
 For the coefficients, the variables are centered, so we can think about their unit change with the outcome. The largest predictor was 0.42 units and the largest side of the 95% confidence interval was 0.54. Therefore, we can set a prior over 0 for the peak to express smaller effects are more likely, but accept larger values in each direction with a SD of 1. 
 
-Finally, for sigma, we can use a relatively weak exponential prior with a change parameter of 1 since the estimate for the model SD was not reported in Coleman et al. We can plot all of these options below and piece them together with patchwork. 
+Finally, for sigma, the model SD was not reported in Coleman et al., so we will keep the default settings to avoid having too much influence. We can plot all of these options below and piece them together with patchwork. 
 
 ```{r Coleman plot priors, echo=FALSE}
 colours <- viridis::plasma(3, end = 0.9)
@@ -1223,7 +1293,7 @@ Intercept_plot <- prior %>%
   labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
   theme_classic()
 
-prior <- c(prior(exponential(1), class = "sigma"))
+prior <- c(prior(student_t(3, 0, 31.1), class = "sigma"))
 
 sigma_plot <- prior %>% 
   parse_dist() %>% 
@@ -1243,8 +1313,7 @@ We can then enter these values as our informed priors.
 ```{r Coleman set priors}
 
 Coleman_priors <- prior("normal(0, 1)", class = "b") + 
-  prior("normal(109, 17)", class = "Intercept") + 
-  prior("exponential(1)", class = "sigma") 
+  prior("normal(109, 17)", class = "Intercept")
 
 ```
 
@@ -1279,7 +1348,7 @@ summary(Coleman_fit)
 
 ```
 
-The population level effects are relatively consistent with our priors. The intercept is slightly higher at 120 and both individual coefficients are positive predictors of mystical experiences. For the partial effects, we expect higher mystical experiences with both higher values of theory of mind and absorption. They are both clearly positive predictors with the 95% HDI no where near zero. 
+The population level effects are relatively consistent with our priors. The intercept is slightly higher at 120 and both individual coefficients are positive predictors of mystical experiences. For the partial effects of each predictor, we expect higher mystical experiences with both higher values of theory of mind and absorption. They are both clearly positive predictors with the 95% HDI no where near zero. 
 
 For the interaction, this is always hard to interpret as a single coefficient. We will return to interpreting this when we plot the conditional effects soon.   
 
@@ -1300,27 +1369,29 @@ plot(p_direction(Coleman_fit),
 
 ```
 
-We can look at this further by plotting the distribution 95% HDI. We can see the 95% HDI clearly excludes 0 and absorption is the  partial predictor with less uncertainty. 
+We can look at this further by plotting the distribution 95% HDI. We can see the 95% HDI clearly excludes 0 and absorption is the partial predictor with less uncertainty. 
 
 ```{r}
 
-plot(bayestestR::hdi(Coleman_fit))
+plot(bayestestR::hdi(Coleman_fit)) # to avoid clashing with ggdist
 
 ```
 
-Next, we can finally made sense of the interaction between theory of mind and absorption. 
+Next, we can finally made sense of the interaction between theory of mind and absorption. When there are two continuous predictors and an interaction, we get three plots. We get the partial effect of each predictor in isolation, then we get the moderating effect of one predictor on the other, which is what we want to help interpret the interaction.
 
 ```{r Coleman basic conditional}
 conditional_effects(Coleman_fit)
 ```
 
+To focus on the interaction, since I included absorption in the model first and theory of mind second, we get the relationship between mystical experiences and absorption for different values of theory of mind. This is known as simple slopes analysis where you hold the effect of your moderator constant at different values: 1 SD below the mean, the mean, and 1 SD above the mean. This shows there is a some overlap in the relationships, but the relationship is stronger at lower values of theory of mind. The slope is more positive when theory of mind is 1 SD below the mean than 1 SD above the mean. 
+
 For a bonus extra you were not expected to know about, [Kurz demonstrated](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/interactions.html) a slightly different way of plotting the continuous interaction. The key differences here are requesting the spaghetti plot and drawing from the posterior. Unlike solid bands for the default, this samples from the posterior and generates regression lines between mystical experiences and theory of mind for each level of the simple slopes for absorption. The slope gets ever so slightly weaker (flatter) at higher values of absorption. We then have some additional options to tidy things up and show the underlying data points.  
 
 ```{r Coleman conditional fancy}
 Coleman_conditional <- conditional_effects(Coleman_fit,
-                    effects = "EQ_SUM:Absorption_SUM", 
-                    spaghetti = T, 
-                    ndraws = 150)
+                    effects = "Absorption_SUM:EQ_SUM", # Restrict to 
+                    spaghetti = T, # Plot individual draws instead of point estimates
+                    ndraws = 150) # How many draws from the posterior? 
 
 plot(Coleman_conditional, 
      plot = FALSE, 
@@ -1329,15 +1400,103 @@ plot(Coleman_conditional,
      point_args = c(alpha = 0.5, size = 1), 
      mean = T)[[1]] + 
   theme_classic() + 
-  labs(y = "Mystical Experiences", x = "Empathizing Quotient")
+  labs(y = "Mystical Experiences", x = "Absorption")
 ```
 
+Step 5. Check your model against the data
 
-Finally, lets look at the posterior predictive check.
+Our model diagnostics all looked fine. R-hat values were all 1, effective sample size values were in the thousands, and the trace plots looked well mixed. Finally, lets look at the posterior predictive check.
 
 ```{r Coleman pp check}
 pp_check(Coleman_fit, 
          ndraws = 100) # 100 draws from the model
 ```
 
-The upward part of the curve is not too far off, but there is clearly something we are not capturing for the upper values of the outcome. This is probably another case of the model going beyond the limits of the data as the sum M scale has a maximum value of 160. We're telling the model to apply a normal distribution, so it will happily accept values towards 200 which is beyond the scale. For this example, we cannot really apply an ordinal model as the range of data is too big, but we could consider alternate distribution families.
+The upward part of the curve is not too far off, but there is clearly something we are not capturing for the upper values of the outcome. This is probably another case of the model going beyond the limits of the data as the sum M scale has a maximum value of 160. We're telling the model to apply a normal distribution, so it will happily accept values towards 200 which is beyond the scale. Its good enough for our purposes here, but you could explore whether assuming a different distribution family fits the outcome better. 
+
+##### Model fit and prior sensitivity
+
+The final thing we will check is the model fit and how sensitive the results were to our choice of priors. We can explore the impact of removing the interaction to demonstrate the process, but note in this study it was of theoretical interest to include and focus on the interaction. 
+
+```{r Coleman no interaction model, message=FALSE, eval = FALSE}
+# Update model to a new formula
+Coleman_fit2 <- update(Coleman_fit, # Original brms model object 
+                     formula. = ~ . - Absorption_SUM:EQ_SUM) # tilda dot for the original formula, minus the interaction
+
+```
+
+```{r Coleman save model 2, eval= FALSE, echo=FALSE}
+write_rds(Coleman_fit2, "Models/Coleman_model2.rds")
+```
+
+```{r Coleman load model 2, echo=FALSE}
+Coleman_fit2 <- read_rds("Models/Coleman_model2.rds")
+```
+
+First, we can calculate the $R^2$ estimate for the proportion of variance in the outcome that the predictors explain.
+
+```{r Coleman R2}
+#R2 for first model object with interaction
+bayes_R2(Coleman_fit)
+
+```
+
+We can also compare the two models side by side. The model with the interaction has the highest $R^2$ estimate, but there is very little difference in how much variance they explain. We will stick with the interaction model since it was of theoretical interest. 
+
+```{r Coleman R2 comparison}
+
+R2_model1 <- as.data.frame(bayes_R2(Coleman_fit))
+R2_model2 <- as.data.frame(bayes_R2(Coleman_fit2))
+
+R2_table <- bind_rows(R2_model1, R2_model2)
+rownames(R2_table) <- c("Model with interaction", "Model without interaction")
+
+knitr::kable(R2_table, 
+             digits = 2,
+             row.names = TRUE,
+             col.names = c("R2 Estimate", "Estimated Error", "Lower 95% HDI", "Upper 95% HDI"))
+
+```
+
+To check the sensitivity of the results to different priors, we will fit one final model removing the user priors.
+
+```{r Coleman model 3, eval=FALSE, warning=FALSE, message=FALSE}
+
+Coleman_fit3 <- brm(
+  formula = Coleman_model,
+  data = Coleman_data,
+  family = gaussian(),
+  seed = 200323,
+  file = "Models/Coleman_model3"
+)
+
+```
+
+```{r read Coleman model 3, echo=FALSE}
+Coleman_fit3 <- read_rds("Models/Coleman_model3.rds")
+```
+
+Using our informed priors, we get very similar results. The sample size is relatively large for three predictors (including the interaction), so the data pretty much overwhelm all sensible choices for the priors.  
+
+```{r Coleman model 3 summary}
+
+summary(Coleman_fit3)
+
+```
+
+To compare the models side by side, we can summarise the key parameters. As you can see, the only differences are in the second or third decimal place. 
+
+```{r Coleman compare models}
+model1 <- describe_posterior(Coleman_fit) %>% 
+  dplyr::mutate(Model = "User prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+model2 <- describe_posterior(Coleman_fit3) %>% 
+  dplyr::mutate(Model = "Default prior") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+bind_rows(model1, model2) %>% 
+  arrange(desc(Parameter))
+```
+
+
