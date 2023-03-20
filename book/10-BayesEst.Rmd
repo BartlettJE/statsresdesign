@@ -27,6 +27,7 @@ library(tidybayes) # helper functions for combining plotting and tidy data from 
 library(tidyverse)
 library(see) # helper functions for plotting objects from bayestestR
 library(emmeans) # Handy function for calculating (marginal) effect sizes
+library(patchwork) # Combine multiple plots
 
 ```
 
@@ -560,12 +561,13 @@ You can check your attempt to the solutions at [the bottom of the page](#Brandt-
 
 ### Guided example (Heino et al., 2018)
 
+For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
+
+In this section, we will work through their multiple regression model following the Bayesian modelling steps. There will be less explanation than the simple linear regression section as we are following the same processes, but I will highlight if there is anything new or important to consider when we have two or more predictors.  
+
 #### Identify data
 
-- Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
-
-For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
-They randomised participants into two groups (`r hl("intervention")`) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (`r hl("value")`) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; `r hl("time")`).
+@heino_bayesian_2018 randomised participants into two groups (`r hl("intervention")`) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (`r hl("value")`) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; `r hl("time")`).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
 
@@ -581,7 +583,7 @@ Heino_data <- read_csv("data/Heino-2018.csv") %>%
 ```
 
 ::: {.info data-latex=""}
-Part of their tutorial discusses a bigger multilevel model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation.
+Part of their tutorial discusses a bigger multi-level model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation. We also convert intervention and time to factors so they work nicely in plotting options later. 
 :::
 
 #### Define a descriptive model
@@ -600,7 +602,7 @@ Heino_model <- bf(value ~ 1 + time * intervention + (1 | ID))
 
 #### Specify prior probability of parameters
 
-Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma. 
+Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations since we now have the group-level standard deviation for the random effect and sigma for the distribution family since we are assuming the outcome is normal. 
 
 ```{r Heino prior options}
 
@@ -610,7 +612,7 @@ get_prior(Heino_model, data = Heino_data)
 
 Note, you get a warning about missing data but since its a multi-level model, we just have fewer observations in some conditions instead of the whole case being removed. 
 
-This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors to only allow positive values. 
+This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors. 
 
 ```{r Heino priors}
 
@@ -620,11 +622,54 @@ Heino_priors <- prior(normal(0, 5), class = "b") +
 
 ```
 
+```{r Heino plot priors, echo=FALSE}
+
+prior <- c(prior(normal(0, 5), class = "b"))
+
+colours <- viridis::plasma(3, end = 0.9)
+
+b_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[1]) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic()
+
+prior <- c(prior(cauchy(0, 1), class = "sd"))
+
+sd_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[2])+
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic() + 
+  coord_cartesian(xlim = c(-15, 15))
+
+prior <- c(prior(cauchy(0, 2), class = "sigma"))
+
+sigma_plot <- prior %>% 
+  parse_dist() %>% 
+  ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
+  stat_slab(normalize = "panels") +
+  scale_fill_manual(values = colours[3]) +
+  guides(fill = "none") +
+  labs(x = "Value", y = "Density", title = paste0(prior$class, ": ", prior$prior)) +
+  theme_classic() + 
+  coord_cartesian(xlim = c(-30, 30))
+
+b_plot + sd_plot + sigma_plot + plot_layout(ncol = 2)
+
+```
+
 #### Update prior to posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
-As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. 
+As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. Remember, we save all the models using the `file` argument, so its easier to load them later. If you update the model, you must use the `file_refit` argument or it will not change when you use the same file name.  
 
 ```{r Heino fit, eval=FALSE, message=FALSE, warning=FALSE}
 
@@ -655,32 +700,42 @@ summary(Heino_fit)
 
 The model summary is very similar to the examples in the simple linear regression section, but we also have a new section for group-level effects since we added a random intercept for participants.
 
-Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
+Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects, but the sample size is quite small to learn anything meaningful from two groups. 
 
-When it comes to comparing models and building multiple regression models, there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain.
+In more complicated models like this, plotting is going to be your best friend for understanding what is going on. First up, we can check the posteriors and trace plots, although we will work through model checking in the next section.  
 
-```{r Heino R2}
+```{r Heino trace plot}
 
-bayes_R2(Heino_fit)
+plot(Heino_fit)
 
 ```
 
-This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on. 
+The posteriors are quite wide and spread over 0 for the coefficients. The trace plots do not suggest there are cause for concern around convergence in the model. 
 
-```{r Heino plots}
+The next key plot is seeing the probability of direction and with the priors superimposed. 
 
-plot(Heino_fit)
+```{r Heino pd plot}
 
 plot(p_direction(Heino_fit), 
      priors = TRUE) # plot the priors
 
-plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
+```
+
+On this plot, you can see how wide the priors were. They are almost flat to cover coefficients from -10 to 10, with the posterior distributions peaking around 0. These plots also show how there is not much we can conclude from the results. 
+
+Finally, we can take a closer look at the 95% HDI of the posterior distributions. 
+
+```{r Heino HDI plot}
+
+plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash with ggdist
 
 ```
 
-Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
+Now we zoom in a little more without the scale of the wide priors and there is further indication the mass of the coefficient posteriors are centered over 0. We would need more data to make firm conclusions about the effectiveness of the intervention. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra since its not included in Heino et al., you can also use the `r pkg("emmeans")` package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
+##### Calculating and plotting conditional effects
+
+As a bonus extra since its not included in Heino et al., you can also use the `r pkg("emmeans")` package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 ```{r Heino marginal}
 
@@ -690,9 +745,9 @@ As a bonus extra since its not included in Heino et al., you can also use the `r
 
 ```
 
-This provides the median value of the posterior for the combination of time and intervention. Here, we can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping. 
+This provides the median value of the posterior for the combination of time and intervention. We can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping. 
 
-Depending on how you want to express the marginal means, you can also use the `r pkg("emmeans")` object to calculate contrasts, expressing the effects as mean differences in the posterior for each group/condition.  
+Depending on how you want to express the marginal means, you can also use the `r pkg("emmeans")` object to calculate contrasts, expressing the effects as differences in the median posterior value for each group/condition. Just keep in mind which comparisons would best address your research question and hypothesis. We entered the difference in time for each intervention, but you might be interested in the difference in intervention for each time.
 
 ```{r Heino contrasts}
 
@@ -700,27 +755,85 @@ contrast(Heino_means)
 
 ```
 
-```{r Heino conditional effects}
+Finally, we can plot the conditional effects which is normally a good idea to help your reader understand your results. In this object, I have used the `effects` argument to specify which population level effect I want plotting. If you omit the `effects` argument, you would receive three plots for this example: one for the partial effect of each predictor and one for the interaction. 
 
+```{r Heino conditional effects standard}
+
+conditional_effects(Heino_fit, 
+                    effects = "time:intervention")
+
+```
+
+Like the simple linear regression example, this is useful for your own understanding, but it might not be quite appropriate for inserting immediately into a report. Once you save the plot as an object, you can add `r pkg("ggplot")` layers to make it easier for your reader to understand. For example, here I have tidied up the axis names and labels, changed the scale to reflect the range of the outcome, and added a colour scheme to differentiate the two intervention groups.
+
+```{r Heino conditional effects modified}
+
+# Save initial plot of the interaction
 conditional_plot <- conditional_effects(Heino_fit, 
                     effects = "time:intervention")
 
+# Call the plot and stop legend being included to prevent duplication later
 plot(conditional_plot, 
      plot = FALSE, 
-     cat_args = list(show.legend = F))[[1]] + 
+     cat_args = list(show.legend = F))[[1]] + # No idea why, but doesn't work without the subsetting
   theme_classic() + 
   scale_y_continuous(limits = c(1, 5), breaks = seq(1, 5, 1)) + 
   scale_x_discrete(labels = c("Baseline", "Six weeks")) + 
   labs(x = "Time", y = "Autonomous Motivation") + 
   scale_color_viridis_d(option = "D", begin = 0.1, end = 0.7, 
-                        name = "Group", labels = c("Control", "Intervention"))
+                        name = "Group", labels = c("Control", "Intervention")) # Add neater legend labels
 
 ```
 
+##### Model fit and comparison
+
+Depending on your research question and theoretical understanding of the variables you are working with, you might be interested in comparing different models and assessing their fit. It is not something Heino et al. included, but you could compare their model to one without the interaction (lets pretend that is theoretically justified). Instead of refitting a whole new model, we can update the model to a change in formula. All other settings like the priors remain the same. 
+
+```{r Heino no interaction model, message=FALSE, eval = FALSE}
+# Update model to a new formula
+Heino_fit2 <- update(Heino_fit, # Original brms model object 
+                     formula. = ~ . - time:intervention) # tilda dot for the original formula, minus the interaction
+
+```
+
+```{r Heino save model 2, eval= FALSE, echo=FALSE}
+write_rds(Heino_fit2, "Models/Heino_model2.rds")
+```
+
+```{r Heino load model 2, echo=FALSE}
+Heino_fit2 <- read_rds("Models/Heino_model2.rds")
+```
+
+First, we can calculate the $R^2$ estimate for the proportion of variance in your outcome that your predictors explain. `r pkg("brms")` has a specific function to get the model $R^2$ and its 95% credible interval. 
+
+```{r Heino R2}
+#R2 for first model object with interaction
+bayes_R2(Heino_fit)
+
+```
+
+We can also compare the two models side by side. The second model actually has a slightly higher $R^2$ estimate, but there is very little to choose between the two models. 
+
+```{r Heino R2 comparison}
+
+R2_model1 <- as.data.frame(bayes_R2(Heino_fit))
+R2_model2 <- as.data.frame(bayes_R2(Heino_fit2))
+
+R2_table <- bind_rows(R2_model1, R2_model2)
+rownames(R2_table) <- c("Model with interaction", "Model without interaction")
+
+knitr::kable(R2_table, 
+             digits = 2,
+             row.names = TRUE,
+             col.names = c("R2 Estimate", "Estimated Error", "Lower 95% HDI", "Upper 95% HDI"))
+
+```
 
 #### Model check
 
-As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
+In previous output, there were no immediate causes of concern. Trace plots showed good mixing of the chains, R-hat values were no higher than 1.01, and effective sample size values were close to the thousands or higher.  
+
+As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. The model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5), but it is good enough with that caveat in mind.
 
 ```{r Heino pp check}
 pp_check(Heino_fit,
@@ -728,8 +841,53 @@ pp_check(Heino_fit,
 ```
 
 ::: {.try data-latex=""}
-If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data. 
+If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data when you do not average over the different situations. 
 :::
+
+##### Check model sensitivity to different priors
+
+The final thing we will check for this model is how sensitive it is to the choice of prior. For this example, we will compare the model output under the default package priors and the user defined priors from Heino et al.
+
+In the code below, we have omitted the prior argument, so we are fitting the exact same model as before but using the default package priors. This time we can't just update the model, we need to refit it. 
+
+```{r Heino model 3, eval=FALSE, message=FALSE, warning=FALSE}
+Heino_fit3 <- brm(
+  formula = Heino_model,
+  data = Heino_data,
+  family = gaussian(),
+  seed = 2108,
+  file = "Models/Heino_model3"
+)
+```
+
+```{r load Heino 3, echo=FALSE}
+
+Heino_fit3 <- read_rds("Models/Heino_model3.rds")
+
+```
+
+If we run the `r hl(summary())` function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+
+```{r summarise Heino 3}
+summary(Heino_fit3)
+```
+
+To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior. 
+
+```{r Heino summary comparison, echo=FALSE, warning=FALSE}
+
+model1 <- describe_posterior(Heino_fit) %>% 
+  dplyr::mutate(Model = "User priors") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+model2 <- describe_posterior(Heino_fit3) %>% 
+  dplyr::mutate(Model = "Default priors") %>% 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+
+dplyr::bind_rows(model1, model2) %>% 
+  arrange(Parameter)
+
+```
 
 ### Independent activity (Coleman et al., 2019)
 
