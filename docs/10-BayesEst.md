@@ -41,7 +41,7 @@ As a reminder, the aim of the study was to investigate whether delivering a shor
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
-For this example, we will focus on the hire rating (variable <code><span><span class='st'>"Hire_Rating"</span></span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span><span class='st'>"CONDITION"</span></span></code>). 
+For this example, we will focus on the hire rating (variable <code><span class='st'>"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class='st'>"CONDITION"</span></code>). 
 
 Remember the key steps of Bayesian modelling from lecture 10 [@heino_bayesian_2018]:
 
@@ -67,7 +67,7 @@ Schroeder_data <- read_csv("data/Schroeder_hiring.csv") %>%
 
 #### Define a descriptive model
 
-The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span><span class='st'>"CONDITION"</span></span></code> as a single categorical predictor of <code><span><span class='st'>"Hire_Rating"</span></span></code> as our outcome. You can enter this directly in the <code><span><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></span></code> function below, but its normally a good idea to clearly outline each component.  
+The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
 
 
 ```r
@@ -242,7 +242,7 @@ Schroeder_fit <- brm(
 When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the brm function, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objects, remember to refit them if you change anything like the priors, model, or data. If the file already exists though, it will not be overwritten unless you use the `file_refit` argument. 
 :::
 
-If you save the model as a .rds file, you can load them again using the <code><span><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>readr</code> in the tidyverse. 
+If you save the model as a .rds file, you can load them again using the <code><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>readr</code> in the tidyverse. 
 
 
 ```r
@@ -361,7 +361,7 @@ We then have the median coefficient of 1.57 with a 95% credible interval between
 
 For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should in the thousands, or at the very least in the hundreds [@flores_beforeafter_2022] for both the bulk and tail. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
-For a tidier summary of the parameters, we can also use the handy <code><span><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>bayestestR</code>. 
+For a tidier summary of the parameters, we can also use the handy <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>bayestestR</code>. 
 
 
 ```r
@@ -394,12 +394,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.006929 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.060903 </td>
-   <td style="text-align:right;"> 3.907041 </td>
+   <td style="text-align:right;"> 2.0932902 </td>
+   <td style="text-align:right;"> 3.942043 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9999234 </td>
    <td style="text-align:right;"> 3382.849 </td>
@@ -409,12 +409,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_CONDITION1 </td>
    <td style="text-align:right;"> 1.567213 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.460239 </td>
-   <td style="text-align:right;"> 2.658799 </td>
+   <td style="text-align:right;"> 0.4562219 </td>
+   <td style="text-align:right;"> 2.657129 </td>
    <td style="text-align:right;"> 0.99625 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9999724 </td>
    <td style="text-align:right;"> 3426.619 </td>
@@ -441,7 +441,7 @@ plot(Schroeder_fit)
 
 For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, `brms` uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues. 
 
-These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package [@Makowski2019] which you can use on their own, or wrap them in the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function after loading the <code class='package'>see</code> package [@Luedecke2021]. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
+These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package [@Makowski2019] which you can use on their own, or wrap them in the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code> function after loading the <code class='package'>see</code> package [@Luedecke2021]. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
 
 
 ```r
@@ -457,7 +457,7 @@ For this to work, you must specify priors in `brms`. It does not work with the p
 
 We can see the pretty wide prior in blue, then the posterior. Almost all of the posterior distribution is above zero to show we're pretty confident that audio is associated with higher hire ratings than transcript. 
 
-The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
+The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
 
 
 ```r
@@ -512,7 +512,7 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ```
 
 ::: {.info data-latex=""}
-We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span><span class='st'>"CONDITION"</span></span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
+We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class='st'>"CONDITION"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
 :::
 
 The key part of the output is the evidence ratio (`Evid.Ratio`), but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 12.5 here. 
@@ -557,7 +557,7 @@ emmeans(Schroeder_fit, # add the model object
 ## HPD interval probability: 0.95
 ```
 
-This provides the median and 95% HDI values for the posterior for each group. The <code class='package'>brms</code> package also comes with a function called <code><span><span class='fu'>conditional_effects</span><span class='op'>(</span><span class='op'>)</span></span></code> which you can use to plot the conditional effects. 
+This provides the median and 95% HDI values for the posterior for each group. The <code class='package'>brms</code> package also comes with a function called <code><span class='fu'>conditional_effects</span><span class='op'>(</span><span class='op'>)</span></code> which you can use to plot the conditional effects. 
 
 
 ```r
@@ -623,7 +623,7 @@ Schroeder_fit2 <- brm(
 
 
 
-If we run the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+If we run the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
 
 
 ```r
@@ -670,16 +670,16 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.01 </td>
-   <td style="text-align:right;"> 2.06 </td>
-   <td style="text-align:right;"> 3.91 </td>
+   <td style="text-align:right;"> 2.09 </td>
+   <td style="text-align:right;"> 3.94 </td>
    <td style="text-align:right;"> 1.00 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 2.90 </td>
-   <td style="text-align:right;"> 1.91 </td>
-   <td style="text-align:right;"> 3.94 </td>
+   <td style="text-align:right;"> 1.89 </td>
+   <td style="text-align:right;"> 3.93 </td>
    <td style="text-align:right;"> 1.00 </td>
   </tr>
   <tr>
@@ -694,8 +694,8 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_CONDITION1 </td>
    <td style="text-align:right;"> 1.84 </td>
-   <td style="text-align:right;"> 0.49 </td>
-   <td style="text-align:right;"> 3.37 </td>
+   <td style="text-align:right;"> 0.33 </td>
+   <td style="text-align:right;"> 3.24 </td>
    <td style="text-align:right;"> 0.99 </td>
   </tr>
 </tbody>
@@ -707,7 +707,7 @@ For an independent activity, we will use data from the study by [@brandt_does_20
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (<code><span><span class='st'>"ExpCond"</span></span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span><span class='st'>"WellLitSca"</span></span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span class='st'>"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
@@ -751,14 +751,14 @@ Brandt_data <- Brandt_data %>%
 
 - Is the coefficient positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
 
-- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_RTDSTDKCAP'><label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
+- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_PXQFXVNDSL'><label><input type="radio" autocomplete="off" name="radio_PXQFXVNDSL" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_PXQFXVNDSL" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
 
-- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_EIQWTQPDQS'><label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
+- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_WDRXDBFWOA'><label><input type="radio" autocomplete="off" name="radio_WDRXDBFWOA" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_WDRXDBFWOA" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
 
 
-- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_GCIABOLLHZ'><label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_MGKZULRZVB'><label><input type="radio" autocomplete="off" name="radio_MGKZULRZVB" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_MGKZULRZVB" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
 
-- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_YIEBQNHUMY'><label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
+- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_RYRAENSOYZ'><label><input type="radio" autocomplete="off" name="radio_RYRAENSOYZ" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_RYRAENSOYZ" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
 
 
 <div class='webex-solution'><button>Explain these answers</button>
@@ -790,7 +790,7 @@ In this section, we will work through their multiple regression model following 
 
 #### Identify data
 
-@heino_bayesian_2018 randomised participants into two groups (<code><span><span class='st'>"intervention"</span></span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span><span class='st'>"time"</span></span></code>).
+@heino_bayesian_2018 randomised participants into two groups (<code><span class='st'>"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class='st'>"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class='st'>"time"</span></code>).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
 
@@ -810,7 +810,7 @@ Part of their tutorial discusses a bigger multi-level model considering differen
 
 #### Define a descriptive model
 
-I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) and we want to look at the interaction between <code><span><span class='st'>"intervention"</span></span></code> and <code><span><span class='st'>"time"</span></span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
+I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span class='st'>"value"</span></code>) and we want to look at the interaction between <code><span class='st'>"intervention"</span></code> and <code><span class='st'>"time"</span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
 ::: {.info data-latex=""}
 By default, R includes a fixed intercept (the `1 +` part) in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.
@@ -1253,7 +1253,7 @@ Heino_fit3 <- brm(
 
 
 
-If we run the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+If we run the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
 
 
 ```r
@@ -1291,12 +1291,6 @@ summary(Heino_fit3)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior. 
 
-
-```
-## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.
-## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.
-```
-
 <table>
  <thead>
   <tr>
@@ -1319,7 +1313,7 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> Default priors </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.68 </td>
-   <td style="text-align:right;"> 3.28 </td>
+   <td style="text-align:right;"> 3.27 </td>
    <td style="text-align:right;"> 4.08 </td>
   </tr>
   <tr>
@@ -1333,7 +1327,7 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> Default priors </td>
    <td style="text-align:left;"> b_intervention1 </td>
    <td style="text-align:right;"> -0.07 </td>
-   <td style="text-align:right;"> -0.57 </td>
+   <td style="text-align:right;"> -0.58 </td>
    <td style="text-align:right;"> 0.46 </td>
   </tr>
   <tr>
@@ -1341,28 +1335,28 @@ To make it easier to compare, we can isolate the key information from each model
    <td style="text-align:left;"> b_time1 </td>
    <td style="text-align:right;"> 0.09 </td>
    <td style="text-align:right;"> -0.19 </td>
-   <td style="text-align:right;"> 0.39 </td>
+   <td style="text-align:right;"> 0.38 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default priors </td>
    <td style="text-align:left;"> b_time1 </td>
    <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.20 </td>
-   <td style="text-align:right;"> 0.38 </td>
+   <td style="text-align:right;"> -0.19 </td>
+   <td style="text-align:right;"> 0.39 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User priors </td>
    <td style="text-align:left;"> b_time1:intervention1 </td>
    <td style="text-align:right;"> 0.09 </td>
    <td style="text-align:right;"> -0.28 </td>
-   <td style="text-align:right;"> 0.42 </td>
+   <td style="text-align:right;"> 0.43 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default priors </td>
    <td style="text-align:left;"> b_time1:intervention1 </td>
    <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.28 </td>
-   <td style="text-align:right;"> 0.45 </td>
+   <td style="text-align:right;"> -0.29 </td>
+   <td style="text-align:right;"> 0.44 </td>
   </tr>
 </tbody>
 </table>
@@ -1373,43 +1367,132 @@ For an independent activity, we will use data from the study by @coleman_absorpt
 
 The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are: 
 
-1. <code><span><span class='st'>"Age"</span></span></code> - Measured in years
+1. <code><span class='st'>"Age"</span></code> - Measured in years
 
-2. <code><span><span class='st'>"Gender"</span></span></code> - 0 = male; 1 = female
+2. <code><span class='st'>"Gender"</span></code> - 0 = male; 1 = female
 
-3. <code><span><span class='st'>"Week_med"</span></span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
+3. <code><span class='st'>"Week_med"</span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
 
-4. <code><span><span class='st'>"Time_session"</span></span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
+4. <code><span class='st'>"Time_session"</span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
 
-5. <code><span><span class='st'>"Absorption_SUM"</span></span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
+5. <code><span class='st'>"Absorption_SUM"</span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
 
-6. <code><span><span class='st'>"EQ_SUM"</span></span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
+6. <code><span class='st'>"EQ_SUM"</span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
 
-7. <code><span><span class='st'>"Mscale_SUM"</span></span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
+7. <code><span class='st'>"Mscale_SUM"</span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
 
-Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) as they were the main contributors, with the other variables as covariates.
+Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and theory of mind (<code><span class='st'>"EQ_SUM"</span></code>) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How are absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) related to mystical experiences (<code><span><span class='st'>"Mscale_SUM"</span></span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Keep in mind they are partial effects since there are more predictors in the model, but these are the key parameters apart from the interaction. The interaction was not statistically significant, so it was not retained in the model or reported in the final table.   
 
-Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:left;"> Estimate </th>
+   <th style="text-align:left;"> 95% Confidence Interval </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:left;"> 108.64 </td>
+   <td style="text-align:left;"> 103.81 - 113.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Absorption </td>
+   <td style="text-align:left;"> 0.42 </td>
+   <td style="text-align:left;"> 0.29 - 0.54 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Theory of Mind </td>
+   <td style="text-align:left;"> 0.22 </td>
+   <td style="text-align:left;"> -0.11 - 0.55 </td>
+  </tr>
+</tbody>
+</table>
 
-
-```r
-Coleman_data <- read_csv("data/Coleman_2019.csv")
-```
+Our research question is: How are absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) related to mystical experiences (<code><span class='st'>"Mscale_SUM"</span></code>) as an outcome? The interaction was of theoretical interest here, so focus on the interaction first. 
 
 ::: {.try data-latex=""}
-From here, apply what you learnt in the first guided example to this new independent task. 
+Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least three models: one using the default priors, one using informative priors, and one removing the interaction term. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
 :::
 
 
 ```r
-Coleman_model <- NULL
+Coleman_data <- read_csv("data/Coleman_2019.csv") %>% 
+  mutate(Absorption_SUM = Absorption_SUM - mean(Absorption_SUM), # Mean center the predictors
+         EQ_SUM = EQ_SUM - mean(EQ_SUM))
 ```
+
+- Is the coefficient for absorption positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
+
+- Is the coefficient for theory of mind positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
+
+- Can we be confident in the direction of the individual predictors? <div class='webex-radiogroup' id='radio_TIBGYNURLC'><label><input type="radio" autocomplete="off" name="radio_TIBGYNURLC" value="x"></input> <span>No, the 95% HDI of both coefficients contain 0.</span></label><label><input type="radio" autocomplete="off" name="radio_TIBGYNURLC" value="x"></input> <span>The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_TIBGYNURLC" value="x"></input> <span>The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_TIBGYNURLC" value="answer"></input> <span>Yes, both individual predictors are positive and their 95% HDI excludes 0.</span></label></div>
+
+- How can you interpret the interaction? <div class='webex-radiogroup' id='radio_NSZKJQJAHR'><label><input type="radio" autocomplete="off" name="radio_NSZKJQJAHR" value="x"></input> <span>There is no clear interaction.</span></label><label><input type="radio" autocomplete="off" name="radio_NSZKJQJAHR" value="answer"></input> <span>For lower values of theory of mind, the slope becomes more positive.</span></label><label><input type="radio" autocomplete="off" name="radio_NSZKJQJAHR" value="x"></input> <span>For lower values of theory of mind, the slope becomes more negative.</span></label></div>
+
+**Hint: ** You will need to look at the conditional effects plot and see how one predictor moderates the effect of the other predictor. 
+
+- Comparing the models with and without the interaction term, which would you retain? <div class='webex-radiogroup' id='radio_ZVLCMQBMLS'><label><input type="radio" autocomplete="off" name="radio_ZVLCMQBMLS" value="x"></input> <span>The model with the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_ZVLCMQBMLS" value="x"></input> <span>The model without the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_ZVLCMQBMLS" value="answer"></input> <span>There is little difference between the two models, but we would retain the interaction for theoretical interest.</span></label></div>
+
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_YJQYRWRQXD'><label><input type="radio" autocomplete="off" name="radio_YJQYRWRQXD" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label><label><input type="radio" autocomplete="off" name="radio_YJQYRWRQXD" value="answer"></input> <span>No, there is almost no difference in the parameters and our conclusions do not change.</span></label></div>
+
+
+<div class='webex-solution'><button>Explain these answers</button>
+
+
+1. The partial effect of absorption is a positive predictor of mystical experiences. 
+
+2. The partial effect of theory of mind is a positive predictor of mystical experiences. 
+
+3. For both partial effects, they are positive and the 95% HDI clearly excludes zero. Particularly for absorption, we have little uncertainty and its a marginally stronger effect compared to theory of mind. 
+4. This is more of a complicated one and I would accept saying there is no clear interaction. Its difficult to interpret an interaction between two continuous predictors and you are relying on the conditional effects plot. The slope between mystical experiences and absorption is more positive for lower values of theory of mind, but the highest density intervals overlap particularly for higher values of absorption. 
+
+5. The key concept here is the interaction is of theoretical interest. There is little difference between the two models - at least by their $R^2$ estimates - but we are interested in the interaction and it had the slightly larger estimate. 
+
+6. We have a lot of data here for three predictors, so the choice of prior has very little impact. The posterior is entirely dominated by the data and we only get variation in the second or third decimal place. 
+
+
+</div>
+
+
+You can check your attempt to the solutions at [the bottom of the page](#Coleman-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
 
 ## Summary 
 
+In this chapter, you learnt about the Bayesian modelling process. This works through 1) identifying data, 2) defining a descriptive model, 3) specifying prior probability distributions over your parameters, 4) updating the priors to the posterior probability distributions, and 5) model checking. This is the most flexible approach to data analysis as you have control over your outcome, predictors, and distribution family. It also scales well to work from single predictors all the way to complex multi-level models.  
+
+Modelling is where Bayesian statistics is most powerful and encourages a more thoughtful approach to data analysis. Just keep in mind, it can still be done mindlessly and it is no silver bullet to problems with data analysis in psychology. For me though, the process of setting priors, model checking, and exploring uncertainty reinforces good thoughtful habits. 
+
 ## Taking this further
+
+The content in this chapter scales well to different use cases, so hopefully you can apply what you learnt to different types of outcome and predictors. For some suggested reading on where to expand your knowledge on these techniques, see the following list of resources. 
+
+**Reporting guidelines**
+
+- @van_de_schoot_bayesian_2021 provide a primer on Bayesian modelling, but they also outline reporting guidelines on what information to check and include.
+
+- @kruschke_bayesian_2021 just focuses on reporting guidelines for Bayesian models. 
+
+**Textbooks**
+
+- @kruschke_doing_2015 walks through the logic and statistics behind Bayesian models. It does not use the <code class='package'>brms</code> package, so you might like to refer to [the translation by Kurz](https://bookdown.org/content/3686/).
+
+- @mcelreath_statistical_2020 is my personal favourite textbook in outlining the Bayesian approach to modelling. He uses his own teaching-focused R package to work through the modelling mechanisms and he has [a great YouTube series](https://www.youtube.com/playlist?list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN) where he posts his supporting lectures every year.
+
+**Additional distribution families**
+
+- @burkner_ordinal_2019 demonstrates ordinal regression models when you have ordinal data like individual Likert responses. 
+
+- [Heiss (2021)](https://www.andrewheiss.com/blog/2021/11/08/beta-regression-guide/) demonstrates beta regression which can be used to model proportion data. 
+
+- @winter_poisson_2021 demonstrates Poisson regression to model count data using <code class='package'>brms</code>. 
+
+**Comparing Bayesian and frequentist modelling**
+
+- @flores_beforeafter_2022 compares the results you receive from Bayesian and frequentist multi-level models
 
 ## Independent activity solutions 
 
@@ -1631,66 +1714,59 @@ Our model diagnostics all looked respectable. Rhat values were all 1 and ESS wer
 ```r
 model1 <- describe_posterior(Brandt_fit1) %>% 
   dplyr::mutate(Model = "User prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 model2 <- describe_posterior(Brandt_fit2) %>% 
   dplyr::mutate(Model = "Default prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 bind_rows(model1, model2) %>% 
-  arrange(desc(Parameter))
+  arrange(desc(Parameter)) %>% 
+  knitr::kable(digits = 2,
+               col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI"))
 ```
-
-<div class="kable-table">
 
 <table>
  <thead>
   <tr>
    <th style="text-align:left;"> Model </th>
    <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median </th>
-   <th style="text-align:right;"> CI_low </th>
-   <th style="text-align:right;"> CI_high </th>
-   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> Median Estimate </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
   </tr>
  </thead>
 <tbody>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 5.1593417 </td>
-   <td style="text-align:right;"> 4.7902122 </td>
-   <td style="text-align:right;"> 5.5114866 </td>
-   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 5.16 </td>
+   <td style="text-align:right;"> 4.79 </td>
+   <td style="text-align:right;"> 5.52 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 5.1564121 </td>
-   <td style="text-align:right;"> 4.8324527 </td>
-   <td style="text-align:right;"> 5.4738875 </td>
-   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 5.16 </td>
+   <td style="text-align:right;"> 4.84 </td>
+   <td style="text-align:right;"> 5.48 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_ExpCond1 </td>
-   <td style="text-align:right;"> 0.2073589 </td>
-   <td style="text-align:right;"> -0.2795692 </td>
-   <td style="text-align:right;"> 0.6975114 </td>
-   <td style="text-align:right;"> 0.79625 </td>
+   <td style="text-align:right;"> 0.21 </td>
+   <td style="text-align:right;"> -0.29 </td>
+   <td style="text-align:right;"> 0.69 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_ExpCond1 </td>
-   <td style="text-align:right;"> 0.1776579 </td>
-   <td style="text-align:right;"> -0.2703808 </td>
-   <td style="text-align:right;"> 0.6012804 </td>
-   <td style="text-align:right;"> 0.78800 </td>
+   <td style="text-align:right;"> 0.18 </td>
+   <td style="text-align:right;"> -0.26 </td>
+   <td style="text-align:right;"> 0.61 </td>
   </tr>
 </tbody>
 </table>
-
-</div>
 
 However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model. 
 
@@ -1779,4 +1855,448 @@ conditional_effects(x = Brandt_fit3,
 
 <img src="10-BayesEst_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
 
-### Coleman et al. (2019)
+### Coleman et al. (2019) {#Coleman-solution}
+
+There will be some minor variation in the values of your output since it is based on semi-random numbers, particularly if your priors are different to below. The important thing is being internally consistent to your output and process. The conclusions and answers to the questions in the independent activity should be the same, but you can see the output below to check your answers against. 
+
+Step 1. Identify data relevant to the research question
+
+To follow the modelling process, you should have read in the data from Coleman et al.
+
+Step 2. Define a descriptive model
+
+For this demonstration, we're going to predict mystical experiences from theory of mind and absorption, then the interaction in a second model. The interaction here is the primary focus, so we will fit that model first, then update it to see the impact of removing the interaction. 
+
+
+```r
+# Predicting mystical experiences from the interaction between theory of mind and absorption
+
+Coleman_model <- bf(Mscale_SUM ~ Absorption_SUM * EQ_SUM) 
+```
+
+Step 3. Specify prior probability distribution on model parameters
+
+
+```r
+# What priors can we specify? 
+get_prior(Coleman_model, data = Coleman_data)
+```
+
+<div class="kable-table">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> prior </th>
+   <th style="text-align:left;"> class </th>
+   <th style="text-align:left;"> coef </th>
+   <th style="text-align:left;"> group </th>
+   <th style="text-align:left;"> resp </th>
+   <th style="text-align:left;"> dpar </th>
+   <th style="text-align:left;"> nlpar </th>
+   <th style="text-align:left;"> bound </th>
+   <th style="text-align:left;"> source </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;"> Absorption_SUM </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;"> Absorption_SUM:EQ_SUM </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> b </td>
+   <td style="text-align:left;"> EQ_SUM </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> student_t(3, 122, 31.1) </td>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> student_t(3, 0, 31.1) </td>
+   <td style="text-align:left;"> sigma </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> default </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+For the intercept, we know the mystical experiences scale ranges from 40 to 160. The intercept in Coleman et al. study two was 109 with a 95% confidence interval ranging from 104 to 113. With some playing around with the prior plots, a normal distribution of 109 (SD = 17) has the peak over the study two intercept as the most likely value, then the tails cut off around the minimum and maximum scale range. 
+
+For the coefficients, the variables are centered, so we can think about their unit change with the outcome. The largest predictor was 0.42 units and the largest side of the 95% confidence interval was 0.54. Therefore, we can set a prior over 0 for the peak to express smaller effects are more likely, but accept larger values in each direction with a SD of 1. 
+
+Finally, for sigma, the model SD was not reported in Coleman et al., so we will keep the default settings to avoid having too much influence. We can plot all of these options below and piece them together with patchwork. 
+
+<img src="10-BayesEst_files/figure-html/Coleman plot priors-1.png" width="100%" style="display: block; margin: auto;" />
+
+We can then enter these values as our informed priors. 
+
+
+```r
+Coleman_priors <- prior("normal(0, 1)", class = "b") + 
+  prior("normal(109, 17)", class = "Intercept")
+```
+
+Step 4. Update the prior to a posterior distribution 
+
+Now we have our model and priors, we can fit the first model including the interaction.
+
+
+```r
+Coleman_fit <- brm(
+  formula = Coleman_model,
+  data = Coleman_data,
+  family = gaussian(),
+  prior = Coleman_priors,
+  seed = 200323,
+  file = "Models/Coleman_model1"
+)
+```
+
+
+
+Lets have a look at the first summary of the model output. 
+
+
+```r
+summary(Coleman_fit)
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: Mscale_SUM ~ Absorption_SUM * EQ_SUM 
+##    Data: Coleman_data (Number of observations: 269) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+## Intercept               120.27      1.50   117.29   123.19 1.00     4951
+## Absorption_SUM            0.60      0.07     0.47     0.73 1.00     3930
+## EQ_SUM                    0.54      0.18     0.20     0.88 1.00     4204
+## Absorption_SUM:EQ_SUM    -0.01      0.01    -0.03     0.00 1.00     4631
+##                       Tail_ESS
+## Intercept                 3078
+## Absorption_SUM            2731
+## EQ_SUM                    2999
+## Absorption_SUM:EQ_SUM     3126
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    22.97      1.03    21.12    25.09 1.00     4509     2687
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+The population level effects are relatively consistent with our priors. The intercept is slightly higher at 120 and both individual coefficients are positive predictors of mystical experiences. For the partial effects of each predictor, we expect higher mystical experiences with both higher values of theory of mind and absorption. They are both clearly positive predictors with the 95% HDI no where near zero. 
+
+For the interaction, this is always hard to interpret as a single coefficient. We will return to interpreting this when we plot the conditional effects soon.   
+
+For now, lets explore some plots of the model and coefficients. First, the trace plots look well mixed and we can see an overview of the posterior distributions. 
+
+
+```r
+plot(Coleman_fit)
+```
+
+<img src="10-BayesEst_files/figure-html/Coleman trace plots-1.png" width="100%" style="display: block; margin: auto;" />
+
+Looking at the probability of direction plots with the prior superimposed, we can see the decent sized sample produces a narrow posterior compared to the prior. We were open to effects in either direction, but the data dominates to produce consistently positive individual predictors. 
+
+
+```r
+plot(p_direction(Coleman_fit), 
+     priors = TRUE) # plot the priors
+```
+
+<img src="10-BayesEst_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+
+We can look at this further by plotting the distribution 95% HDI. We can see the 95% HDI clearly excludes 0 and absorption is the partial predictor with less uncertainty. 
+
+
+```r
+plot(bayestestR::hdi(Coleman_fit)) # to avoid clashing with ggdist
+```
+
+<img src="10-BayesEst_files/figure-html/unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" />
+
+Next, we can finally made sense of the interaction between theory of mind and absorption. When there are two continuous predictors and an interaction, we get three plots. We get the partial effect of each predictor in isolation, then we get the moderating effect of one predictor on the other, which is what we want to help interpret the interaction.
+
+
+```r
+conditional_effects(Coleman_fit)
+```
+
+<img src="10-BayesEst_files/figure-html/Coleman basic conditional-1.png" width="100%" style="display: block; margin: auto;" /><img src="10-BayesEst_files/figure-html/Coleman basic conditional-2.png" width="100%" style="display: block; margin: auto;" /><img src="10-BayesEst_files/figure-html/Coleman basic conditional-3.png" width="100%" style="display: block; margin: auto;" />
+
+To focus on the interaction, since I included absorption in the model first and theory of mind second, we get the relationship between mystical experiences and absorption for different values of theory of mind. This is known as simple slopes analysis where you hold the effect of your moderator constant at different values: 1 SD below the mean, the mean, and 1 SD above the mean. This shows there is a some overlap in the relationships, but the relationship is stronger at lower values of theory of mind. The slope is more positive when theory of mind is 1 SD below the mean than 1 SD above the mean. 
+
+For a bonus extra you were not expected to know about, [Kurz demonstrated](https://bookdown.org/ajkurz/Statistical_Rethinking_recoded/interactions.html) a slightly different way of plotting the continuous interaction. The key differences here are requesting the spaghetti plot and drawing from the posterior. Unlike solid bands for the default, this samples from the posterior and generates regression lines between mystical experiences and theory of mind for each level of the simple slopes for absorption. The slope gets ever so slightly weaker (flatter) at higher values of absorption. We then have some additional options to tidy things up and show the underlying data points.  
+
+
+```r
+Coleman_conditional <- conditional_effects(Coleman_fit,
+                    effects = "Absorption_SUM:EQ_SUM", # Restrict to 
+                    spaghetti = T, # Plot individual draws instead of point estimates
+                    ndraws = 150) # How many draws from the posterior? 
+
+plot(Coleman_conditional, 
+     plot = FALSE, 
+     cat_args = list(show.legend = F),
+     points = T,
+     point_args = c(alpha = 0.5, size = 1), 
+     mean = T)[[1]] + 
+  theme_classic() + 
+  labs(y = "Mystical Experiences", x = "Absorption")
+```
+
+<img src="10-BayesEst_files/figure-html/Coleman conditional fancy-1.png" width="100%" style="display: block; margin: auto;" />
+
+Step 5. Check your model against the data
+
+Our model diagnostics all looked fine. R-hat values were all 1, effective sample size values were in the thousands, and the trace plots looked well mixed. Finally, lets look at the posterior predictive check.
+
+
+```r
+pp_check(Coleman_fit, 
+         ndraws = 100) # 100 draws from the model
+```
+
+<img src="10-BayesEst_files/figure-html/Coleman pp check-1.png" width="100%" style="display: block; margin: auto;" />
+
+The upward part of the curve is not too far off, but there is clearly something we are not capturing for the upper values of the outcome. This is probably another case of the model going beyond the limits of the data as the sum M scale has a maximum value of 160. We're telling the model to apply a normal distribution, so it will happily accept values towards 200 which is beyond the scale. Its good enough for our purposes here, but you could explore whether assuming a different distribution family fits the outcome better. 
+
+##### Model fit and prior sensitivity
+
+The final thing we will check is the model fit and how sensitive the results were to our choice of priors. We can explore the impact of removing the interaction to demonstrate the process, but note in this study it was of theoretical interest to include and focus on the interaction. 
+
+
+```r
+# Update model to a new formula
+Coleman_fit2 <- update(Coleman_fit, # Original brms model object 
+                     formula. = ~ . - Absorption_SUM:EQ_SUM) # tilda dot for the original formula, minus the interaction
+```
+
+
+
+
+
+First, we can calculate the $R^2$ estimate for the proportion of variance in the outcome that the predictors explain.
+
+
+```r
+#R2 for first model object with interaction
+bayes_R2(Coleman_fit)
+```
+
+```
+##     Estimate  Est.Error      Q2.5     Q97.5
+## R2 0.3303394 0.03797409 0.2499044 0.3996068
+```
+
+We can also compare the two models side by side. The model with the interaction has the highest $R^2$ estimate, but there is very little difference in how much variance they explain. We will stick with the interaction model since it was of theoretical interest. 
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> R2 Estimate </th>
+   <th style="text-align:right;"> Estimated Error </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Model with interaction </td>
+   <td style="text-align:right;"> 0.33 </td>
+   <td style="text-align:right;"> 0.04 </td>
+   <td style="text-align:right;"> 0.25 </td>
+   <td style="text-align:right;"> 0.40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Model without interaction </td>
+   <td style="text-align:right;"> 0.32 </td>
+   <td style="text-align:right;"> 0.04 </td>
+   <td style="text-align:right;"> 0.24 </td>
+   <td style="text-align:right;"> 0.39 </td>
+  </tr>
+</tbody>
+</table>
+
+To check the sensitivity of the results to different priors, we will fit one final model removing the user priors.
+
+
+```r
+Coleman_fit3 <- brm(
+  formula = Coleman_model,
+  data = Coleman_data,
+  family = gaussian(),
+  seed = 200323,
+  file = "Models/Coleman_model3"
+)
+```
+
+
+
+Using our informed priors, we get very similar results. The sample size is relatively large for three predictors (including the interaction), so the data pretty much overwhelm all sensible choices for the priors.  
+
+
+```r
+summary(Coleman_fit3)
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: Mscale_SUM ~ Absorption_SUM * EQ_SUM 
+##    Data: Coleman_data (Number of observations: 269) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Population-Level Effects: 
+##                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+## Intercept               120.39      1.48   117.47   123.32 1.00     4613
+## Absorption_SUM            0.60      0.07     0.48     0.74 1.00     4105
+## EQ_SUM                    0.55      0.18     0.18     0.89 1.00     4267
+## Absorption_SUM:EQ_SUM    -0.01      0.01    -0.03     0.00 1.00     4727
+##                       Tail_ESS
+## Intercept                 2900
+## Absorption_SUM            2961
+## EQ_SUM                    3243
+## Absorption_SUM:EQ_SUM     3064
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    22.98      1.04    21.05    25.07 1.00     4343     3088
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+To compare the models side by side, we can summarise the key parameters. As you can see, the only differences are in the second or third decimal place. 
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Model </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median Estimate </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 120.26 </td>
+   <td style="text-align:right;"> 117.29 </td>
+   <td style="text-align:right;"> 123.19 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 120.40 </td>
+   <td style="text-align:right;"> 117.47 </td>
+   <td style="text-align:right;"> 123.32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_EQ_SUM </td>
+   <td style="text-align:right;"> 0.54 </td>
+   <td style="text-align:right;"> 0.20 </td>
+   <td style="text-align:right;"> 0.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_EQ_SUM </td>
+   <td style="text-align:right;"> 0.55 </td>
+   <td style="text-align:right;"> 0.18 </td>
+   <td style="text-align:right;"> 0.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_Absorption_SUM:EQ_SUM </td>
+   <td style="text-align:right;"> -0.01 </td>
+   <td style="text-align:right;"> -0.03 </td>
+   <td style="text-align:right;"> 0.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_Absorption_SUM:EQ_SUM </td>
+   <td style="text-align:right;"> -0.01 </td>
+   <td style="text-align:right;"> -0.03 </td>
+   <td style="text-align:right;"> 0.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User prior </td>
+   <td style="text-align:left;"> b_Absorption_SUM </td>
+   <td style="text-align:right;"> 0.60 </td>
+   <td style="text-align:right;"> 0.47 </td>
+   <td style="text-align:right;"> 0.73 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default prior </td>
+   <td style="text-align:left;"> b_Absorption_SUM </td>
+   <td style="text-align:right;"> 0.60 </td>
+   <td style="text-align:right;"> 0.48 </td>
+   <td style="text-align:right;"> 0.74 </td>
+  </tr>
+</tbody>
+</table>
+
+

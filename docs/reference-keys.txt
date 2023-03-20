@@ -65,7 +65,8 @@ taking-this-further
 independent-activity-solutions-1
 Brandt-solution
 Brandt-bonus
-coleman-et-al.-2019
+Coleman-solution
+model-fit-and-prior-sensitivity
 installing-r
 installing-base-r
 installing-rstudio

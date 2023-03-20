@@ -1167,14 +1167,16 @@ Our model diagnostics all looked respectable. Rhat values were all 1 and ESS wer
 ```{r Brandt compare models}
 model1 <- describe_posterior(Brandt_fit1) %>% 
   dplyr::mutate(Model = "User prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 model2 <- describe_posterior(Brandt_fit2) %>% 
   dplyr::mutate(Model = "Default prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 bind_rows(model1, model2) %>% 
-  arrange(desc(Parameter))
+  arrange(desc(Parameter)) %>% 
+  knitr::kable(digits = 2,
+               col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI"))
 ```
 
 However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model. 
@@ -1443,7 +1445,7 @@ bayes_R2(Coleman_fit)
 
 We can also compare the two models side by side. The model with the interaction has the highest $R^2$ estimate, but there is very little difference in how much variance they explain. We will stick with the interaction model since it was of theoretical interest. 
 
-```{r Coleman R2 comparison}
+```{r Coleman R2 comparison, echo=FALSE}
 
 R2_model1 <- as.data.frame(bayes_R2(Coleman_fit))
 R2_model2 <- as.data.frame(bayes_R2(Coleman_fit2))
@@ -1486,17 +1488,19 @@ summary(Coleman_fit3)
 
 To compare the models side by side, we can summarise the key parameters. As you can see, the only differences are in the second or third decimal place. 
 
-```{r Coleman compare models}
+```{r Coleman compare models, echo=FALSE}
 model1 <- describe_posterior(Coleman_fit) %>% 
   dplyr::mutate(Model = "User prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 model2 <- describe_posterior(Coleman_fit3) %>% 
   dplyr::mutate(Model = "Default prior") %>% 
-  dplyr::select(Model, Parameter, Median, CI_low, CI_high, pd) 
+  dplyr::select(Model, Parameter, Median, CI_low, CI_high) 
 
 bind_rows(model1, model2) %>% 
-  arrange(desc(Parameter))
+  arrange(desc(Parameter)) %>% 
+  knitr::kable(digits = 2,
+               col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI"))
 ```
 
 
