@@ -937,7 +937,37 @@ Coleman_model <- NULL
 
 ## Summary 
 
+In this chapter, you learnt about the Bayesian modelling process. This works through 1) identifying data, 2) defining a descriptive model, 3) specifying prior probability distributions over your parameters, 4) updating the priors to the posterior probability distributions, and 5) model checking. This is the most flexible approach to data analysis as you have control over your outcome, predictors, and distribution family. It also scales well to work from single predictors all the way to complex multi-level models.  
+
+Modelling is where Bayesian statistics is most powerful and encourages a more thoughtful approach to data analysis. Just keep in mind, it can still be done mindlessly and it is no silver bullet to problems with data analysis in psychology. For me though, the process of setting priors, model checking, and exploring uncertainty reinforces good thoughtful habits. 
+
 ## Taking this further
+
+The content in this chapter scales well to different use cases, so hopefully you can apply what you learnt to different types of outcome and predictors. For some suggested reading on where to expand your knowledge on these techniques, see the following list of resources. 
+
+**Reporting guidelines**
+
+- @van_de_schoot_bayesian_2021 provide a primer on Bayesian modelling, but they also outline reporting guidelines on what information to check and include.
+
+- @kruschke_bayesian_2021 just focuses on reporting guidelines for Bayesian models. 
+
+**Textbooks**
+
+- @kruschke_doing_2015 walks through the logic and statistics behind Bayesian models. It does not use the `r pkg("brms")` package, so you might like to refer to [the translation by Kurz](https://bookdown.org/content/3686/).
+
+- @mcelreath_statistical_2020 is my personal favourite textbook in outlining the Bayesian approach to modelling. He uses his own teaching-focused R package to work through the modelling mechanisms and he has [a great YouTube series](https://www.youtube.com/playlist?list=PLDcUM9US4XdMROZ57-OIRtIK0aOynbgZN) where he posts his supporting lectures every year.
+
+**Additional distribution families**
+
+- @burkner_ordinal_2019 demonstrates ordinal regression models when you have ordinal data like individual Likert responses. 
+
+- [Heiss (2021)](https://www.andrewheiss.com/blog/2021/11/08/beta-regression-guide/) demonstrates beta regression which can be used to model proportion data. 
+
+- @winter_poisson_2021 demonstrates Poisson regression to model count data using `r pkg("brms")`. 
+
+**Comparing Bayesian and frequentist modelling**
+
+- @flores_beforeafter_2022 compares the results you receive from Bayesian and frequentist multi-level models
 
 ## Independent activity solutions 
 
