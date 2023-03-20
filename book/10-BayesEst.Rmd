@@ -490,8 +490,6 @@ knitr::kable(
 Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
 :::
 
-You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
-
 ```{r Brandt data,  warning=FALSE, message=FALSE}
 Brandt_data <- read_csv("data/Brandt_unlit.csv")
 
@@ -555,6 +553,8 @@ cat("- Does the normal model capture the features of the data?", longmcq(opts))
 5. In contrast to the Schroeder and Epley data where the ordinal data was approximately normal, there is no getting away from the characteristic ordinal distribution with peaks at each integer. Really, we would need to explore something like ordinal regression to capture the properties of the data. It is not something we covered in the Bayesian lectures or activites, but [see the bonus section](#Brandt-bonus) showing what an ordinal model would look like applied to these data. 
 
 `r unhide()`
+
+You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
 
 ## Multiple Linear Regression {#multipleregression}
 
