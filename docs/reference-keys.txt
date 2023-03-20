@@ -55,7 +55,10 @@ identify-data-1
 define-a-descriptive-model-1
 specify-prior-probability-of-parameters-1
 update-prior-to-posterior
+calculating-and-plotting-conditional-effects-1
+model-fit-and-comparison
 model-check
+check-model-sensitivity-to-different-priors-1
 independent-activity-coleman-et-al.-2019
 summary-1
 taking-this-further

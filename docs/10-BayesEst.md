@@ -28,6 +28,7 @@ library(tidybayes) # helper functions for combining plotting and tidy data from 
 library(tidyverse)
 library(see) # helper functions for plotting objects from bayestestR
 library(emmeans) # Handy function for calculating (marginal) effect sizes
+library(patchwork) # Combine multiple plots
 ```
 
 ## Simple Linear Regression {#simpleregression}
@@ -40,7 +41,7 @@ As a reminder, the aim of the study was to investigate whether delivering a shor
 
 The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items. 
 
-For this example, we will focus on the hire rating (variable <code><span class='st'>"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class='st'>"CONDITION"</span></code>). 
+For this example, we will focus on the hire rating (variable <code><span><span class='st'>"Hire_Rating"</span></span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span><span class='st'>"CONDITION"</span></span></code>). 
 
 Remember the key steps of Bayesian modelling from lecture 10 [@heino_bayesian_2018]:
 
@@ -66,7 +67,7 @@ Schroeder_data <- read_csv("data/Schroeder_hiring.csv") %>%
 
 #### Define a descriptive model
 
-The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class='st'>"CONDITION"</span></code> as a single categorical predictor of <code><span class='st'>"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></code> function below, but its normally a good idea to clearly outline each component.  
+The next step is to define a descriptive model. In chapter 9, we used the <code class='package'>BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span><span class='st'>"CONDITION"</span></span></code> as a single categorical predictor of <code><span><span class='st'>"Hire_Rating"</span></span></code> as our outcome. You can enter this directly in the <code><span><span class='fu'>brm</span><span class='op'>(</span><span class='op'>)</span></span></code> function below, but its normally a good idea to clearly outline each component.  
 
 
 ```r
@@ -241,7 +242,7 @@ Schroeder_fit <- brm(
 When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the brm function, there is an argument called `file`. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objects, remember to refit them if you change anything like the priors, model, or data. If the file already exists though, it will not be overwritten unless you use the `file_refit` argument. 
 :::
 
-If you save the model as a .rds file, you can load them again using the <code><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>readr</code> in the tidyverse. 
+If you save the model as a .rds file, you can load them again using the <code><span><span class='fu'>read_rds</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>readr</code> in the tidyverse. 
 
 
 ```r
@@ -360,7 +361,7 @@ We then have the median coefficient of 1.57 with a 95% credible interval between
 
 For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should in the thousands, or at the very least in the hundreds [@flores_beforeafter_2022] for both the bulk and tail. We will return to a final indicator of model fitting soon when we check the trace plots. 
 
-For a tidier summary of the parameters, we can also use the handy <code><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></code> function from <code class='package'>bayestestR</code>. 
+For a tidier summary of the parameters, we can also use the handy <code><span><span class='fu'>describe_posterior</span><span class='op'>(</span><span class='op'>)</span></span></code> function from <code class='package'>bayestestR</code>. 
 
 
 ```r
@@ -393,12 +394,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 3.006929 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.0932902 </td>
-   <td style="text-align:right;"> 3.942043 </td>
+   <td style="text-align:right;"> 2.060903 </td>
+   <td style="text-align:right;"> 3.907041 </td>
    <td style="text-align:right;"> 1.00000 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1 </td>
-   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> -0.2330343 </td>
+   <td style="text-align:right;"> 0.2330343 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9999234 </td>
    <td style="text-align:right;"> 3382.849 </td>
@@ -408,12 +409,12 @@ describe_posterior(Schroeder_fit)
    <td style="text-align:left;"> b_CONDITION1 </td>
    <td style="text-align:right;"> 1.567213 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.4562219 </td>
-   <td style="text-align:right;"> 2.657129 </td>
+   <td style="text-align:right;"> 0.460239 </td>
+   <td style="text-align:right;"> 2.658799 </td>
    <td style="text-align:right;"> 0.99625 </td>
    <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.1 </td>
-   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> -0.2330343 </td>
+   <td style="text-align:right;"> 0.2330343 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0.9999724 </td>
    <td style="text-align:right;"> 3426.619 </td>
@@ -440,7 +441,7 @@ plot(Schroeder_fit)
 
 For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, `brms` uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues. 
 
-These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package [@Makowski2019] which you can use on their own, or wrap them in the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code> function after loading the <code class='package'>see</code> package [@Luedecke2021]. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
+These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class='package'>bayestestR</code> package [@Makowski2019] which you can use on their own, or wrap them in the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function after loading the <code class='package'>see</code> package [@Luedecke2021]. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span><span class='fu'>p_direction</span><span class='op'>(</span><span class='op'>)</span></span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0. 
 
 
 ```r
@@ -456,7 +457,7 @@ For this to work, you must specify priors in `brms`. It does not work with the p
 
 We can see the pretty wide prior in blue, then the posterior. Almost all of the posterior distribution is above zero to show we're pretty confident that audio is associated with higher hire ratings than transcript. 
 
-The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
+The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span><span class='fu'>hdi</span><span class='op'>(</span><span class='op'>)</span></span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span></span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model. 
 
 
 ```r
@@ -511,7 +512,7 @@ hypothesis(Schroeder_fit, # brms model we fitted earlier
 ```
 
 ::: {.info data-latex=""}
-We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class='st'>"CONDITION"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
+We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span><span class='st'>"CONDITION"</span></span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION > 0.
 :::
 
 The key part of the output is the evidence ratio (`Evid.Ratio`), but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 12.5 here. 
@@ -543,9 +544,8 @@ For the final part of exploring the posterior, you might be interested in the es
 
 
 ```r
-# Surround with brackets to both save and output
-(Schroeder_means <- emmeans(Schroeder_fit, # add the model object  
-        ~ CONDITION)) # What predictor do you want marginal means of? 
+emmeans(Schroeder_fit, # add the model object  
+        ~ CONDITION) # What predictor do you want marginal means of? 
 ```
 
 ```
@@ -557,7 +557,7 @@ For the final part of exploring the posterior, you might be interested in the es
 ## HPD interval probability: 0.95
 ```
 
-This provides the median and 95% HDI values for the posterior for each group. The <code class='package'>brms</code> package also comes with a function called <code><span class='fu'>conditional_effects</span><span class='op'>(</span><span class='op'>)</span></code> which you can use to plot the conditional effects. 
+This provides the median and 95% HDI values for the posterior for each group. The <code class='package'>brms</code> package also comes with a function called <code><span><span class='fu'>conditional_effects</span><span class='op'>(</span><span class='op'>)</span></span></code> which you can use to plot the conditional effects. 
 
 
 ```r
@@ -623,7 +623,7 @@ Schroeder_fit2 <- brm(
 
 
 
-If we run the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+If we run the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
 
 
 ```r
@@ -654,56 +654,52 @@ summary(Schroeder_fit2)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept between both models. The median is similar, both probability of direction values are 100%, and the 95% HDI ranges across similar values. For our user prior, the coefficient is a little more conservative, but the difference is also small here, showing how our results are robust to the choice of prior. 
 
-<div class="kable-table">
-
 <table>
  <thead>
   <tr>
    <th style="text-align:left;"> Model </th>
    <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median </th>
-   <th style="text-align:right;"> CI_low </th>
-   <th style="text-align:right;"> CI_high </th>
-   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> Median Estimate </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
+   <th style="text-align:right;"> Prob Direction </th>
   </tr>
  </thead>
 <tbody>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.006929 </td>
-   <td style="text-align:right;"> 2.0932902 </td>
-   <td style="text-align:right;"> 3.942043 </td>
-   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 3.01 </td>
+   <td style="text-align:right;"> 2.06 </td>
+   <td style="text-align:right;"> 3.91 </td>
+   <td style="text-align:right;"> 1.00 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 2.903251 </td>
-   <td style="text-align:right;"> 1.8855461 </td>
-   <td style="text-align:right;"> 3.930462 </td>
-   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 2.90 </td>
+   <td style="text-align:right;"> 1.91 </td>
+   <td style="text-align:right;"> 3.94 </td>
+   <td style="text-align:right;"> 1.00 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_CONDITION1 </td>
-   <td style="text-align:right;"> 1.567213 </td>
-   <td style="text-align:right;"> 0.4562219 </td>
-   <td style="text-align:right;"> 2.657129 </td>
-   <td style="text-align:right;"> 0.99625 </td>
+   <td style="text-align:right;"> 1.57 </td>
+   <td style="text-align:right;"> 0.46 </td>
+   <td style="text-align:right;"> 2.66 </td>
+   <td style="text-align:right;"> 1.00 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_CONDITION1 </td>
-   <td style="text-align:right;"> 1.838562 </td>
-   <td style="text-align:right;"> 0.3318538 </td>
-   <td style="text-align:right;"> 3.237537 </td>
-   <td style="text-align:right;"> 0.98900 </td>
+   <td style="text-align:right;"> 1.84 </td>
+   <td style="text-align:right;"> 0.49 </td>
+   <td style="text-align:right;"> 3.37 </td>
+   <td style="text-align:right;"> 0.99 </td>
   </tr>
 </tbody>
 </table>
-
-</div>
 
 ### Independent activity (Brandt et al., 2014)
 
@@ -711,7 +707,7 @@ For an independent activity, we will use data from the study by [@brandt_does_20
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (<code><span class='st'>"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span class='st'>"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (<code><span><span class='st'>"ExpCond"</span></span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span><span class='st'>"WellLitSca"</span></span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
@@ -738,8 +734,6 @@ In the original study, they found that the room was perceived as darker in the u
 Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
 :::
 
-You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
-
 
 ```r
 Brandt_data <- read_csv("data/Brandt_unlit.csv")
@@ -757,14 +751,14 @@ Brandt_data <- Brandt_data %>%
 
 - Is the coefficient positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
 
-- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_DPCSYBKPRH'><label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
+- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_RTDSTDKCAP'><label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
 
-- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_PNTRUJRPIY'><label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
+- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_EIQWTQPDQS'><label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
 
 
-- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_UFLXAMEWIT'><label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_GCIABOLLHZ'><label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
 
-- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_IMDGRDNIDO'><label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
+- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_YIEBQNHUMY'><label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
 
 
 <div class='webex-solution'><button>Explain these answers</button>
@@ -784,16 +778,19 @@ Brandt_data <- Brandt_data %>%
 </div>
 
 
+You can check your attempt to the solutions at [the bottom of the page](#Brandt-solution). Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from [the Github repository](https://github.com/BartlettJE/statsresdesign/tree/master/book/Models) and reproduce the results that way. 
+
 ## Multiple Linear Regression {#multipleregression}
 
 ### Guided example (Heino et al., 2018)
 
+For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
+
+In this section, we will work through their multiple regression model following the Bayesian modelling steps. There will be less explanation than the simple linear regression section as we are following the same processes, but I will highlight if there is anything new or important to consider when we have two or more predictors.  
+
 #### Identify data
 
-- Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness. 
-
-For the second guided example we covered in the lecture, we will explore the model included in @heino_bayesian_2018 for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents. 
-They randomised participants into two groups (<code><span class='st'>"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class='st'>"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class='st'>"time"</span></code>).
+@heino_bayesian_2018 randomised participants into two groups (<code><span><span class='st'>"intervention"</span></span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span><span class='st'>"time"</span></span></code>).
 
 Their research question was: To what extent does the intervention affect autonomous motivation? 
 
@@ -808,12 +805,12 @@ Heino_data <- read_csv("data/Heino-2018.csv") %>%
 ```
 
 ::: {.info data-latex=""}
-Part of their tutorial discusses a bigger multilevel model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation.
+Part of their tutorial discusses a bigger multi-level model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation. We also convert intervention and time to factors so they work nicely in plotting options later. 
 :::
 
 #### Define a descriptive model
 
-I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span class='st'>"value"</span></code>) and we want to look at the interaction between <code><span class='st'>"intervention"</span></code> and <code><span class='st'>"time"</span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
+I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span><span class='st'>"value"</span></span></code>) and we want to look at the interaction between <code><span><span class='st'>"intervention"</span></span></code> and <code><span><span class='st'>"time"</span></span></code>. They define a fixed intercept in the model with the `1 +` part. Its also technically a multi-level model as they define a random intercept for each participant (`(1 | ID)`) to ensure we recognise time is within-subjects. 
 
 ::: {.info data-latex=""}
 By default, R includes a fixed intercept (the `1 +` part) in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.
@@ -826,7 +823,7 @@ Heino_model <- bf(value ~ 1 + time * intervention + (1 | ID))
 
 #### Specify prior probability of parameters
 
-Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma. 
+Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations since we now have the group-level standard deviation for the random effect and sigma for the distribution family since we are assuming the outcome is normal. 
 
 
 ```r
@@ -960,7 +957,7 @@ get_prior(Heino_model, data = Heino_data)
 
 Note, you get a warning about missing data but since its a multi-level model, we just have fewer observations in some conditions instead of the whole case being removed. 
 
-This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors to only allow positive values. 
+This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors. 
 
 
 ```r
@@ -969,11 +966,13 @@ Heino_priors <- prior(normal(0, 5), class = "b") +
   prior(cauchy(0, 2), class = "sigma")
 ```
 
+<img src="10-BayesEst_files/figure-html/Heino plot priors-1.png" width="100%" style="display: block; margin: auto;" />
+
 #### Update prior to posterior
 
 This is going to be the longest section as we are going to fit the `brms` model and then explore the posterior. 
 
-As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. 
+As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. Remember, we save all the models using the `file` argument, so its easier to load them later. If you update the model, you must use the `file_refit` argument or it will not change when you use the same file name.  
 
 
 ```r
@@ -1007,18 +1006,18 @@ summary(Heino_fit)
 ## Group-Level Effects: 
 ## ~ID (Number of levels: 40) 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.71      0.10     0.53     0.92 1.00      817     1710
+## sd(Intercept)     0.71      0.10     0.54     0.92 1.00      907     1725
 ## 
 ## Population-Level Effects: 
 ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept               3.70      0.20     3.29     4.09 1.00      810     1328
-## time1                   0.08      0.14    -0.19     0.37 1.00     2170     2694
-## intervention1          -0.08      0.26    -0.59     0.43 1.00      762     1446
-## time1:intervention1     0.10      0.18    -0.25     0.44 1.00     2203     2552
+## Intercept               3.69      0.21     3.28     4.09 1.01      789     1511
+## time1                   0.09      0.15    -0.19     0.38 1.00     2442     2596
+## intervention1          -0.08      0.26    -0.59     0.44 1.01      761     1383
+## time1:intervention1     0.09      0.18    -0.28     0.43 1.00     2424     2565
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.33      0.05     0.25     0.44 1.00     1107     1982
+## sigma     0.33      0.05     0.25     0.44 1.00     1210     2101
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1027,45 +1026,45 @@ summary(Heino_fit)
 
 The model summary is very similar to the examples in the simple linear regression section, but we also have a new section for group-level effects since we added a random intercept for participants.
 
-Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects. 
+Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects, but the sample size is quite small to learn anything meaningful from two groups. 
 
-When it comes to comparing models and building multiple regression models, there is also a specific function to get the model $R^2$ and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain.
-
-
-```r
-bayes_R2(Heino_fit)
-```
-
-```
-##     Estimate  Est.Error      Q2.5     Q97.5
-## R2 0.8037073 0.05385016 0.6720168 0.8781995
-```
-
-This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on. 
+In more complicated models like this, plotting is going to be your best friend for understanding what is going on. First up, we can check the posteriors and trace plots, although we will work through model checking in the next section.  
 
 
 ```r
 plot(Heino_fit)
 ```
 
-<img src="10-BayesEst_files/figure-html/Heino plots-1.png" width="100%" style="display: block; margin: auto;" /><img src="10-BayesEst_files/figure-html/Heino plots-2.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/Heino trace plot-1.png" width="100%" style="display: block; margin: auto;" /><img src="10-BayesEst_files/figure-html/Heino trace plot-2.png" width="100%" style="display: block; margin: auto;" />
+
+The posteriors are quite wide and spread over 0 for the coefficients. The trace plots do not suggest there are cause for concern around convergence in the model. 
+
+The next key plot is seeing the probability of direction and with the priors superimposed. 
+
 
 ```r
 plot(p_direction(Heino_fit), 
      priors = TRUE) # plot the priors
 ```
 
-<img src="10-BayesEst_files/figure-html/Heino plots-3.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/Heino pd plot-1.png" width="100%" style="display: block; margin: auto;" />
+
+On this plot, you can see how wide the priors were. They are almost flat to cover coefficients from -10 to 10, with the posterior distributions peaking around 0. These plots also show how there is not much we can conclude from the results. 
+
+Finally, we can take a closer look at the 95% HDI of the posterior distributions. 
+
 
 ```r
-plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash
+plot(bayestestR::hdi(Heino_fit)) # Specify to avoid clash with ggdist
 ```
 
-<img src="10-BayesEst_files/figure-html/Heino plots-4.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/Heino HDI plot-1.png" width="100%" style="display: block; margin: auto;" />
 
-Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
+Now we zoom in a little more without the scale of the wide priors and there is further indication the mass of the coefficient posteriors are centered over 0. We would need more data to make firm conclusions about the effectiveness of the intervention. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention. 
 
-As a bonus extra since its not included in Heino et al., you can also use the <code class='package'>emmeans</code> package [@Lenth2022] to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
+##### Calculating and plotting conditional effects
+
+As a bonus extra since its not included in Heino et al., you can also use the <code class='package'>emmeans</code> package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future. 
 
 
 ```r
@@ -1077,21 +1076,21 @@ As a bonus extra since its not included in Heino et al., you can also use the <c
 ```
 ## intervention = 0:
 ##  time emmean lower.HPD upper.HPD
-##  0      3.69      3.32      4.11
-##  1      3.78      3.39      4.18
+##  0      3.69      3.28      4.09
+##  1      3.78      3.39      4.16
 ## 
 ## intervention = 1:
 ##  time emmean lower.HPD upper.HPD
-##  0      3.61      3.27      3.91
-##  1      3.79      3.46      4.12
+##  0      3.60      3.28      3.92
+##  1      3.78      3.46      4.11
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95
 ```
 
-This provides the median value of the posterior for the combination of time and intervention. Here, we can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping. 
+This provides the median value of the posterior for the combination of time and intervention. We can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping. 
 
-Depending on how you want to express the marginal means, you can also use the <code class='package'>emmeans</code> object to calculate contrasts, expressing the effects as mean differences in the posterior for each group/condition.  
+Depending on how you want to express the marginal means, you can also use the <code class='package'>emmeans</code> object to calculate contrasts, expressing the effects as differences in the median posterior value for each group/condition. Just keep in mind which comparisons would best address your research question and hypothesis. We entered the difference in time for each intervention, but you might be interested in the difference in intervention for each time.
 
 
 ```r
@@ -1101,40 +1100,127 @@ contrast(Heino_means)
 ```
 ## intervention = 0:
 ##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0418   -0.1802    0.0957
-##  1 effect   0.0418   -0.0957    0.1802
+##  0 effect  -0.0458   -0.1926    0.0926
+##  1 effect   0.0458   -0.0926    0.1926
 ## 
 ## intervention = 1:
 ##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0909   -0.1919    0.0216
-##  1 effect   0.0909   -0.0216    0.1919
+##  0 effect  -0.0893   -0.1948    0.0143
+##  1 effect   0.0893   -0.0143    0.1948
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95
 ```
 
+Finally, we can plot the conditional effects which is normally a good idea to help your reader understand your results. In this object, I have used the `effects` argument to specify which population level effect I want plotting. If you omit the `effects` argument, you would receive three plots for this example: one for the partial effect of each predictor and one for the interaction. 
+
 
 ```r
+conditional_effects(Heino_fit, 
+                    effects = "time:intervention")
+```
+
+<img src="10-BayesEst_files/figure-html/Heino conditional effects standard-1.png" width="100%" style="display: block; margin: auto;" />
+
+Like the simple linear regression example, this is useful for your own understanding, but it might not be quite appropriate for inserting immediately into a report. Once you save the plot as an object, you can add <code class='package'>ggplot</code> layers to make it easier for your reader to understand. For example, here I have tidied up the axis names and labels, changed the scale to reflect the range of the outcome, and added a colour scheme to differentiate the two intervention groups.
+
+
+```r
+# Save initial plot of the interaction
 conditional_plot <- conditional_effects(Heino_fit, 
                     effects = "time:intervention")
 
+# Call the plot and stop legend being included to prevent duplication later
 plot(conditional_plot, 
      plot = FALSE, 
-     cat_args = list(show.legend = F))[[1]] + 
+     cat_args = list(show.legend = F))[[1]] + # No idea why, but doesn't work without the subsetting
   theme_classic() + 
   scale_y_continuous(limits = c(1, 5), breaks = seq(1, 5, 1)) + 
   scale_x_discrete(labels = c("Baseline", "Six weeks")) + 
   labs(x = "Time", y = "Autonomous Motivation") + 
   scale_color_viridis_d(option = "D", begin = 0.1, end = 0.7, 
-                        name = "Group", labels = c("Control", "Intervention"))
+                        name = "Group", labels = c("Control", "Intervention")) # Add neater legend labels
 ```
 
-<img src="10-BayesEst_files/figure-html/Heino conditional effects-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="10-BayesEst_files/figure-html/Heino conditional effects modified-1.png" width="100%" style="display: block; margin: auto;" />
 
+##### Model fit and comparison
+
+Depending on your research question and theoretical understanding of the variables you are working with, you might be interested in comparing different models and assessing their fit. It is not something Heino et al. included, but you could compare their model to one without the interaction (lets pretend that is theoretically justified). Instead of refitting a whole new model, we can update the model to a change in formula. All other settings like the priors remain the same. 
+
+
+```r
+# Update model to a new formula
+Heino_fit2 <- update(Heino_fit, # Original brms model object 
+                     formula. = ~ . - time:intervention) # tilda dot for the original formula, minus the interaction
+```
+
+
+
+
+
+First, we can calculate the $R^2$ estimate for the proportion of variance in your outcome that your predictors explain. <code class='package'>brms</code> has a specific function to get the model $R^2$ and its 95% credible interval. 
+
+
+```r
+#R2 for first model object with interaction
+bayes_R2(Heino_fit)
+```
+
+```
+##     Estimate  Est.Error      Q2.5     Q97.5
+## R2 0.8025928 0.05267947 0.6740807 0.8766934
+```
+
+We can also compare the two models side by side. The second model actually has a slightly higher $R^2$ estimate, but there is very little to choose between the two models. 
+
+
+```r
+R2_model1 <- as.data.frame(bayes_R2(Heino_fit))
+R2_model2 <- as.data.frame(bayes_R2(Heino_fit2))
+
+R2_table <- bind_rows(R2_model1, R2_model2)
+rownames(R2_table) <- c("Model with interaction", "Model without interaction")
+
+knitr::kable(R2_table, 
+             digits = 2,
+             row.names = TRUE,
+             col.names = c("R2 Estimate", "Estimated Error", "Lower 95% HDI", "Upper 95% HDI"))
+```
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> R2 Estimate </th>
+   <th style="text-align:right;"> Estimated Error </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Model with interaction </td>
+   <td style="text-align:right;"> 0.80 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 0.67 </td>
+   <td style="text-align:right;"> 0.88 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Model without interaction </td>
+   <td style="text-align:right;"> 0.81 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 0.69 </td>
+   <td style="text-align:right;"> 0.88 </td>
+  </tr>
+</tbody>
+</table>
 
 #### Model check
 
-As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).
+In previous output, there were no immediate causes of concern. Trace plots showed good mixing of the chains, R-hat values were no higher than 1.01, and effective sample size values were close to the thousands or higher.  
+
+As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. The model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5), but it is good enough with that caveat in mind.
 
 
 ```r
@@ -1145,8 +1231,141 @@ pp_check(Heino_fit,
 <img src="10-BayesEst_files/figure-html/Heino pp check-1.png" width="100%" style="display: block; margin: auto;" />
 
 ::: {.try data-latex=""}
-If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data. 
+If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data when you do not average over the different situations. 
 :::
+
+##### Check model sensitivity to different priors
+
+The final thing we will check for this model is how sensitive it is to the choice of prior. For this example, we will compare the model output under the default package priors and the user defined priors from Heino et al.
+
+In the code below, we have omitted the prior argument, so we are fitting the exact same model as before but using the default package priors. This time we can't just update the model, we need to refit it. 
+
+
+```r
+Heino_fit3 <- brm(
+  formula = Heino_model,
+  data = Heino_data,
+  family = gaussian(),
+  seed = 2108,
+  file = "Models/Heino_model3"
+)
+```
+
+
+
+If we run the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use. 
+
+
+```r
+summary(Heino_fit3)
+```
+
+```
+##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: value ~ 1 + time * intervention + (1 | ID) 
+##    Data: Heino_data (Number of observations: 68) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Group-Level Effects: 
+## ~ID (Number of levels: 40) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.71      0.10     0.53     0.94 1.00      896     1615
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               3.68      0.21     3.27     4.08 1.00      916     1677
+## time1                   0.09      0.15    -0.19     0.39 1.00     2541     2786
+## intervention1          -0.07      0.27    -0.58     0.46 1.00      753     1196
+## time1:intervention1     0.09      0.19    -0.29     0.44 1.00     2384     2585
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.33      0.05     0.25     0.45 1.00     1003     1602
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).
+```
+
+To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior. 
+
+
+```
+## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.
+## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.
+```
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Model </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median Estimate </th>
+   <th style="text-align:right;"> Lower 95% HDI </th>
+   <th style="text-align:right;"> Upper 95% HDI </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> User priors </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 3.28 </td>
+   <td style="text-align:right;"> 4.09 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default priors </td>
+   <td style="text-align:left;"> b_Intercept </td>
+   <td style="text-align:right;"> 3.68 </td>
+   <td style="text-align:right;"> 3.28 </td>
+   <td style="text-align:right;"> 4.08 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User priors </td>
+   <td style="text-align:left;"> b_intervention1 </td>
+   <td style="text-align:right;"> -0.08 </td>
+   <td style="text-align:right;"> -0.59 </td>
+   <td style="text-align:right;"> 0.44 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default priors </td>
+   <td style="text-align:left;"> b_intervention1 </td>
+   <td style="text-align:right;"> -0.07 </td>
+   <td style="text-align:right;"> -0.57 </td>
+   <td style="text-align:right;"> 0.46 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User priors </td>
+   <td style="text-align:left;"> b_time1 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> -0.19 </td>
+   <td style="text-align:right;"> 0.39 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default priors </td>
+   <td style="text-align:left;"> b_time1 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> -0.20 </td>
+   <td style="text-align:right;"> 0.38 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> User priors </td>
+   <td style="text-align:left;"> b_time1:intervention1 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> -0.28 </td>
+   <td style="text-align:right;"> 0.42 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Default priors </td>
+   <td style="text-align:left;"> b_time1:intervention1 </td>
+   <td style="text-align:right;"> 0.09 </td>
+   <td style="text-align:right;"> -0.28 </td>
+   <td style="text-align:right;"> 0.45 </td>
+  </tr>
+</tbody>
+</table>
 
 ### Independent activity (Coleman et al., 2019)
 
@@ -1154,23 +1373,23 @@ For an independent activity, we will use data from the study by @coleman_absorpt
 
 The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are: 
 
-1. <code><span class='st'>"Age"</span></code> - Measured in years
+1. <code><span><span class='st'>"Age"</span></span></code> - Measured in years
 
-2. <code><span class='st'>"Gender"</span></code> - 0 = male; 1 = female
+2. <code><span><span class='st'>"Gender"</span></span></code> - 0 = male; 1 = female
 
-3. <code><span class='st'>"Week_med"</span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
+3. <code><span><span class='st'>"Week_med"</span></span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often
 
-4. <code><span class='st'>"Time_session"</span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
+4. <code><span><span class='st'>"Time_session"</span></span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer
 
-5. <code><span class='st'>"Absorption_SUM"</span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
+5. <code><span><span class='st'>"Absorption_SUM"</span></span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement 
 
-6. <code><span class='st'>"EQ_SUM"</span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
+6. <code><span><span class='st'>"EQ_SUM"</span></span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability 
 
-7. <code><span class='st'>"Mscale_SUM"</span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
+7. <code><span><span class='st'>"Mscale_SUM"</span></span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences
 
-Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) as they were the main contributors, with the other variables as covariates.
+Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) as they were the main contributors, with the other variables as covariates.
 
-Our research question is: How are absorption (<code><span class='st'>"Absorption_SUM"</span></code>) and mentalizing (<code><span class='st'>"EQ_SUM"</span></code>) related to mystical experiences (<code><span class='st'>"Mscale_SUM"</span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
+Our research question is: How are absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) related to mystical experiences (<code><span><span class='st'>"Mscale_SUM"</span></span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction. 
 
 Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior. 
 
@@ -1440,32 +1659,32 @@ bind_rows(model1, model2) %>%
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 5.1593417 </td>
-   <td style="text-align:right;"> 4.7926584 </td>
-   <td style="text-align:right;"> 5.5172109 </td>
+   <td style="text-align:right;"> 4.7902122 </td>
+   <td style="text-align:right;"> 5.5114866 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_Intercept </td>
    <td style="text-align:right;"> 5.1564121 </td>
-   <td style="text-align:right;"> 4.8412631 </td>
-   <td style="text-align:right;"> 5.4821084 </td>
+   <td style="text-align:right;"> 4.8324527 </td>
+   <td style="text-align:right;"> 5.4738875 </td>
    <td style="text-align:right;"> 1.00000 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> User prior </td>
    <td style="text-align:left;"> b_ExpCond1 </td>
    <td style="text-align:right;"> 0.2073589 </td>
-   <td style="text-align:right;"> -0.2910827 </td>
-   <td style="text-align:right;"> 0.6920747 </td>
+   <td style="text-align:right;"> -0.2795692 </td>
+   <td style="text-align:right;"> 0.6975114 </td>
    <td style="text-align:right;"> 0.79625 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Default prior </td>
    <td style="text-align:left;"> b_ExpCond1 </td>
    <td style="text-align:right;"> 0.1776579 </td>
-   <td style="text-align:right;"> -0.2597102 </td>
-   <td style="text-align:right;"> 0.6131311 </td>
+   <td style="text-align:right;"> -0.2703808 </td>
+   <td style="text-align:right;"> 0.6012804 </td>
    <td style="text-align:right;"> 0.78800 </td>
   </tr>
 </tbody>

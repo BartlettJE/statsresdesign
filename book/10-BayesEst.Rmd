@@ -452,7 +452,7 @@ summary(Schroeder_fit2)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept between both models. The median is similar, both probability of direction values are 100%, and the 95% HDI ranges across similar values. For our user prior, the coefficient is a little more conservative, but the difference is also small here, showing how our results are robust to the choice of prior. 
 
-```{r side by side summary, echo=FALSE}
+```{r side by side summary, echo=FALSE, warning=FALSE, message=FALSE}
 
 model1 <- describe_posterior(Schroeder_fit) %>% 
   dplyr::mutate(Model = "User prior") %>% 
@@ -876,7 +876,7 @@ summary(Heino_fit3)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior. 
 
-```{r Heino summary comparison, echo=FALSE, warning=FALSE}
+```{r Heino summary comparison, echo=FALSE, warning=FALSE, message=FALSE}
 
 model1 <- describe_posterior(Heino_fit) %>% 
   dplyr::mutate(Model = "User priors") %>% 

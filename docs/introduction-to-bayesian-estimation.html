@@ -122,12 +122,13 @@
 <p>To follow along to this chapter and try the code yourself, please download the data files we will be using in <a href="data/10_data.zip">this zip file</a>.</p>
 <p>In this chapter, we need a few extra packages. The one most likely to cause trouble is the main <code class="package">brms</code> package since it uses Stan and you need a C++ compiler. See the <a href="installing-r.html#installing-r">installing R appendix</a> for guidance. If you are really struggling or its very slow on your computer, <code class="package">brms</code> is available on the R Studio server. See the course overview page for a link if you have never used it before.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span> <span class="co"># fitting Bayesian models</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/bayestestR/">bayestestR</a></span><span class="op">)</span> <span class="co"># helper functions for plotting and understanding the models</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/tidybayes/">tidybayes</a></span><span class="op">)</span> <span class="co"># helper functions for combining plotting and tidy data from models</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/">see</a></span><span class="op">)</span> <span class="co"># helper functions for plotting objects from bayestestR</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans">emmeans</a></span><span class="op">)</span> <span class="co"># Handy function for calculating (marginal) effect sizes</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span> <span class="co"># fitting Bayesian models</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/bayestestR/">bayestestR</a></span><span class="op">)</span> <span class="co"># helper functions for plotting and understanding the models</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/tidybayes/">tidybayes</a></span><span class="op">)</span> <span class="co"># helper functions for combining plotting and tidy data from models</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/see/">see</a></span><span class="op">)</span> <span class="co"># helper functions for plotting objects from bayestestR</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans">emmeans</a></span><span class="op">)</span> <span class="co"># Handy function for calculating (marginal) effect sizes</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span> <span class="co"># Combine multiple plots</span></span></code></pre></div>
 </div>
 <div id="simpleregression" class="section level2" number="10.2">
 <h2>
@@ -140,7 +141,7 @@
 <p>For this guided activity, we will use data from the study by <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015" role="doc-biblioref">2015</a>)</span>. We used this in the chapter 9 for the independent activity, so we will explore the data set as the guided example in this chapter to see how we can refit it as a Bayesian regression model.</p>
 <p>As a reminder, the aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read or an audio recording of them reading the speech.</p>
 <p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
-<p>For this example, we will focus on the hire rating (variable <code><span class="st">"Hire_Rating"</span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span class="st">"CONDITION"</span></code>).</p>
+<p>For this example, we will focus on the hire rating (variable <code><span><span class="st">"Hire_Rating"</span></span></code>) to see whether the audio condition would lead to higher ratings than the transcript condition (variable <code><span><span class="st">"CONDITION"</span></span></code>).</p>
 <p>Remember the key steps of Bayesian modelling from lecture 10 <span class="citation">(<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">Heino et al., 2018</a>)</span>:</p>
 <ol style="list-style-type: decimal">
 <li><p>Identify data relevant to the research question</p></li>
@@ -155,16 +156,16 @@
 </h4>
 <p>For this example, we have the data from Schroeder and Epley with one outcome and one categorical predictor. The data are coded 0 for those in the transcript group and 1 for those in the audio group.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Schroeder_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Schroeder_hiring.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>CONDITION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">CONDITION</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Schroeder_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Schroeder_hiring.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>CONDITION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">CONDITION</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="define-a-descriptive-model" class="section level4" number="10.2.1.2">
 <h4>
 <span class="header-section-number">10.2.1.2</span> Define a descriptive model<a class="anchor" aria-label="anchor" href="#define-a-descriptive-model"><i class="fas fa-link"></i></a>
 </h4>
-<p>The next step is to define a descriptive model. In chapter 9, we used the <code class="package">BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span class="st">"CONDITION"</span></code> as a single categorical predictor of <code><span class="st">"Hire_Rating"</span></code> as our outcome. You can enter this directly in the <code><span class="fu">brm</span><span class="op">(</span><span class="op">)</span></code> function below, but its normally a good idea to clearly outline each component.</p>
+<p>The next step is to define a descriptive model. In chapter 9, we used the <code class="package">BayesFactor</code> package to use out-of-the-box tests like a t-test, but we saw in the lecture with the <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank">Lindelöv (2019) blog post</a>, common statistical models are just different expressions of linear models. So, we can express the same t-test as a linear model, using <code><span><span class="st">"CONDITION"</span></span></code> as a single categorical predictor of <code><span><span class="st">"Hire_Rating"</span></span></code> as our outcome. You can enter this directly in the <code><span><span class="fu">brm</span><span class="op">(</span><span class="op">)</span></span></code> function below, but its normally a good idea to clearly outline each component.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Schroeder_model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">Hire_Rating</span> <span class="op">~</span> <span class="va">CONDITION</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Schroeder_model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">Hire_Rating</span> <span class="op">~</span> <span class="va">CONDITION</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="specify-prior-probability-of-parameters" class="section level4" number="10.2.1.3">
 <h4>
@@ -172,8 +173,8 @@
 </h4>
 <p>Once you get used to the <code class="package">brms</code> package, you start to learn which priors you need for simple cases, but now we have stated a model, we can see which parameters can be assigned a prior.</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Schroeder_model1</span>, <span class="co"># Model we defined above</span>
-          data <span class="op">=</span> <span class="va">Schroeder_data</span><span class="op">)</span> <span class="co"># Which data frame are we using? </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Schroeder_model1</span>, <span class="co"># Model we defined above</span></span>
+<span>          data <span class="op">=</span> <span class="va">Schroeder_data</span><span class="op">)</span> <span class="co"># Which data frame are we using? </span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -321,25 +322,25 @@ default
 <p><strong>Note on the visualisation</strong>: Credit to the visualisation method goes to Andrew Heiss who shared some <a href="https://gist.github.com/andrewheiss/a4e0c0ab2d735625ac17ec8a081f0f32" target="_blank">code on a Github Gist</a> to visualise different priors. I adapted the code to use here to help you visualise the priors you enter. You can adapt the code to show any kind of prior used in brms models. All you need to do is specify the distribution family and parameters. Like the original code, you can even present a bunch of options to compare side by side.</p>
 <p>For the coefficient, the mean difference was around 1 (calculated manually by subtracting one mean from the other) and the 95% confidence interval was quite wide from 0.22 to 2.34. As we are working out what prior would best fit our knowledge, we can compare some different options side by side. We can compare a stronger prior (<em>SD</em> = 0.5) vs a weaker prior (<em>SD</em> = 1).</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">b</span><span class="op">)</span>,
-            <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">b</span><span class="op">)</span><span class="op">)</span> <span class="co"># Set prior and class</span>
-
-<span class="va">priors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html">parse_dist</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Function from tidybayes/ggdist to turn prior into a dataframe</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span>, dist <span class="op">=</span> <span class="va">.dist</span>, args <span class="op">=</span> <span class="va">.args</span>, fill <span class="op">=</span> <span class="va">prior</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Fill in details from prior and add fill</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_slab.html">stat_slab</a></span><span class="op">(</span>normalize <span class="op">=</span> <span class="st">"panels"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># ggdist layer to visualise distributions</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"plasma"</span>, end <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Add colour scheme</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Remove legend for fill</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">prior</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Split into a different panel for each prior</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Value"</span>, y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">b</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">b</span><span class="op">)</span><span class="op">)</span> <span class="co"># Set prior and class</span></span>
+<span></span>
+<span><span class="va">priors</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html">parse_dist</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Function from tidybayes/ggdist to turn prior into a dataframe</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span>, dist <span class="op">=</span> <span class="va">.dist</span>, args <span class="op">=</span> <span class="va">.args</span>, fill <span class="op">=</span> <span class="va">prior</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Fill in details from prior and add fill</span></span>
+<span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_slab.html">stat_slab</a></span><span class="op">(</span>normalize <span class="op">=</span> <span class="st">"panels"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># ggdist layer to visualise distributions</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"plasma"</span>, end <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Add colour scheme</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Remove legend for fill</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">prior</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Split into a different panel for each prior</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Value"</span>, y <span class="op">=</span> <span class="st">"Density"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/plot%20coefficient%20priors-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>The stronger prior on the left shows we are expecting mainly positive effects with a peak over 1 but ranges between around -0.5 (transcript to be higher than audio) and 2 (audio to be higher than transcript). The weaker prior on the right shows we are still expecting the peak over 1, but it could span from -1.5 to around 3.5.</p>
 <p>Lets say we think both positive and negatives effects are plausible but we expect the most likely outcome to be similar to study 1 from Schroeder and Epley. So, for this example we will go with the weaker prior. Now we have our priors, we can save them to a new object:</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(1, 1)"</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(3, 3)"</span>, class <span class="op">=</span> <span class="st">"Intercept"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"exponential(1)"</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(1, 1)"</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(3, 3)"</span>, class <span class="op">=</span> <span class="st">"Intercept"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"exponential(1)"</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></span></code></pre></div>
 <div class="info">
 <p>Remember it is important to check the sensitivity of the results to the choice of prior. So, once we're finished, we will check how stable the results are to an uninformative prior, keeping the defaults. Normally it is the opposite way around and using uninformative priors first, but I did not want to put off thinking about the priors.</p>
 </div>
@@ -351,25 +352,25 @@ default
 <p>This is going to be the longest section as we are going to fit the <code>brms</code> model and then explore the posterior.</p>
 <p>As the process relies on sampling using MCMC, it is important to set a seed within the function for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Schroeder_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Schroeder_model1</span>, <span class="co"># formula we defined above </span>
-  data <span class="op">=</span> <span class="va">Schroeder_data</span>, <span class="co"># Data frame we're using </span>
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, <span class="co"># What distribution family do we want for the likelihood function? Many examples we use in psychology are Gaussian, but check the documentation for options</span>
-  prior <span class="op">=</span> <span class="va">priors</span>, <span class="co"># priors we stated above</span>
-  sample_prior <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Setting this to true includes the prior in the object, so we can include it on plots later</span>
-  seed <span class="op">=</span> <span class="fl">1908</span>,
-  file <span class="op">=</span> <span class="st">"Models/Schroeder_model1"</span> <span class="co">#Save the model as a .rds file</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Schroeder_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Schroeder_model1</span>, <span class="co"># formula we defined above </span></span>
+<span>  data <span class="op">=</span> <span class="va">Schroeder_data</span>, <span class="co"># Data frame we're using </span></span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>, <span class="co"># What distribution family do we want for the likelihood function? Many examples we use in psychology are Gaussian, but check the documentation for options</span></span>
+<span>  prior <span class="op">=</span> <span class="va">priors</span>, <span class="co"># priors we stated above</span></span>
+<span>  sample_prior <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Setting this to true includes the prior in the object, so we can include it on plots later</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">1908</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Schroeder_model1"</span> <span class="co">#Save the model as a .rds file</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="info">
 <p>When you have lots of data or complicated models, the fitting process can take a long time. This means its normally a good idea to save your fitted model to save time if you want to look at it again quickly. In the brm function, there is an argument called <code>file</code>. You write a character string for any further file directory and the name you want to save it as. Models are saved as a .rds file - R's own data file format you can save objects in. Behind the scenes for this book, we must run the code every time we want to update it, so all the models you see will be based on reading the models as .rds files after we first fitted the models. If you save the objects, remember to refit them if you change anything like the priors, model, or data. If the file already exists though, it will not be overwritten unless you use the <code>file_refit</code> argument.</p>
 </div>
-<p>If you save the model as a .rds file, you can load them again using the <code><span class="fu">read_rds</span><span class="op">(</span><span class="op">)</span></code> function from <code class="package">readr</code> in the tidyverse.</p>
+<p>If you save the model as a .rds file, you can load them again using the <code><span><span class="fu">read_rds</span><span class="op">(</span><span class="op">)</span></span></code> function from <code class="package">readr</code> in the tidyverse.</p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Schroeder_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span><span class="op">(</span><span class="st">"Models/Schroeder_model1.rds"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Schroeder_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_rds.html">read_rds</a></span><span class="op">(</span><span class="st">"Models/Schroeder_model1.rds"</span><span class="op">)</span></span></code></pre></div>
 <p>There will be a lot of output here to explain the fitting and sampling process. For a longer explanation of how MCMC sampling works, see <span class="citation">Ravenzwaaij et al. (<a href="references.html#ref-van_ravenzwaaij_simple_2018" role="doc-biblioref">2018</a>)</span>, but for a quick overview, we want to sample from the posterior distribution based on the data and model. The default of <code>brms</code> is to sample from four chains, with each chain containing 2000 iterations (1000 of which are warm up / burn in iterations). If you get warning messages about model fit or convergence issues, you can increase the number of iterations. This becomes more important with more complex models, so all the defaults should be fine for the relatively simple models we fit in this chapter. We will return to chains and convergence when we see the trace plots later.</p>
 <p>Now we have fitted the model, we can also double check the priors you set are what you wanted. You will see the source for the priors you set switched from default to user.</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/prior_summary.brmsfit.html">prior_summary</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/prior_summary.html">prior_summary</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -499,7 +500,7 @@ user
 </div>
 <p>Now we have our model, we can get a model summary like any old linear model in R.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: Hire_Rating ~ CONDITION 
@@ -523,9 +524,9 @@ user
 <p>Population-level effects is our main area of interest. This is where we have the posterior probability distribution summary statistics. We will look at the whole distribution soon, but for now, we can see the median point-estimate for the intercept is 3.01 with a 95% credible interval between 2.09 and 3.94. This is what we expect the mean of the reference group to be, i.e., the transcript group.</p>
 <p>We then have the median coefficient of 1.57 with a 95% credible interval between 0.46 and 2.66. This means our best guess for the mean difference / slope is an increase of 1.57 for the audio group. Note, you might get subtly different values to the output here since it is based on a semi-random sampling process, but the qualitative conclusions should be the same.</p>
 <p>For convergence issues, if Rhat is different from 1, it can suggest there are problems with the model fitting process. You can also look at the effective sample size statistics (the columns ending in ESS). These should in the thousands, or at the very least in the hundreds <span class="citation">(<a href="references.html#ref-flores_beforeafter_2022" role="doc-biblioref">Flores et al., 2022</a>)</span> for both the bulk and tail. We will return to a final indicator of model fitting soon when we check the trace plots.</p>
-<p>For a tidier summary of the parameters, we can also use the handy <code><span class="fu">describe_posterior</span><span class="op">(</span><span class="op">)</span></code> function from <code class="package">bayestestR</code>.</p>
+<p>For a tidier summary of the parameters, we can also use the handy <code><span><span class="fu">describe_posterior</span><span class="op">(</span><span class="op">)</span></span></code> function from <code class="package">bayestestR</code>.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -583,10 +584,10 @@ b_Intercept
 0.95
 </td>
 <td style="text-align:right;">
-2.0932902
+2.060903
 </td>
 <td style="text-align:right;">
-3.942043
+3.907041
 </td>
 <td style="text-align:right;">
 1.00000
@@ -595,10 +596,10 @@ b_Intercept
 0.95
 </td>
 <td style="text-align:right;">
--0.1
+-0.2330343
 </td>
 <td style="text-align:right;">
-0.1
+0.2330343
 </td>
 <td style="text-align:right;">
 0
@@ -624,10 +625,10 @@ b_CONDITION1
 0.95
 </td>
 <td style="text-align:right;">
-0.4562219
+0.460239
 </td>
 <td style="text-align:right;">
-2.657129
+2.658799
 </td>
 <td style="text-align:right;">
 0.99625
@@ -636,10 +637,10 @@ b_CONDITION1
 0.95
 </td>
 <td style="text-align:right;">
--0.1
+-0.2330343
 </td>
 <td style="text-align:right;">
-0.1
+0.2330343
 </td>
 <td style="text-align:right;">
 0
@@ -662,21 +663,21 @@ b_CONDITION1
 <p>Until now, we have focused on point-estimates and intervals of the posterior, but the main strength of Bayesian statistics is summarising the parameters as a whole posterior probability distribution, so we will now turn to the various plotting options.</p>
 <p>The first plot is useful for seeing the posterior of each parameter and the trace plots to check on any convergence issues.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20parameters%20and%20trace-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For this model, we have three plots: one for the intercept, one for the coefficient/slope, and one for sigma. On the left, we have the posterior probability distributions for each. On the right, we have trace plots. By default, <code>brms</code> uses four chains - or series of samples using MCMC - and this shows how each chain moves around the parameter space. Essentially, we want the trace plots to look like fuzzy caterpillars with a random series of lines. If there are spike which deviate massively from the rest, or the lines get stuck in one area, this suggests there are convergence issues.</p>
-<p>These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class="package">bayestestR</code> package <span class="citation">(<a href="references.html#ref-Makowski2019" role="doc-biblioref">Makowski et al., 2019</a>)</span> which you can use on their own, or wrap them in the <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code> function after loading the <code class="package">see</code> package <span class="citation">(<a href="references.html#ref-Luedecke2021" role="doc-biblioref">Lüdecke et al., 2021</a>)</span>. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span class="fu">p_direction</span><span class="op">(</span><span class="op">)</span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0.</p>
+<p>These plots are useful for an initial feel of the parameter posteriors, but there are a great series of functions from the <code class="package">bayestestR</code> package <span class="citation">(<a href="references.html#ref-Makowski2019" role="doc-biblioref">Makowski et al., 2019</a>)</span> which you can use on their own, or wrap them in the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code> function after loading the <code class="package">see</code> package <span class="citation">(<a href="references.html#ref-Luedecke2021" role="doc-biblioref">Lüdecke et al., 2021</a>)</span>. For example, we can see an overlay of the prior and posterior for the main parameters of interest. On its own, <code><span><span class="fu">p_direction</span><span class="op">(</span><span class="op">)</span></span></code> tells you the probability of direction for each parameter, i.e., how much of the distribution is above or below 0? Wrapped in <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code>, you can see the prior and posterior, with the posterior divided in areas above or below 0.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span>, 
-     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span>, </span>
+<span>     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20p%20direction-1.png" width="100%" style="display: block; margin: auto;"></div>
 <div class="warning">
 <p>For this to work, you must specify priors in <code>brms</code>. It does not work with the package default options for the coefficients.</p>
 </div>
 <p>We can see the pretty wide prior in blue, then the posterior. Almost all of the posterior distribution is above zero to show we're pretty confident that audio is associated with higher hire ratings than transcript.</p>
-<p>The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span class="fu">hdi</span><span class="op">(</span><span class="op">)</span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model.</p>
+<p>The next useful plot is seeing the 95% HDI / credible interval. On its own, <code><span><span class="fu">hdi</span><span class="op">(</span><span class="op">)</span></span></code> will show you the 95% HDI for your parameters. Wrapped in <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code>, you can visualise the HDI compared to zero for your main parameters. If the HDI excludes zero, you can be confident in a positive or negative effect, at least conditional on these data and model. Remember, there is a difference between the small world and big world of models. This is not the absolute truth, just the most credible values conditioned on our data and model.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify package to avoid clash with ggdist</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify package to avoid clash with ggdist</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20HDI-1.png" width="100%" style="display: block; margin: auto;"></div>
 <div class="warning">
 <p>These plots are informative for you learning about your model and the inferences you can learn from it. However, they would not be immediately suitable to enter into a report. Fortunately, they are created using <code class="package">ggplot</code>, so you can customise them in the same way by adding layers of additional functions.</p>
@@ -687,8 +688,8 @@ b_CONDITION1
 <p>Remember this is potentially the most difficult decision to make, maybe more so than choosing priors. Many areas of psychology do not have clear guidelines/expectations for smallest effect sizes of interest, so it is down to you to explain and justify your approach based on your understanding of the topic area.</p>
 </div>
 <div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/rope.html">rope</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, 
-          range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># What is the ROPE range for your smallest effects of interest? </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/rope.html">rope</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, </span>
+<span>          range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># What is the ROPE range for your smallest effects of interest? </span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20ROPE-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For this example, for a sample size of 39, we have pretty strong evidence in favour of a positive effect in the audio group. The 95% HDI excludes zero, but if we set a ROPE of 1 unit, we do not quite exclude it. This means if we wanted to be more confident that the effect exceeded the ROPE, we would need more data. This is just for demonstration purposes, I'm not sure if the original study would consider an effect of 1 as practically meaningful, or whether they would just be happy with any non-zero effect.</p>
 </div>
@@ -698,8 +699,8 @@ b_CONDITION1
 </h5>
 <p>Following from chapter 9, we saw we can also use Bayesian statistics to test hypotheses. This works in a modelling approach as <code>brms</code> has a function to test hypotheses. We must provide the fitted model object and state a hypothesis to test. This relies on a character description of the parameter and test value. For a full explanation, see the <a href="https://paul-buerkner.github.io/brms/reference/hypothesis.html" target="_blank">brms documentation online</a> for the function. Here, we will test the coefficient/slope against a point-null of 0.</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/hypothesis.brmsfit.html">hypothesis</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># brms model we fitted earlier</span>
-           hypothesis <span class="op">=</span> <span class="st">"CONDITION1 = 0"</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/hypothesis.brmsfit.html">hypothesis</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># brms model we fitted earlier</span></span>
+<span>           hypothesis <span class="op">=</span> <span class="st">"CONDITION1 = 0"</span><span class="op">)</span> </span></code></pre></div>
 <pre><code>## Hypothesis Tests for class b:
 ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
 ## 1 (CONDITION1) = 0     1.57      0.57     0.46     2.66       0.08      0.08
@@ -711,13 +712,13 @@ b_CONDITION1
 ## for two-sided hypotheses, the value tested against lies outside the 95%-CI.
 ## Posterior probabilities of point hypotheses assume equal prior probabilities.</code></pre>
 <div class="info">
-<p>We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span class="st">"CONDITION"</span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION &gt; 0.</p>
+<p>We must state a character hypothesis which requires you to select a parameter. Here, we focus on the <code><span><span class="st">"CONDITION"</span></span></code> parameter, i.e., our slope, which must match the name in the model. We can then state values to test against, like here against a point-null of 0 for a Bayes factor. Alternatively, you can test posterior odds where you compare masses of the posterior like CONDITION &gt; 0.</p>
 </div>
 <p>The key part of the output is the evidence ratio (<code>Evid.Ratio</code>), but we also have the estimate and 95% credible interval. As we are testing a point-null of 0, we are testing the null hypothesis against the alternative of a non-null effect. As the value is below 1, it suggests we have evidence in favour of the alternative compared to the null. I prefer to express things above 1 as its easier to interpret. You can do this by dividing 1 by the ratio, which should provide a Bayes factor of 12.5 here.</p>
 <p>Alternatively, you can calculate the posterior odds by stating regions of the posterior to test. For example, if we used "CONDITION1 &gt; 0", this would provide a ratio of the posterior probability of positive effects above 0 to the posterior probability of negative effects below 0. For this example, this would be a posterior odds of 265.7 in favour of positive effects. Note, when all the posterior is above 0, you can get a result of Inf (infinity) as all the evidence is in favour of positive effects.</p>
 <div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/hypothesis.brmsfit.html">hypothesis</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># brms model we fitted earlier</span>
-           hypothesis <span class="op">=</span> <span class="st">"CONDITION1 &gt; 0"</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/hypothesis.brmsfit.html">hypothesis</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># brms model we fitted earlier</span></span>
+<span>           hypothesis <span class="op">=</span> <span class="st">"CONDITION1 &gt; 0"</span><span class="op">)</span> </span></code></pre></div>
 <pre><code>## Hypothesis Tests for class b:
 ##         Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio Post.Prob
 ## 1 (CONDITION1) &gt; 0     1.57      0.57     0.63      2.5     265.67         1
@@ -735,32 +736,31 @@ b_CONDITION1
 </h5>
 <p>For the final part of exploring the posterior, you might be interested in the estimates for each group or condition in your predictor. When you only have two groups, you can calculate the point estimate using the intercept and slope, but we can use the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022" role="doc-biblioref">Lenth, 2022</a>)</span> to calculate conditional effects on the posterior distribution.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Surround with brackets to both save and output</span>
-<span class="op">(</span><span class="va">Schroeder_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># add the model object  </span>
-        <span class="op">~</span> <span class="va">CONDITION</span><span class="op">)</span><span class="op">)</span> <span class="co"># What predictor do you want marginal means of? </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, <span class="co"># add the model object  </span></span>
+<span>        <span class="op">~</span> <span class="va">CONDITION</span><span class="op">)</span> <span class="co"># What predictor do you want marginal means of? </span></span></code></pre></div>
 <pre><code>##  CONDITION emmean lower.HPD upper.HPD
 ##  0           3.01      2.06      3.91
 ##  1           4.58      3.75      5.42
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95</code></pre>
-<p>This provides the median and 95% HDI values for the posterior for each group. The <code class="package">brms</code> package also comes with a function called <code><span class="fu">conditional_effects</span><span class="op">(</span><span class="op">)</span></code> which you can use to plot the conditional effects.</p>
+<p>This provides the median and 95% HDI values for the posterior for each group. The <code class="package">brms</code> package also comes with a function called <code><span><span class="fu">conditional_effects</span><span class="op">(</span><span class="op">)</span></span></code> which you can use to plot the conditional effects.</p>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20conditional%20effects%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>By default, it plots the median of the posterior for each group and the error bars represent the 95% HDI around the median. Behind the scenes, it uses ggplot, so you can customise the graphs to make them better suited for a report.</p>
 <div class="warning">
 <p>When you use the <code><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects()</a></code> function, the type of plot it produces will depend on the data type. All the way back when we read the data in, we turned CONDITION into a factor. If you left it numeric, all the modelling would work the same, but the plot here would be more of a scatterplot. There are additional arguments you can use, so <a href="http://paul-buerkner.github.io/brms/reference/conditional_effects.html">see the function help</a> for further customisation options.</p>
 </div>
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">conditional_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">conditional_plot</span>, 
-     plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="co">#I don't know why you need this, but it doesn't work without</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Transcript"</span>, <span class="st">"Audio"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Speech Group"</span>, y <span class="op">=</span> <span class="st">"Mean Hire Rating"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">conditional_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Schroeder_fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">conditional_plot</span>, </span>
+<span>     plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="co">#I don't know why you need this, but it doesn't work without</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Transcript"</span>, <span class="st">"Audio"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Speech Group"</span>, y <span class="op">=</span> <span class="st">"Mean Hire Rating"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Conditional%20effects%20customisation-1.png" width="100%" style="display: block; margin: auto;"></div>
 </div>
 </div>
@@ -772,8 +772,8 @@ b_CONDITION1
 <p>Bayesian models are generative, which means once they are fitted, we can use them to sample values from the posterior and make predictions from it. One key process is called a posterior predictive check which takes the model and uses is to generate new samples. This shows how you have conditioned the model and what it expects.</p>
 <p>The plot below is a <code class="package">brms</code> function for facilitating this. The thick blue line is your data for the outcome. The light blue lines are 100 samples from the posterior to show what the model expects about the outcome.</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/pp_check.brmsfit.html">pp_check</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, 
-         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># How many draws from the posterior? Higher values means more lines</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">Schroeder_fit</span>, </span>
+<span>         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># How many draws from the posterior? Higher values means more lines</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Schroeder%20model%20check-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For this example, it does an OK job at capturing the pattern of data and the bulk of the observed data follows the generated curves. However, you can see the data are quite flat compared to the predicted values. As we expect a Gaussian distribution, the model will happily produce normal curves. The model also happily expects values beyond the range of data as our scale is bound to 0 and 10. This is hugely common in psychological research as we expect Gaussian distributions from ordinal bound data. So, while this model does an OK job, we could potentially improve it by focusing on an ordinal regression model so we can factor in the bounded nature of the measure if we had the raw measures.</p>
 <div id="check-model-sensitivity-to-different-priors" class="section level5" number="10.2.1.5.1">
@@ -783,16 +783,16 @@ b_CONDITION1
 <p>The final thing we will check for this model is how sensitive it is to the choice of prior. A justifiable informative prior is a key strength of Bayesian statistics, but it is important to check the model under at least two sets of priors. For this example, we will compare the model output under the default package priors and our user defined priors we used all along.</p>
 <p>In the code below, we have omitted the prior argument, so we are fitting the exact same model as before but using the default package priors.</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Schroeder_fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Schroeder_model1</span>,
-  data <span class="op">=</span> <span class="va">Schroeder_data</span>, 
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="fl">1908</span>,
-  file <span class="op">=</span> <span class="st">"Models/Schroeder_model2"</span> <span class="co">#Save the model as a .rds file</span>
-<span class="op">)</span></code></pre></div>
-<p>If we run the <code><span class="fu"><a target="_blank" href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use.</p>
+<code class="sourceCode R"><span><span class="va">Schroeder_fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Schroeder_model1</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Schroeder_data</span>, </span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1908</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Schroeder_model2"</span> <span class="co">#Save the model as a .rds file</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>If we run the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use.</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Schroeder_fit2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Schroeder_fit2</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: Hire_Rating ~ CONDITION 
@@ -813,7 +813,6 @@ b_CONDITION1
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept between both models. The median is similar, both probability of direction values are 100%, and the 95% HDI ranges across similar values. For our user prior, the coefficient is a little more conservative, but the difference is also small here, showing how our results are robust to the choice of prior.</p>
-<div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
 <th style="text-align:left;">
@@ -823,16 +822,16 @@ Model
 Parameter
 </th>
 <th style="text-align:right;">
-Median
+Median Estimate
 </th>
 <th style="text-align:right;">
-CI_low
+Lower 95% HDI
 </th>
 <th style="text-align:right;">
-CI_high
+Upper 95% HDI
 </th>
 <th style="text-align:right;">
-pd
+Prob Direction
 </th>
 </tr></thead>
 <tbody>
@@ -844,16 +843,16 @@ User prior
 b_Intercept
 </td>
 <td style="text-align:right;">
-3.006929
+3.01
 </td>
 <td style="text-align:right;">
-2.0932902
+2.06
 </td>
 <td style="text-align:right;">
-3.942043
+3.91
 </td>
 <td style="text-align:right;">
-1.00000
+1.00
 </td>
 </tr>
 <tr>
@@ -864,16 +863,16 @@ Default prior
 b_Intercept
 </td>
 <td style="text-align:right;">
-2.903251
+2.90
 </td>
 <td style="text-align:right;">
-1.8855461
+1.91
 </td>
 <td style="text-align:right;">
-3.930462
+3.94
 </td>
 <td style="text-align:right;">
-1.00000
+1.00
 </td>
 </tr>
 <tr>
@@ -884,16 +883,16 @@ User prior
 b_CONDITION1
 </td>
 <td style="text-align:right;">
-1.567213
+1.57
 </td>
 <td style="text-align:right;">
-0.4562219
+0.46
 </td>
 <td style="text-align:right;">
-2.657129
+2.66
 </td>
 <td style="text-align:right;">
-0.99625
+1.00
 </td>
 </tr>
 <tr>
@@ -904,21 +903,20 @@ Default prior
 b_CONDITION1
 </td>
 <td style="text-align:right;">
-1.838562
+1.84
 </td>
 <td style="text-align:right;">
-0.3318538
+0.49
 </td>
 <td style="text-align:right;">
-3.237537
+3.37
 </td>
 <td style="text-align:right;">
-0.98900
+0.99
 </td>
 </tr>
 </tbody>
 </table></div>
-</div>
 </div>
 </div>
 </div>
@@ -928,7 +926,7 @@ b_CONDITION1
 </h3>
 <p>For an independent activity, we will use data from the study by <span class="citation">(<a href="references.html#ref-brandt_does_2014" role="doc-biblioref">Brandt et al., 2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
 <p>In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results.</p>
-<p>Participants were randomly allocated (<code><span class="st">"ExpCond"</span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span class="st">"WellLitSca"</span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
+<p>Participants were randomly allocated (<code><span><span class="st">"ExpCond"</span></span></code>) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (<code><span><span class="st">"WellLitSca"</span></span></code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
 <p>In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.</p>
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -961,45 +959,44 @@ Ethical
 <div class="try">
 <p>Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.</p>
 </div>
-<p>You can check your attempt to the solutions at <a href="introduction-to-bayesian-estimation.html#Brandt-solution">the bottom of the page</a>. Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from <a href="https://github.com/BartlettJE/statsresdesign/tree/master/book/Models">the Github repository</a> and reproduce the results that way.</p>
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Brandt_unlit.csv"</span><span class="op">)</span>
-
-<span class="co"># Recode to dummy coding </span>
-<span class="co"># Turn to factor after recoding so we're working with groups</span>
-
-<span class="co"># 0 = Ethical</span>
-<span class="co"># 1 = Unethical</span>
-
-<span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="va">Brandt_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>ExpCond <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">ExpCond</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="fl">0</span>,
-                             <span class="va">ExpCond</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Brandt_unlit.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Recode to dummy coding </span></span>
+<span><span class="co"># Turn to factor after recoding so we're working with groups</span></span>
+<span></span>
+<span><span class="co"># 0 = Ethical</span></span>
+<span><span class="co"># 1 = Unethical</span></span>
+<span></span>
+<span><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="va">Brandt_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>ExpCond <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">ExpCond</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="fl">0</span>,</span>
+<span>                             <span class="va">ExpCond</span> <span class="op">==</span> <span class="op">-</span><span class="fl">1</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li><p>Is the coefficient positive or negative? <select class="webex-select"><option value="blank"></option>
 <option value="answer">Positive</option>
 <option value="x">Negative</option></select></p></li>
 <li>
 <p>Can we be confident in the direction of the coefficient?</p>
-<div id="radio_DPCSYBKPRH" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="x"><span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_DPCSYBKPRH" value="answer"><span>No, the 95% HDI crosses 0</span></label>
+<div id="radio_RTDSTDKCAP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="x"><span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_RTDSTDKCAP" value="answer"><span>No, the 95% HDI crosses 0</span></label>
 </div>
 </li>
 <li>
 <p>What would your conclusion be for the research question?</p>
-<div id="radio_PNTRUJRPIY" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="x"><span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_PNTRUJRPIY" value="answer"><span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label>
+<div id="radio_EIQWTQPDQS" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="x"><span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_EIQWTQPDQS" value="answer"><span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label>
 </div>
 </li>
 <li>
 <p>Are the results sensitive to the choice between default and user priors?</p>
-<div id="radio_UFLXAMEWIT" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="answer"><span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_UFLXAMEWIT" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label>
+<div id="radio_GCIABOLLHZ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="answer"><span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_GCIABOLLHZ" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label>
 </div>
 </li>
 <li>
 <p>Does the normal model capture the features of the data?</p>
-<div id="radio_IMDGRDNIDO" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="answer"><span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_IMDGRDNIDO" value="x"><span>Yes, assuming a normal distribution captures key features of the data.</span></label>
+<div id="radio_YIEBQNHUMY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="answer"><span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_YIEBQNHUMY" value="x"><span>Yes, assuming a normal distribution captures key features of the data.</span></label>
 </div>
 </li>
 </ul>
@@ -1015,6 +1012,7 @@ Explain these answers
 <li><p>In contrast to the Schroeder and Epley data where the ordinal data was approximately normal, there is no getting away from the characteristic ordinal distribution with peaks at each integer. Really, we would need to explore something like ordinal regression to capture the properties of the data. It is not something we covered in the Bayesian lectures or activites, but <a href="introduction-to-bayesian-estimation.html#Brandt-bonus">see the bonus section</a> showing what an ordinal model would look like applied to these data.</p></li>
 </ol>
 </div>
+<p>You can check your attempt to the solutions at <a href="introduction-to-bayesian-estimation.html#Brandt-solution">the bottom of the page</a>. Remember this is based on semi-random number generation, so there might be some variation in your precise values, but the qualitative conclusions should be consistent. If you want to double check your process is accurate, you can download our saved models from <a href="https://github.com/BartlettJE/statsresdesign/tree/master/book/Models">the Github repository</a> and reproduce the results that way.</p>
 </div>
 </div>
 <div id="multipleregression" class="section level2" number="10.3">
@@ -1025,45 +1023,43 @@ Explain these answers
 <h3>
 <span class="header-section-number">10.3.1</span> Guided example (Heino et al., 2018)<a class="anchor" aria-label="anchor" href="#guided-example-heino-et-al.-2018"><i class="fas fa-link"></i></a>
 </h3>
+<p>For the second guided example we covered in the lecture, we will explore the model included in <span class="citation">Heino et al. (<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">2018</a>)</span> for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents.</p>
+<p>In this section, we will work through their multiple regression model following the Bayesian modelling steps. There will be less explanation than the simple linear regression section as we are following the same processes, but I will highlight if there is anything new or important to consider when we have two or more predictors.</p>
 <div id="identify-data-1" class="section level4" number="10.3.1.1">
 <h4>
 <span class="header-section-number">10.3.1.1</span> Identify data<a class="anchor" aria-label="anchor" href="#identify-data-1"><i class="fas fa-link"></i></a>
 </h4>
-<ul>
-<li>Replace with Troy et al. replication from Aimi and Rhonda or Catherine's religion self-forgiveness.</li>
-</ul>
-<p>For the second guided example we covered in the lecture, we will explore the model included in <span class="citation">Heino et al. (<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">2018</a>)</span> for their Bayesian data analysis tutorial. They explored the feasibility and acceptability of the ”Let’s Move It” intervention to increase physical activity in 43 older adolescents.
-They randomised participants into two groups (<code><span class="st">"intervention"</span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span class="st">"value"</span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span class="st">"time"</span></code>).</p>
+<p><span class="citation">Heino et al. (<a href="references.html#ref-heino_bayesian_2018" role="doc-biblioref">2018</a>)</span> randomised participants into two groups (<code><span><span class="st">"intervention"</span></span></code>) for control (0) and intervention (1) arms (group sessions on motivation and self-regulation skills, and teacher training). Their outcome was a measure of autonomous motivation (<code><span><span class="st">"value"</span></span></code>) on a 1-5 scale, with higher values meaning greater motivation. They measured the outcome at both baseline (0) and six weeks after (1; <code><span><span class="st">"time"</span></span></code>).</p>
 <p>Their research question was: To what extent does the intervention affect autonomous motivation?</p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Heino_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Heino-2018.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">intervention</span>, <span class="va">time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">intervention</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
-         time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">time</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Heino_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Heino-2018.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">ID</span>, <span class="va">intervention</span>, <span class="va">time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>intervention <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">intervention</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">time</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="info">
-<p>Part of their tutorial discusses a bigger multilevel model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation.</p>
+<p>Part of their tutorial discusses a bigger multi-level model considering different scenarios, but for this demonstration, we're just averaging over the scenarios to get the mean motivation. We also convert intervention and time to factors so they work nicely in plotting options later.</p>
 </div>
 </div>
 <div id="define-a-descriptive-model-1" class="section level4" number="10.3.1.2">
 <h4>
 <span class="header-section-number">10.3.1.2</span> Define a descriptive model<a class="anchor" aria-label="anchor" href="#define-a-descriptive-model-1"><i class="fas fa-link"></i></a>
 </h4>
-<p>I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span class="st">"value"</span></code>) and we want to look at the interaction between <code><span class="st">"intervention"</span></code> and <code><span class="st">"time"</span></code>. They define a fixed intercept in the model with the <code>1 +</code> part. Its also technically a multi-level model as they define a random intercept for each participant (<code>(1 | ID)</code>) to ensure we recognise time is within-subjects.</p>
+<p>I recommend reading the article as they explain this process in more detail. We essentially have an outcome of autonomous motivation (<code><span><span class="st">"value"</span></span></code>) and we want to look at the interaction between <code><span><span class="st">"intervention"</span></span></code> and <code><span><span class="st">"time"</span></span></code>. They define a fixed intercept in the model with the <code>1 +</code> part. Its also technically a multi-level model as they define a random intercept for each participant (<code>(1 | ID)</code>) to ensure we recognise time is within-subjects.</p>
 <div class="info">
 <p>By default, R includes a fixed intercept (the <code>1 +</code> part) in the model, so you would get the same results without adding it to the model. However, people often include it so it is explicit in the model formula.</p>
 </div>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Heino_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">time</span> <span class="op">*</span> <span class="va">intervention</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ID</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Heino_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">time</span> <span class="op">*</span> <span class="va">intervention</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">|</span> <span class="va">ID</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="specify-prior-probability-of-parameters-1" class="section level4" number="10.3.1.3">
 <h4>
 <span class="header-section-number">10.3.1.3</span> Specify prior probability of parameters<a class="anchor" aria-label="anchor" href="#specify-prior-probability-of-parameters-1"><i class="fas fa-link"></i></a>
 </h4>
-<p>Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations and sigma.</p>
+<p>Compared to simple linear regression, as you add predictors, the number of priors you can set also increase. In the output below, you will see how you can enter a prior for all beta coefficients or one specific for each predictors. There are also different options for setting a prior for standard deviations since we now have the group-level standard deviation for the random effect and sigma for the distribution family since we are assuming the outcome is normal.</p>
 <div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Heino_model</span>, data <span class="op">=</span> <span class="va">Heino_data</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Heino_model</span>, data <span class="op">=</span> <span class="va">Heino_data</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Warning: Rows containing NAs were excluded from the model.</code></pre>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
@@ -1308,30 +1304,31 @@ default
 </table></div>
 </div>
 <p>Note, you get a warning about missing data but since its a multi-level model, we just have fewer observations in some conditions instead of the whole case being removed.</p>
-<p>This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors to only allow positive values.</p>
+<p>This is another place where I recommend reading the original article for more information. They discuss their choices and essentially settle on wide weak priors for the coefficients to say small effects are more likely but they allow larger effects. The two standard deviation classes are then assigned relatively wide Cauchy priors.</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Heino_priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">cauchy</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">cauchy</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Heino_priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">cauchy</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">cauchy</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20plot%20priors-1.png" width="100%" style="display: block; margin: auto;"></div>
 </div>
 <div id="update-prior-to-posterior" class="section level4" number="10.3.1.4">
 <h4>
 <span class="header-section-number">10.3.1.4</span> Update prior to posterior<a class="anchor" aria-label="anchor" href="#update-prior-to-posterior"><i class="fas fa-link"></i></a>
 </h4>
 <p>This is going to be the longest section as we are going to fit the <code>brms</code> model and then explore the posterior.</p>
-<p>As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains.</p>
+<p>As the process relies on sampling using MCMC, it is important to set a seed for reproducibility, so the semi-random numbers have a consistent starting point. This might take a while depending on your computer, then you will get a bunch of output for fitting the model and sampling from the MCMC chains. Remember, we save all the models using the <code>file</code> argument, so its easier to load them later. If you update the model, you must use the <code>file_refit</code> argument or it will not change when you use the same file name.</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Heino_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Heino_model</span>,
-  data <span class="op">=</span> <span class="va">Heino_data</span>,
-  prior <span class="op">=</span> <span class="va">Heino_priors</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="fl">2108</span>,
-  file <span class="op">=</span> <span class="st">"Models/Heino_model"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Heino_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Heino_model</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Heino_data</span>,</span>
+<span>  prior <span class="op">=</span> <span class="va">Heino_priors</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">2108</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Heino_model"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now we have fitted the model, let's have a look at the summary.</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: value ~ 1 + time * intervention + (1 | ID) 
@@ -1342,100 +1339,399 @@ default
 ## Group-Level Effects: 
 ## ~ID (Number of levels: 40) 
 ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sd(Intercept)     0.71      0.10     0.53     0.92 1.00      817     1710
+## sd(Intercept)     0.71      0.10     0.54     0.92 1.00      907     1725
 ## 
 ## Population-Level Effects: 
 ##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## Intercept               3.70      0.20     3.29     4.09 1.00      810     1328
-## time1                   0.08      0.14    -0.19     0.37 1.00     2170     2694
-## intervention1          -0.08      0.26    -0.59     0.43 1.00      762     1446
-## time1:intervention1     0.10      0.18    -0.25     0.44 1.00     2203     2552
+## Intercept               3.69      0.21     3.28     4.09 1.01      789     1511
+## time1                   0.09      0.15    -0.19     0.38 1.00     2442     2596
+## intervention1          -0.08      0.26    -0.59     0.44 1.01      761     1383
+## time1:intervention1     0.09      0.18    -0.28     0.43 1.00     2424     2565
 ## 
 ## Family Specific Parameters: 
 ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-## sigma     0.33      0.05     0.25     0.44 1.00     1107     1982
+## sigma     0.33      0.05     0.25     0.44 1.00     1210     2101
 ## 
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>The model summary is very similar to the examples in the simple linear regression section, but we also have a new section for group-level effects since we added a random intercept for participants.</p>
-<p>Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects.</p>
-<p>When it comes to comparing models and building multiple regression models, there is also a specific function to get the model <span class="math inline">\(R^2\)</span> and its 95% credible interval. This tells you the proportion of variance in your outcome that your predictor(s) explain.</p>
+<p>Exploring the coefficients, all the effects are pretty small, with the largest effect being 0.10 units. There is quite a bit of uncertainty here, with 95% credible intervals spanning negative and positive effects, but the sample size is quite small to learn anything meaningful from two groups.</p>
+<p>In more complicated models like this, plotting is going to be your best friend for understanding what is going on. First up, we can check the posteriors and trace plots, although we will work through model checking in the next section.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/bayes_R2.brmsfit.html">bayes_R2</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></code></pre></div>
-<pre><code>##     Estimate  Est.Error      Q2.5     Q97.5
-## R2 0.8037073 0.05385016 0.6720168 0.8781995</code></pre>
-<p>This is a start, but particularly in more complicated models like this, plotting is going to be your best friend for understanding what is going on.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="10-BayesEst_files/figure-html/Heino%20trace%20plot-1.png" width="100%" style="display: block; margin: auto;"><img src="10-BayesEst_files/figure-html/Heino%20trace%20plot-2.png" width="100%" style="display: block; margin: auto;"></p>
+<p>The posteriors are quite wide and spread over 0 for the coefficients. The trace plots do not suggest there are cause for concern around convergence in the model.</p>
+<p>The next key plot is seeing the probability of direction and with the priors superimposed.</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span>, </span>
+<span>     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># plot the priors</span></span></code></pre></div>
+<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20pd%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>On this plot, you can see how wide the priors were. They are almost flat to cover coefficients from -10 to 10, with the posterior distributions peaking around 0. These plots also show how there is not much we can conclude from the results.</p>
+<p>Finally, we can take a closer look at the 95% HDI of the posterior distributions.</p>
 <div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></code></pre></div>
-<p><img src="10-BayesEst_files/figure-html/Heino%20plots-1.png" width="100%" style="display: block; margin: auto;"><img src="10-BayesEst_files/figure-html/Heino%20plots-2.png" width="100%" style="display: block; margin: auto;"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify to avoid clash with ggdist</span></span></code></pre></div>
+<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20HDI%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>Now we zoom in a little more without the scale of the wide priors and there is further indication the mass of the coefficient posteriors are centered over 0. We would need more data to make firm conclusions about the effectiveness of the intervention. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention.</p>
+<div id="calculating-and-plotting-conditional-effects-1" class="section level5" number="10.3.1.4.1">
+<h5>
+<span class="header-section-number">10.3.1.4.1</span> Calculating and plotting conditional effects<a class="anchor" aria-label="anchor" href="#calculating-and-plotting-conditional-effects-1"><i class="fas fa-link"></i></a>
+</h5>
+<p>As a bonus extra since its not included in Heino et al., you can also use the <code class="package">emmeans</code> package to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future.</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span>, 
-     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># plot the priors</span></code></pre></div>
-<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20plots-3.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify to avoid clash</span></code></pre></div>
-<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20plots-4.png" width="100%" style="display: block; margin: auto;"></div>
-<p>Regardless of the output we look at here, there is not much going on across any of the predictors. The data comes from a feasibility study, so the sample size was pretty small and its mainly about how receptive participants are to the intervention.</p>
-<p>As a bonus extra since its not included in Heino et al., you can also use the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022" role="doc-biblioref">Lenth, 2022</a>)</span> to calculate marginal effects on the posterior distribution. Its not important here as there is little we can learn from breaking down the interaction further, but it might come in handy in future.</p>
+<code class="sourceCode R"><span><span class="co"># Surround with brackets to both save and output</span></span>
+<span><span class="op">(</span><span class="va">Heino_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">Heino_fit</span>, <span class="co"># add the model object  </span></span>
+<span>        <span class="op">~</span> <span class="va">time</span> <span class="op">|</span> <span class="va">intervention</span><span class="op">)</span><span class="op">)</span> <span class="co"># We want to separate time by levels of intervention</span></span></code></pre></div>
+<pre><code>## intervention = 0:
+##  time emmean lower.HPD upper.HPD
+##  0      3.69      3.28      4.09
+##  1      3.78      3.39      4.16
+## 
+## intervention = 1:
+##  time emmean lower.HPD upper.HPD
+##  0      3.60      3.28      3.92
+##  1      3.78      3.46      4.11
+## 
+## Point estimate displayed: median 
+## HPD interval probability: 0.95</code></pre>
+<p>This provides the median value of the posterior for the combination of time and intervention. We can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping.</p>
+<p>Depending on how you want to express the marginal means, you can also use the <code class="package">emmeans</code> object to calculate contrasts, expressing the effects as differences in the median posterior value for each group/condition. Just keep in mind which comparisons would best address your research question and hypothesis. We entered the difference in time for each intervention, but you might be interested in the difference in intervention for each time.</p>
 <div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Surround with brackets to both save and output</span>
-<span class="op">(</span><span class="va">Heino_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">Heino_fit</span>, <span class="co"># add the model object  </span>
-        <span class="op">~</span> <span class="va">time</span> <span class="op">|</span> <span class="va">intervention</span><span class="op">)</span><span class="op">)</span> <span class="co"># We want to separate time by levels of intervention</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span><span class="va">Heino_means</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## intervention = 0:
-##  time emmean lower.HPD upper.HPD
-##  0      3.69      3.32      4.11
-##  1      3.78      3.39      4.18
+##  contrast estimate lower.HPD upper.HPD
+##  0 effect  -0.0458   -0.1926    0.0926
+##  1 effect   0.0458   -0.0926    0.1926
 ## 
 ## intervention = 1:
-##  time emmean lower.HPD upper.HPD
-##  0      3.61      3.27      3.91
-##  1      3.79      3.46      4.12
+##  contrast estimate lower.HPD upper.HPD
+##  0 effect  -0.0893   -0.1948    0.0143
+##  1 effect   0.0893   -0.0143    0.1948
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95</code></pre>
-<p>This provides the median value of the posterior for the combination of time and intervention. Here, we can see pretty clearly there is not much going on, with very little difference across the estimates and all the 95% credible intervals overlapping.</p>
-<p>Depending on how you want to express the marginal means, you can also use the <code class="package">emmeans</code> object to calculate contrasts, expressing the effects as mean differences in the posterior for each group/condition.</p>
+<p>Finally, we can plot the conditional effects which is normally a good idea to help your reader understand your results. In this object, I have used the <code>effects</code> argument to specify which population level effect I want plotting. If you omit the <code>effects</code> argument, you would receive three plots for this example: one for the partial effect of each predictor and one for the interaction.</p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span><span class="va">Heino_means</span><span class="op">)</span></code></pre></div>
-<pre><code>## intervention = 0:
-##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0418   -0.1802    0.0957
-##  1 effect   0.0418   -0.0957    0.1802
-## 
-## intervention = 1:
-##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0909   -0.1919    0.0216
-##  1 effect   0.0909   -0.0216    0.1919
-## 
-## Point estimate displayed: median 
-## HPD interval probability: 0.95</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Heino_fit</span>, </span>
+<span>                    effects <span class="op">=</span> <span class="st">"time:intervention"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20conditional%20effects%20standard-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>Like the simple linear regression example, this is useful for your own understanding, but it might not be quite appropriate for inserting immediately into a report. Once you save the plot as an object, you can add <code class="package">ggplot</code> layers to make it easier for your reader to understand. For example, here I have tidied up the axis names and labels, changed the scale to reflect the range of the outcome, and added a colour scheme to differentiate the two intervention groups.</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Save initial plot of the interaction</span></span>
+<span><span class="va">conditional_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Heino_fit</span>, </span>
+<span>                    effects <span class="op">=</span> <span class="st">"time:intervention"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Call the plot and stop legend being included to prevent duplication later</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">conditional_plot</span>, </span>
+<span>     plot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>     cat_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="co"># No idea why, but doesn't work without the subsetting</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Six weeks"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time"</span>, y <span class="op">=</span> <span class="st">"Autonomous Motivation"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"D"</span>, begin <span class="op">=</span> <span class="fl">0.1</span>, end <span class="op">=</span> <span class="fl">0.7</span>, </span>
+<span>                        name <span class="op">=</span> <span class="st">"Group"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Intervention"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Add neater legend labels</span></span></code></pre></div>
+<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20conditional%20effects%20modified-1.png" width="100%" style="display: block; margin: auto;"></div>
+</div>
+<div id="model-fit-and-comparison" class="section level5" number="10.3.1.4.2">
+<h5>
+<span class="header-section-number">10.3.1.4.2</span> Model fit and comparison<a class="anchor" aria-label="anchor" href="#model-fit-and-comparison"><i class="fas fa-link"></i></a>
+</h5>
+<p>Depending on your research question and theoretical understanding of the variables you are working with, you might be interested in comparing different models and assessing their fit. It is not something Heino et al. included, but you could compare their model to one without the interaction (lets pretend that is theoretically justified). Instead of refitting a whole new model, we can update the model to a change in formula. All other settings like the priors remain the same.</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">conditional_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span><span class="va">Heino_fit</span>, 
-                    effects <span class="op">=</span> <span class="st">"time:intervention"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">conditional_plot</span>, 
-     plot <span class="op">=</span> <span class="cn">FALSE</span>, 
-     cat_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Six weeks"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time"</span>, y <span class="op">=</span> <span class="st">"Autonomous Motivation"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_d</a></span><span class="op">(</span>option <span class="op">=</span> <span class="st">"D"</span>, begin <span class="op">=</span> <span class="fl">0.1</span>, end <span class="op">=</span> <span class="fl">0.7</span>, 
-                        name <span class="op">=</span> <span class="st">"Group"</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Intervention"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20conditional%20effects-1.png" width="100%" style="display: block; margin: auto;"></div>
+<code class="sourceCode R"><span><span class="co"># Update model to a new formula</span></span>
+<span><span class="va">Heino_fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span><span class="va">Heino_fit</span>, <span class="co"># Original brms model object </span></span>
+<span>                     formula. <span class="op">=</span> <span class="op">~</span> <span class="va">.</span> <span class="op">-</span> <span class="va">time</span><span class="op">:</span><span class="va">intervention</span><span class="op">)</span> <span class="co"># tilda dot for the original formula, minus the interaction</span></span></code></pre></div>
+<p>First, we can calculate the <span class="math inline">\(R^2\)</span> estimate for the proportion of variance in your outcome that your predictors explain. <code class="package">brms</code> has a specific function to get the model <span class="math inline">\(R^2\)</span> and its 95% credible interval.</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#R2 for first model object with interaction</span></span>
+<span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/bayes_R2.html">bayes_R2</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##     Estimate  Est.Error      Q2.5     Q97.5
+## R2 0.8025928 0.05267947 0.6740807 0.8766934</code></pre>
+<p>We can also compare the two models side by side. The second model actually has a slightly higher <span class="math inline">\(R^2\)</span> estimate, but there is very little to choose between the two models.</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">R2_model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/bayes_R2.html">bayes_R2</a></span><span class="op">(</span><span class="va">Heino_fit</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">R2_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstantools/reference/bayes_R2.html">bayes_R2</a></span><span class="op">(</span><span class="va">Heino_fit2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">R2_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">R2_model1</span>, <span class="va">R2_model2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">R2_table</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Model with interaction"</span>, <span class="st">"Model without interaction"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">R2_table</span>, </span>
+<span>             digits <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>             col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2 Estimate"</span>, <span class="st">"Estimated Error"</span>, <span class="st">"Lower 95% HDI"</span>, <span class="st">"Upper 95% HDI"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+R2 Estimate
+</th>
+<th style="text-align:right;">
+Estimated Error
+</th>
+<th style="text-align:right;">
+Lower 95% HDI
+</th>
+<th style="text-align:right;">
+Upper 95% HDI
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Model with interaction
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.67
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Model without interaction
+</td>
+<td style="text-align:right;">
+0.81
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:right;">
+0.88
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 </div>
 <div id="model-check" class="section level4" number="10.3.1.5">
 <h4>
 <span class="header-section-number">10.3.1.5</span> Model check<a class="anchor" aria-label="anchor" href="#model-check"><i class="fas fa-link"></i></a>
 </h4>
-<p>As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. Compared to the first guided example, the model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5).</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/pp_check.brmsfit.html">pp_check</a></span><span class="op">(</span><span class="va">Heino_fit</span>,
-         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># 100 draws from the model</span></code></pre></div>
+<p>In previous output, there were no immediate causes of concern. Trace plots showed good mixing of the chains, R-hat values were no higher than 1.01, and effective sample size values were close to the thousands or higher.</p>
+<p>As the final step, we can look at the posterior predictive check to make sure the model is capturing the features of the data. The model maps onto the data quite well, with the samples largely following the underlying data. We are still using metric models to analyse ultimately ordinal data (despite calculating the mean response), so the expected values go beyond the range of data (1-5), but it is good enough with that caveat in mind.</p>
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">Heino_fit</span>,</span>
+<span>         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="co"># 100 draws from the model</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Heino%20pp%20check-1.png" width="100%" style="display: block; margin: auto;"></div>
 <div class="try">
-<p>If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data.</p>
+<p>If you scroll to the end of the Heino et al. article, they demonstrate how you can fit an ordinal model to the data when you do not average over the different situations.</p>
+</div>
+<div id="check-model-sensitivity-to-different-priors-1" class="section level5" number="10.3.1.5.1">
+<h5>
+<span class="header-section-number">10.3.1.5.1</span> Check model sensitivity to different priors<a class="anchor" aria-label="anchor" href="#check-model-sensitivity-to-different-priors-1"><i class="fas fa-link"></i></a>
+</h5>
+<p>The final thing we will check for this model is how sensitive it is to the choice of prior. For this example, we will compare the model output under the default package priors and the user defined priors from Heino et al.</p>
+<p>In the code below, we have omitted the prior argument, so we are fitting the exact same model as before but using the default package priors. This time we can't just update the model, we need to refit it.</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Heino_fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Heino_model</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Heino_data</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">2108</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Heino_model3"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>If we run the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span></code> function again, you can check the intercept and predictor coefficients to see how they differ to the first model we fitted. Ideally, they should provide us with similar inferences, such as a similar magnitude and in the same direction. It is never going to be exactly the same under different priors, but we want our conclusions robust to the choice of prior we use.</p>
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Heino_fit3</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: value ~ 1 + time * intervention + (1 | ID) 
+##    Data: Heino_data (Number of observations: 68) 
+##   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
+##          total post-warmup draws = 4000
+## 
+## Group-Level Effects: 
+## ~ID (Number of levels: 40) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.71      0.10     0.53     0.94 1.00      896     1615
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               3.68      0.21     3.27     4.08 1.00      916     1677
+## time1                   0.09      0.15    -0.19     0.39 1.00     2541     2786
+## intervention1          -0.07      0.27    -0.58     0.46 1.00      753     1196
+## time1:intervention1     0.09      0.19    -0.29     0.44 1.00     2384     2585
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.33      0.05     0.25     0.45 1.00     1003     1602
+## 
+## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+<p>To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior.</p>
+<pre><code>## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.
+## Possible multicollinearity between b_time1:intervention1 and b_time1 (r = 0.8). This might lead to inappropriate results. See 'Details' in '?rope'.</code></pre>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr>
+<th style="text-align:left;">
+Model
+</th>
+<th style="text-align:left;">
+Parameter
+</th>
+<th style="text-align:right;">
+Median Estimate
+</th>
+<th style="text-align:right;">
+Lower 95% HDI
+</th>
+<th style="text-align:right;">
+Upper 95% HDI
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+User priors
+</td>
+<td style="text-align:left;">
+b_Intercept
+</td>
+<td style="text-align:right;">
+3.69
+</td>
+<td style="text-align:right;">
+3.28
+</td>
+<td style="text-align:right;">
+4.09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Default priors
+</td>
+<td style="text-align:left;">
+b_Intercept
+</td>
+<td style="text-align:right;">
+3.68
+</td>
+<td style="text-align:right;">
+3.28
+</td>
+<td style="text-align:right;">
+4.08
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+User priors
+</td>
+<td style="text-align:left;">
+b_intervention1
+</td>
+<td style="text-align:right;">
+-0.08
+</td>
+<td style="text-align:right;">
+-0.59
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Default priors
+</td>
+<td style="text-align:left;">
+b_intervention1
+</td>
+<td style="text-align:right;">
+-0.07
+</td>
+<td style="text-align:right;">
+-0.57
+</td>
+<td style="text-align:right;">
+0.46
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+User priors
+</td>
+<td style="text-align:left;">
+b_time1
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+-0.19
+</td>
+<td style="text-align:right;">
+0.39
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Default priors
+</td>
+<td style="text-align:left;">
+b_time1
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+-0.20
+</td>
+<td style="text-align:right;">
+0.38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+User priors
+</td>
+<td style="text-align:left;">
+b_time1:intervention1
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+-0.28
+</td>
+<td style="text-align:right;">
+0.42
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Default priors
+</td>
+<td style="text-align:left;">
+b_time1:intervention1
+</td>
+<td style="text-align:right;">
+0.09
+</td>
+<td style="text-align:right;">
+-0.28
+</td>
+<td style="text-align:right;">
+0.45
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 </div>
 </div>
@@ -1446,24 +1742,24 @@ default
 <p>For an independent activity, we will use data from the study by <span class="citation">Coleman et al. (<a href="references.html#ref-coleman_absorption_2019" role="doc-biblioref">2019</a>)</span>. Coleman et al. contains two studies investigating religious mystical experiences. One study focused on undergraduates and a second study focused on experienced meditators who were part of a unique religious group.</p>
 <p>The data set contains a range of variables used for the full model in the paper. We are going to focus on a small part of it for this exercise, but feel free to explore developing the full model as was used in study 1. The key variables are:</p>
 <ol style="list-style-type: decimal">
-<li><p><code><span class="st">"Age"</span></code> - Measured in years</p></li>
-<li><p><code><span class="st">"Gender"</span></code> - 0 = male; 1 = female</p></li>
-<li><p><code><span class="st">"Week_med"</span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often</p></li>
-<li><p><code><span class="st">"Time_session"</span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer</p></li>
-<li><p><code><span class="st">"Absorption_SUM"</span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement</p></li>
-<li><p><code><span class="st">"EQ_SUM"</span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability</p></li>
-<li><p><code><span class="st">"Mscale_SUM"</span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences</p></li>
+<li><p><code><span><span class="st">"Age"</span></span></code> - Measured in years</p></li>
+<li><p><code><span><span class="st">"Gender"</span></span></code> - 0 = male; 1 = female</p></li>
+<li><p><code><span><span class="st">"Week_med"</span></span></code> - Ordinal measure of how often people meditate per week, with higher values meaning more often</p></li>
+<li><p><code><span><span class="st">"Time_session"</span></span></code> - Ordinal measure of how long people meditate per session, with higher values meaning longer</p></li>
+<li><p><code><span><span class="st">"Absorption_SUM"</span></span></code> - Sum score of the Modified Tellegen Absorption scale, with higher values meaning greater trait levels of imaginative engagement</p></li>
+<li><p><code><span><span class="st">"EQ_SUM"</span></span></code> - Sum score of the Empathizing Quotient short form, with higher values meaning greater theory of mind ability</p></li>
+<li><p><code><span><span class="st">"Mscale_SUM"</span></span></code> - Sum score of the Hood M-scale, with higher values meaning more self-reported mystical experiences</p></li>
 </ol>
-<p>Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span class="st">"Absorption_SUM"</span></code>) and mentalizing (<code><span class="st">"EQ_SUM"</span></code>) as they were the main contributors, with the other variables as covariates.</p>
-<p>Our research question is: How are absorption (<code><span class="st">"Absorption_SUM"</span></code>) and mentalizing (<code><span class="st">"EQ_SUM"</span></code>) related to mystical experiences (<code><span class="st">"Mscale_SUM"</span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction.</p>
+<p>Previous studies had explored these components separately and mainly in undergraduates, so Coleman et al. took the opportunity to explore a unique sample of a highly committed religious group. The final model included all seven variables, but for this example, we will just focus on absorption (<code><span><span class="st">"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class="st">"EQ_SUM"</span></span></code>) as they were the main contributors, with the other variables as covariates.</p>
+<p>Our research question is: How are absorption (<code><span><span class="st">"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class="st">"EQ_SUM"</span></span></code>) related to mystical experiences (<code><span><span class="st">"Mscale_SUM"</span></span></code>) as an outcome? Focus on entering the two variables as individual predictors at first, then explore an interaction.</p>
 <p>Use your understanding of the design to address the research question. If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Think about whether you have weaker or stronger priors depending on your understanding of the topic, but keep in mind how sensitive your conclusions are to your choice of prior.</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Coleman_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Coleman_2019.csv"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Coleman_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Coleman_2019.csv"</span><span class="op">)</span></span></code></pre></div>
 <div class="try">
 <p>From here, apply what you learnt in the first guided example to this new independent task.</p>
 </div>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Coleman_model</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Coleman_model</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
 </div>
 </div>
 <div id="summary-1" class="section level2" number="10.4">
@@ -1489,11 +1785,11 @@ default
 <p>To follow the modelling process, you should have read in the data from Brandt et al.</p>
 <p>Step 2. Define a descriptive model</p>
 <p>For this model, we are again working with simple linear regression. We have one outcome of <code>welllit</code> and one categorical predictor of <code>ExpCond</code>. We can also check what priors we can specify:</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">welllit</span> <span class="op">~</span> <span class="va">ExpCond</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Brandt_model</span>,
-          data <span class="op">=</span> <span class="va">Brandt_data</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Brandt_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsformula.html">bf</a></span><span class="op">(</span><span class="va">welllit</span> <span class="op">~</span> <span class="va">ExpCond</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/get_prior.html">get_prior</a></span><span class="op">(</span><span class="va">Brandt_model</span>,</span>
+<span>          data <span class="op">=</span> <span class="va">Brandt_data</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -1625,23 +1921,23 @@ default
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20intercept%20prior-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>For the coefficient, the brightness rating was 0.59 units lower in the unethical priming group compared to the ethical priming group. This is quite a small effect and whether you favour an effect in one direction or the other depends on how convinced you are in the manipulation. I set the prior as a normal distribution over 0 with an SD of 0.5. This means 0 is the most likely value and most of the mass is between -1 and 1 to consider effects in a positive or negative direction.</p>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20coefficient%20prior-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(4, 1.2)"</span>, class <span class="op">=</span> <span class="st">"Intercept"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(0, 0.5)"</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"exponential(1)"</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Brandt_priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(4, 1.2)"</span>, class <span class="op">=</span> <span class="st">"Intercept"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"normal(0, 0.5)"</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">set_prior</a></span><span class="op">(</span><span class="st">"exponential(1)"</span>, class <span class="op">=</span> <span class="st">"sigma"</span><span class="op">)</span></span></code></pre></div>
 <p>Step 4. Update the prior to a posterior distribution</p>
 <p>For the first model, I will just use the default priors to have minimal influence on the parameters.</p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Brandt_model</span>,
-  data <span class="op">=</span> <span class="va">Brandt_data</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="fl">80323</span>,
-  file <span class="op">=</span> <span class="st">"Models/Brandt_model1"</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Brandt_fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Brandt_model</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Brandt_data</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">80323</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Brandt_model1"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>To summarise the first model, the effects are seemingly in the opposite direction. In this default prior model, the unethical group was 0.21 units higher on the posterior median than the ethical group. This means the unethical group perceived the room as brighter, but there is a lot of uncertainty with the mass of the posterior spanning across negative and positive values.</p>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit1</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: welllit ~ ExpCond 
@@ -1662,19 +1958,19 @@ default
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>Now, we can fit a second model using our informed priors.</p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Brandt_model</span>,
-  data <span class="op">=</span> <span class="va">Brandt_data</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,
-  prior <span class="op">=</span> <span class="va">Brandt_priors</span>,
-  sample_prior <span class="op">=</span> <span class="cn">TRUE</span>,
-  seed <span class="op">=</span> <span class="fl">80323</span>,
-  file <span class="op">=</span> <span class="st">"Models/Brandt_model2"</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Brandt_fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Brandt_model</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Brandt_data</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="va">Brandt_priors</span>,</span>
+<span>  sample_prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">80323</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Brandt_model2"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Using our informed priors, we get very similar results. The intercept estimates are almost identical and the coefficient estimates are marginally smaller than our default priors. This means our inferences are robust to the choice of priors. Apart from when we compare the estimates from each model, we will focus on the second model and our informed priors.</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: welllit ~ ExpCond 
@@ -1694,26 +1990,26 @@ default
 ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span>, 
-     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/p_direction.html">p_direction</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span>, </span>
+<span>     priors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20model%202%20prior%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify package to avoid clash with ggdist</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">bayestestR</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/bayestestR/reference/hdi.html">hdi</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span><span class="op">)</span> <span class="co"># Specify package to avoid clash with ggdist</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20model%202%20HDI%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>Step 5. Check your model against the data</p>
 <p>Our model diagnostics all looked respectable. Rhat values were all 1 and ESS were in the thousands. If we compare our two models, we get similar estimates from our default and informed priors.</p>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Brandt_fit1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Model <span class="op">=</span> <span class="st">"User prior"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Model</span>, <span class="va">Parameter</span>, <span class="va">Median</span>, <span class="va">CI_low</span>, <span class="va">CI_high</span>, <span class="va">pd</span><span class="op">)</span> 
-
-<span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Model <span class="op">=</span> <span class="st">"Default prior"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Model</span>, <span class="va">Parameter</span>, <span class="va">Median</span>, <span class="va">CI_low</span>, <span class="va">CI_high</span>, <span class="va">pd</span><span class="op">)</span> 
-
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">model1</span>, <span class="va">model2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Parameter</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Brandt_fit1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Model <span class="op">=</span> <span class="st">"User prior"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Model</span>, <span class="va">Parameter</span>, <span class="va">Median</span>, <span class="va">CI_low</span>, <span class="va">CI_high</span>, <span class="va">pd</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://easystats.github.io/bayestestR/reference/describe_posterior.html">describe_posterior</a></span><span class="op">(</span><span class="va">Brandt_fit2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Model <span class="op">=</span> <span class="st">"Default prior"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Model</span>, <span class="va">Parameter</span>, <span class="va">Median</span>, <span class="va">CI_low</span>, <span class="va">CI_high</span>, <span class="va">pd</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">model1</span>, <span class="va">model2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">Parameter</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
 <thead><tr>
@@ -1748,10 +2044,10 @@ b_Intercept
 5.1593417
 </td>
 <td style="text-align:right;">
-4.7926584
+4.7902122
 </td>
 <td style="text-align:right;">
-5.5172109
+5.5114866
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1768,10 +2064,10 @@ b_Intercept
 5.1564121
 </td>
 <td style="text-align:right;">
-4.8412631
+4.8324527
 </td>
 <td style="text-align:right;">
-5.4821084
+5.4738875
 </td>
 <td style="text-align:right;">
 1.00000
@@ -1788,10 +2084,10 @@ b_ExpCond1
 0.2073589
 </td>
 <td style="text-align:right;">
--0.2910827
+-0.2795692
 </td>
 <td style="text-align:right;">
-0.6920747
+0.6975114
 </td>
 <td style="text-align:right;">
 0.79625
@@ -1808,10 +2104,10 @@ b_ExpCond1
 0.1776579
 </td>
 <td style="text-align:right;">
--0.2597102
+-0.2703808
 </td>
 <td style="text-align:right;">
-0.6131311
+0.6012804
 </td>
 <td style="text-align:right;">
 0.78800
@@ -1821,9 +2117,9 @@ b_ExpCond1
 </table></div>
 </div>
 <p>However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model.</p>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/pp_check.brmsfit.html">pp_check</a></span><span class="op">(</span><span class="va">Brandt_fit2</span>,
-         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">Brandt_fit2</span>,</span>
+<span>         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20pp%20check-1.png" width="100%" style="display: block; margin: auto;"></div>
 <div id="Brandt-bonus" class="section level4" number="10.6.1.1">
 <h4>
@@ -1831,19 +2127,19 @@ b_ExpCond1
 </h4>
 <p>Instead of assuming a Gaussian distribution, we can fit a cumulative probit model, assuming there is some normally distributed latent variable behind the ordinal item. For this demonstration, we will just use default priors and see <span class="citation">Bürkner &amp; Vuorre (<a href="references.html#ref-burkner_ordinal_2019" role="doc-biblioref">2019</a>)</span> for a full discussion of Bayesian ordinal regression models. Almost all the other arguments are identical to our previous models, apart from one feature.</p>
 <p>In the regular models, we avoided many fitting problems. In this model though, we get some warnings if you leave the default settings. One is "Warning: There were X divergent transitions after warmup. Increasing adapt_delta above 0.8 may help". This means when we are sampling from the posterior, there can be divergent transitions that cause bias. Increasing delta to 0.9 or 0.99 (it must be smaller than 1) slows down the fitting process, but often helps avoid these issues. At least on my computer, increasing delta to 0.99 fixed the warnings.</p>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Brandt_fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">Brandt_model</span>,
-  data <span class="op">=</span> <span class="va">Brandt_data</span>,
-  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsfamily.html">cumulative</a></span><span class="op">(</span><span class="st">"probit"</span><span class="op">)</span>, <span class="co"># cumulative probit model for ordinal values</span>
-  seed <span class="op">=</span> <span class="fl">80323</span>,
-  file <span class="op">=</span> <span class="st">"Models/Brandt_model3"</span>,
-  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span> <span class="co"># Change from default to decrease divergent transitions </span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Brandt_fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">Brandt_model</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Brandt_data</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsfamily.html">cumulative</a></span><span class="op">(</span><span class="st">"probit"</span><span class="op">)</span>, <span class="co"># cumulative probit model for ordinal values</span></span>
+<span>  seed <span class="op">=</span> <span class="fl">80323</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"Models/Brandt_model3"</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span> <span class="co"># Change from default to decrease divergent transitions </span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now we have our model, we can get a summary like before. This might look a little different as we no longer have just one intercept and one coefficient for this model. Our scale has 7 response options, so for the cumulative probit model, we get successive thresholds between the response options.</p>
 <p>We then have our primary estimate of interest which is the coefficient for experimental condition. We have a categorical predictor, so this represents the shift in our latent outcome from ethical (0) to unethical (1). It is expressed in standard deviations, so the unethical group lead to a 0.16 increase in brightness rating, but the 95% credible interval ranges between -0.26 and 0.58, meaning we have a lot of uncertainty and we would not conclude experimental condition led to a difference in brightness ratings.</p>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit3</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Brandt_fit3</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Family: cumulative 
 ##   Links: mu = probit; disc = identity 
 ## Formula: welllit ~ ExpCond 
@@ -1869,15 +2165,15 @@ b_ExpCond1
 ## and Tail_ESS are effective sample size measures, and Rhat is the potential
 ## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <p>For this model, we can look at the posterior predictive check to see if it represents the data better. Compared to the normal model, this is much better and we are capturing the ordinal features when we draw from the posterior.</p>
-<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/pp_check.brmsfit.html">pp_check</a></span><span class="op">(</span><span class="va">Brandt_fit3</span>, 
-         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/pp_check.html">pp_check</a></span><span class="op">(</span><span class="va">Brandt_fit3</span>, </span>
+<span>         ndraws <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/Brandt%20model%203%20pp%20check-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>After the model summary, we can think about what the model looks like visually. We can get the conditional effects for the response options by experimental condition. We have the estimated probabilities of the 7 response options and there is very little to support a difference between the two groups. The pattern of responses is similar for both groups. This means we make a similar conclusion to the normal distribution model, but it respects the underlying distribution better.</p>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Brandt_fit3</span>, 
-                    effects <span class="op">=</span> <span class="st">"ExpCond"</span>, 
-                    categorical <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/brms/man/conditional_effects.brmsfit.html">conditional_effects</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Brandt_fit3</span>, </span>
+<span>                    effects <span class="op">=</span> <span class="st">"ExpCond"</span>, </span>
+<span>                    categorical <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="10-BayesEst_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></div>
 </div>
 </div>
@@ -2140,7 +2436,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-03-19.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-03-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
