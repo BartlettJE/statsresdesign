@@ -475,7 +475,7 @@ For an independent activity, we will use data from the study by [@brandt_does_20
 
 In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results. 
 
-Participants were randomly allocated (`r hl("ExpCond")`) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (`r hl("WellLitSca")`), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
+Participants were randomly allocated (`r hl("ExpCond")`) to recall an unethical behaviour (n = 49) or an ethical behaviour (n = 51). The key outcome was their perception of how bright the room was (`r hl("welllit")`), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour? 
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
