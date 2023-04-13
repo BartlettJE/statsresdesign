@@ -82,7 +82,7 @@ Now we have our values, it is time to think about what values we will use for th
 
 For Bastian et al. (2014), they measured bonding on a 5-point Likert scale, so we might consider anything less than a one-point difference as too small to be practically meaningful for demonstration purposes. We can now enter these values into the TOSTER function. 
 
-```{r Brandt 1-point TOST}
+```{r Brandt one-point TOST}
 # Save as object and present with brackets around 
 (Brandt_TOST <- tsum_TOST(m1 = Control_mean, # Group 1: Control
                          sd1 = Control_sd,
@@ -118,6 +118,47 @@ As additional information, note there are different confidence levels plotted ab
 
 ## Correlation
 
+For a correlation example, we can use data from [Dawtry et al. (2015)](https://doi.org/10.1177/0956797615586560). This study investigated how people can differently view an increase in wealth inequality. 305 participants completed measures like: Household and estimated population income ($), perceived fairness and satisfaction of the current system of wealth redistribution (1 extremely fair – 9 extremely unfair), and attitudes on wealth redistribution (1 strongly disagree – 6 strongly agree). For this example, we will focus on the relationship between perceived fairness and satisfaction and attitudes on wealth redistribution. The idea is people surround themselves with people of a similar socioeconomic status to themselves, so we might expect a negative relationship between perceived fairness and satisfaction and attitudes on wealth redistribution. 
+
+For this example, load the Dawtry et al. data and we will be focusing on the two variables `r hl("fairness_satisfaction")` and `r hl("redistribution")` after a little wrangling. 
+
+```{r Load Dawtry, warning=FALSE, message=FALSE}
+Dawtry_data <- read_csv("data/Dawtry-2015.csv") %>% 
+  mutate(fairness_satisfaction = (fairness + satisfaction) / 2, # Mean of fairness and satisfaction
+         across(.cols = c(redist2, redist4), ~ case_when(. == 1 ~ 6, #Reverse score two items for redistribution
+                                                         . == 2 ~ 5,
+                                                         . == 3 ~ 4,
+                                                         . == 4 ~ 3,
+                                                         . == 5 ~ 2,
+                                                         . == 6 ~ 1))) %>% 
+  pivot_longer(names_to = "item", # var for item names
+               values_to = "score", # var for item scores
+               cols = redist1:redist4) %>% # Range of columns for redistribution items
+  group_by(across(.cols = c(-item, -score))) %>% # Group by everything but ignore item and score
+  summarise(redistribution = mean(score)) %>% # Summarise by creating a subscale mean
+  ungroup()
+```
+
+For the correlation example, we will explore a slight variation of equivalence testing. In this figure reproduced from [Lakens et al. (2018)](https://doi.org/10.1177/2515245918770963), you can see three types of interval testing compared to traditional null hypothesis significance testing. For t-tests, we used equivalence testing to see if an effect was too small to be practically/theoretically meaningful. However, you can also flip the two one-sided test procedure for a minimal-effects test. Instead of testing whether an effect is too small to be meaningful, this variation tests whether an effect is larger than your smallest effect size of interest.
+
+![](images/Lakens_2018.jpeg)
+
+This can be particularly useful for correlations due to the idea of the crud factor ([Orben & Lakens, 2020](https://doi.org/10.1177/2515245920917961)). This is the idea that in non-randomised studies, a point-null hypothesis may not be meaningful nor surprising to reject since there can be small but meaningless relationships between variables. Although they critique the literature supporting a value for the crud factor, the most common reference was to Meehl's estimate of *r* = .30. When applying this to your own work, take care to think about and justify what would be your smallest effect size of interest, but this will work for this demonstration. 
+
+For the correlation TOSTER function, we need a data, our two variables to correlate, and the type of correlation to specify. We will use bounds of *r* = ±.30 and this time use `hypothesis = "MET"` to perform a minimal-effects test rather than an equivalence test. 
+
+```{r Dawtry TOST r}
+
+Dawtry_r <- cor.test(x = Dawtry_data$fairness_satisfaction, y = Dawtry_data$redistribution, method = "pearson")$estimate
+
+Dawtry_n <- nrow(Dawtry_data)
+
+Dawtry_r_TOST <- corsum_test(n = Dawtry_n, r = Dawtry_r, method = "pearson", alternative = "minimal.effect", null = 0.3)
+
+plot_cor(n = Dawtry_n, r = Dawtry_r, method = "pearson")
+```
+
+
 ## Meta-analysis
 
 ## Further reading
@@ -129,3 +170,5 @@ In this appendix, we mainly focused on the practical part of applying equivalenc
 - [Lakens (2017)](https://journals.sagepub.com/doi/10.1177/1948550617697177) and [Lakens et al. (2018)](https://journals.sagepub.com/doi/10.1177/2515245918770963) have two tutorial articles where they walk through applying and reporting equivalence testing. 
 
 - [Bartlett et al. (2022)](https://journal.trialanderror.org/pub/attentionalsmoker/release/2) provides a published example of equivalence testing if you want to see how it can look and be reported in a results section. 
+
+- [Charles et al. (2022)](https://link.springer.com/article/10.1007/s12144-022-04062-2) provide a slightly more advanced application of equivalence testing to a mixed effects model. 

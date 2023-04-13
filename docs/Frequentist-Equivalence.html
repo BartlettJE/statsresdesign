@@ -6,16 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>B Frequentist Equivalence Testing | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
-<meta name="description" content="Link to Lakens et al. papers Repeat examples from ROPE to show how they're different Show plot  /* update total correct if #webex-total_correct exists */ update_total_correct = function() { ...">
+<meta name="description" content="In the lectures, we mentioned equivalence testing is another option for statistically supporting there is no meaningful effect present. No technique can support the null hypothesis is precisely 0,...">
 <meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="B Frequentist Equivalence Testing | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/Frequentist-Equivalence.html">
 <meta property="og:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
-<meta property="og:description" content="Link to Lakens et al. papers Repeat examples from ROPE to show how they're different Show plot  /* update total correct if #webex-total_correct exists */ update_total_correct = function() { ...">
+<meta property="og:description" content="In the lectures, we mentioned equivalence testing is another option for statistically supporting there is no meaningful effect present. No technique can support the null hypothesis is precisely 0,...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="B Frequentist Equivalence Testing | Statistics and Research Design">
-<meta name="twitter:description" content="Link to Lakens et al. papers Repeat examples from ROPE to show how they're different Show plot  /* update total correct if #webex-total_correct exists */ update_total_correct = function() { ...">
+<meta name="twitter:description" content="In the lectures, we mentioned equivalence testing is another option for statistically supporting there is no meaningful effect present. No technique can support the null hypothesis is precisely 0,...">
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -106,11 +106,137 @@
 <h1>
 <span class="header-section-number">B</span> Frequentist Equivalence Testing<a class="anchor" aria-label="anchor" href="#Frequentist-Equivalence"><i class="fas fa-link"></i></a>
 </h1>
+<p>In the lectures, we mentioned equivalence testing is another option for statistically supporting there is no meaningful effect present. No technique can support the null hypothesis is precisely 0, so equivalence testing flips the standard hypothesis testing logic around.</p>
+<p>Instead of testing against a single point-null hypothesis of 0, you can apply two one-sided tests to boundaries representing your smallest effect size of interest. You apply a one-sided test to a lower bound and see whether your effect is significantly higher. You apply a one-sided test to an upper bound and see whether your effect is significantly lower. If both tests are significant, you can conclude your effect is statistically equivalent, at least within your chosen boundaries.</p>
+<p>You can apply this technique to different focal tests such as t-tests, correlations, and meta-analyses. The package we will use is called <code class="package">TOSTER</code>. Make sure you install it before running any of the following code, and load the necessary packages for this appendix.</p>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Applying equivalence testing in R </span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/TOSTERpkg/">TOSTER</a></span><span class="op">)</span>
+<span class="co"># Wrangling and plotting functions</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
+<p>To follow along to this appendix and try the code yourself, please download the data files we will be using in <a href="data/equivalence_testing.zip">this zip file</a>.</p>
+<div id="t-tests" class="section level2" number="12.1">
+<h2>
+<span class="header-section-number">B.1</span> t-tests<a class="anchor" aria-label="anchor" href="#t-tests"><i class="fas fa-link"></i></a>
+</h2>
+<p>For a t-test applied to two groups, we will reanalyse data from <span class="citation">Bastian et al. (<a href="references.html#ref-bastian_pain_2014" role="doc-biblioref">2014</a>)</span>. This study wanted to investigate whether experiencing pain together can increase levels of bonding between participants. The study was trying to explain how people often say friendships are strengthened by adversity.</p>
+<p>Participants were randomly allocated into two conditions: pain or control. Participants in the pain group experienced mild pain through a cold pressor task (leaving your hand in ice cold water) and a wall squat (sitting against a wall). The control group completed a different task that did not involve pain. The participants then completed a scale to measure how bonded they felt to other participants in the group. Higher values on this scale mean greater bonding.</p>
+<p>The independent variable is called <code><span class="st">"CONDITION"</span></code>. The control group has the value 0 and the pain group has the value 1. They wanted to find out whether participants in the pain group would have higher levels of bonding with their fellow participants than participants in the control group. After a little processing, the dependent variable is called <code><span class="st">"mean_bonding"</span></code> for the mean of 7 items related to bonding.</p>
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Bastian_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Bastian.csv"</span><span class="op">)</span>
+
+<span class="co"># Relabel condition to be more intuitive which group is which </span>
+<span class="va">Bastian_data</span><span class="op">$</span><span class="va">CONDITION</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Bastian_data</span><span class="op">$</span><span class="va">CONDITION</span>, 
+                                   levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, 
+                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Pain"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># We also need to get our DV from the mean of 7 items</span>
+<span class="va">Bastian_data</span> <span class="op">&lt;-</span> <span class="va">Bastian_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>names_to <span class="op">=</span> <span class="st">"item"</span>, <span class="co"># var for item names</span>
+               values_to <span class="op">=</span> <span class="st">"score"</span>, <span class="co"># var for item scores</span>
+               cols <span class="op">=</span> <span class="va">group101</span><span class="op">:</span><span class="va">group107</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Range of columns for group bonding items</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span>.cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">item</span>, <span class="op">-</span><span class="va">score</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Group by everything but ignore item and score</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean_bonding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Summarise by creating a subscale name and specify sum or mean</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Always ungroup</span></code></pre></div>
+<p>For t-tests, the package has shifted to a single function that can be applied in different ways:</p>
 <ul>
-<li><p>Link to Lakens et al. papers</p></li>
-<li><p>Repeat examples from ROPE to show how they're different</p></li>
-<li><p>Show plot</p></li>
+<li><p>For a one-sample t-test, you must enter the mean, SD, and sample size for the sample, alongside the value of mu to test against.</p></li>
+<li><p>For an independent samples t-test, you must enter the mean, SD, and sample size for each group.</p></li>
+<li><p>For a paired samples t-test, you must enter the mean and SD for each condition, the sample size, and the correlation between conditions.</p></li>
 </ul>
+<p>Bastian et al. requires the independent samples t-test inputs. The first step will be calculating the summary statistics for our two groups and saving them to clearly label and enter into the TOSTER function later. You could enter the values directly into the function, but I like to calculate them first and save them as objects to avoid copy-paste errors.</p>
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Group by condition to get one row for control and pain values</span>
+<span class="va">Brandt_summary</span> <span class="op">&lt;-</span> <span class="va">Bastian_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">CONDITION</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mean_bonding</span><span class="op">)</span>,
+            sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">mean_bonding</span><span class="op">)</span>,
+            n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Doesn't work well with tibbles</span>
+
+<span class="co"># Save values for Control</span>
+<span class="va">Control_mean</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span>
+<span class="va">Control_sd</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span>
+<span class="va">Control_n</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">]</span>
+
+<span class="co"># Save values for Pain</span>
+<span class="va">Pain_mean</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span>
+<span class="va">Pain_sd</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">]</span>
+<span class="va">Pain_n</span> <span class="op">&lt;-</span> <span class="va">Brandt_summary</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">]</span></code></pre></div>
+<p>Now we have our values, it is time to think about what values we will use for the boundaries. From the lecture, there are different strategies (this is a non-exhaustive list) to choosing and justifying your smallest effect size of interest boundaries:</p>
+<ol style="list-style-type: decimal">
+<li><p>Your understanding of the applications / mechanisms (e.g., a clinically meaningful decrease in pain).</p></li>
+<li><p>Smallest effects from previous research (e.g., lower bound of individual study effect sizes or lower bound of a meta-analysis).</p></li>
+<li><p>Small telescopes (the effect size the original study had 33% power to detect).</p></li>
+</ol>
+<p>For Bastian et al. (2014), they measured bonding on a 5-point Likert scale, so we might consider anything less than a one-point difference as too small to be practically meaningful for demonstration purposes. We can now enter these values into the TOSTER function.</p>
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Save as object and present with brackets around </span>
+<span class="op">(</span><span class="va">Brandt_TOST</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://aaroncaldwell.us/TOSTERpkg/reference/tsum_TOST.html">tsum_TOST</a></span><span class="op">(</span>m1 <span class="op">=</span> <span class="va">Control_mean</span>, <span class="co"># Group 1: Control</span>
+                         sd1 <span class="op">=</span> <span class="va">Control_sd</span>,
+                         n1 <span class="op">=</span> <span class="va">Control_n</span>,
+                         m2 <span class="op">=</span> <span class="va">Pain_mean</span>, <span class="co"># Group 2: Pain</span>
+                         sd2 <span class="op">=</span> <span class="va">Pain_sd</span>,
+                         n2 <span class="op">=</span> <span class="va">Pain_n</span>,
+                         hypothesis <span class="op">=</span> <span class="st">"EQU"</span>, <span class="co"># Equivalence test rather than minimal effects test</span>
+                         low_eqbound <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="co"># Our lower and upper equivalence bounds</span>
+                         high_eqbound <span class="op">=</span> <span class="fl">1</span>,
+                         eqbound_type <span class="op">=</span> <span class="st">"raw"</span>, <span class="co"># We can specify raw or standardised values</span>
+                         alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">)</span> <span class="co"># We could change alpha from the default</span></code></pre></div>
+<pre><code>## 
+## Welch Modified Two-Sample t-Test
+## Hypothesis Tested: Equivalence
+## Equivalence Bounds (raw):-1.000 &amp; 1.000
+## Alpha Level:0.05
+## The equivalence test was non-significant, t(51.7) = 1.484, p = 7.2e-02
+## The null hypothesis test was significant, t(51.7) = -2.022, p = 4.84e-02
+## NHST: reject null significance hypothesis that the effect is equal to zero 
+## TOST: don't reject null equivalence hypothesis
+## 
+## TOST Results 
+##                    t        SE       df      p.value
+## t-test     -2.021774 0.2852542 51.69508 4.839002e-02
+## TOST Lower  1.483871 0.2852542 51.69508 7.195754e-02
+## TOST Upper -5.527420 0.2852542 51.69508 5.390001e-07
+## 
+## Effect Sizes 
+##                 estimate        SE  lower.ci    upper.ci conf.level
+## Raw           -0.5767196 0.2852542 -1.054483 -0.09895642        0.9
+## Hedges' g(av) -0.5422288 0.2830491 -1.024025 -0.09475207        0.9
+## 
+## Note: SMD confidence intervals are an approximation. See vignette("SMD_calcs").</code></pre>
+<p>We have quite a lot of output to break down and there are essentially three parts.</p>
+<p>The first provides an overview of the two one-sided test procedure you applied and what you can conclude from it. After confirming your inputs, you have one t-test for the equivalence test and one traditional t-test. You only get one for the equivalence test as both must be significant to conclude the effect was statistically equivalent, so you typically report the largest <em>p</em>-value as if that is significant, the other test will be lower. You then get two one sentence statements on what you can conclude from the tests. For this example, the traditional t-test was significant to suggest we can reject the point-null hypothesis, but the equivalence test was not statistically equivalent for our choice of boundaries.</p>
+<p>The second provides the full output for all three t-tests: the traditional t-test and the two one-sided tests. This is more helpful for reporting as you can produce the full t-test statistics, for example the one-sided test with the largest p-value would be: <em>t</em> (51.70) = 1.48, <em>p</em> = .07. The degrees of freedom is not an integer as it produces the Welch version of the t-test (<a href="http://www.rips-irsp.com/articles/10.5334/irsp.82/">Delacre et al., 2017</a>). If you really want the student t-test, you can use the argument <code>var.equal = TRUE</code>.</p>
+<p>Finally, the third provides estimates and 90% confidence intervals for the effect size in raw and standardised units. This is the estimate of your effect size and what you can see in the plots below. Remember, you get a 90% confidence interval as the specified alpha is .05 but you are performing two one-sided tests. So, the overall confidence level is .90.</p>
+<p>For the t-test TOSTER function, we do not get an accompanying plot by default. However, since we saved the model object, we can call a plot to visualise the equivalence testing procedure.</p>
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">Brandt_TOST</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="appendix-b-equivalence-testing_files/figure-html/Brandt%20TOST%20plot-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>This plots both the raw and standardised effects from the final part of the output above. The vertical dashed lines represent your user-defined bounds for the smallest effect size of interest. The circle and thick black line at the bottom of each panel represent the estimate for the effect size and its 90% confidence interval. This is what you are using for the equivalence testing procedure. If the confidence interval is entirely within your bounds, the test is statistically equivalent. However, in this scenario, the confidence interval crosses the lower bound, visually reinforcing how the largest one-sided test above was not statistically significant.</p>
+<p>As additional information, note there are different confidence levels plotted above and colour coded. The confidence interval bar reaches the end of the green region for 90%. You also have two further levels of 95% and 99.9% confidence intervals.</p>
+</div>
+<div id="correlation" class="section level2" number="12.2">
+<h2>
+<span class="header-section-number">B.2</span> Correlation<a class="anchor" aria-label="anchor" href="#correlation"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="meta-analysis" class="section level2" number="12.3">
+<h2>
+<span class="header-section-number">B.3</span> Meta-analysis<a class="anchor" aria-label="anchor" href="#meta-analysis"><i class="fas fa-link"></i></a>
+</h2>
+</div>
+<div id="further-reading" class="section level2" number="12.4">
+<h2>
+<span class="header-section-number">B.4</span> Further reading<a class="anchor" aria-label="anchor" href="#further-reading"><i class="fas fa-link"></i></a>
+</h2>
+<p>In this appendix, we mainly focused on the practical part of applying equivalence testing in R. Possibly the hardest part of this technique is choosing and justifying your equivalence bounds. Therefore, there are some recommendations for further reading to explore more of the topic.</p>
+<ul>
+<li><p><a href="https://lakens.github.io/statistical_inferences/equivalencetest.html">Lakens (2023)</a> has an online open access textbook on improving your statistical inferences. Chapter 9 focuses on equivalence testing and explains different methods for setting your smallest effect size of interest.</p></li>
+<li><p><a href="https://journals.sagepub.com/doi/10.1177/1948550617697177">Lakens (2017)</a> and <a href="https://journals.sagepub.com/doi/10.1177/2515245918770963">Lakens et al. (2018)</a> have two tutorial articles where they walk through applying and reporting equivalence testing.</p></li>
+<li><p><a href="https://journal.trialanderror.org/pub/attentionalsmoker/release/2">Bartlett et al. (2022)</a> provides a published example of equivalence testing if you want to see how it can look and be reported in a results section.</p></li>
+</ul>
+</div>
 </div>
 <script>
 
@@ -318,7 +444,13 @@ $( document ).ready(function() {
 <div class="next"><a href="conventions.html"><span class="header-section-number">C</span> Conventions</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#Frequentist-Equivalence"><span class="header-section-number">B</span> Frequentist Equivalence Testing</a></li></ul>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#Frequentist-Equivalence"><span class="header-section-number">B</span> Frequentist Equivalence Testing</a></li>
+<li><a class="nav-link" href="#t-tests"><span class="header-section-number">B.1</span> t-tests</a></li>
+<li><a class="nav-link" href="#correlation"><span class="header-section-number">B.2</span> Correlation</a></li>
+<li><a class="nav-link" href="#meta-analysis"><span class="header-section-number">B.3</span> Meta-analysis</a></li>
+<li><a class="nav-link" href="#further-reading"><span class="header-section-number">B.4</span> Further reading</a></li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -335,7 +467,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-03-20.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2023-04-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -74,6 +74,10 @@ rstudio-settings
 installing-latex
 installing-the-brms-package
 Frequentist-Equivalence
+t-tests
+correlation
+meta-analysis
+further-reading
 conventions
 webexercises
 alert-boxes
