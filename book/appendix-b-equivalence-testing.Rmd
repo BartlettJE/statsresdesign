@@ -50,7 +50,7 @@ For t-tests, the package has shifted to a single function that can be applied in
 
 - For a paired samples t-test, you must enter the mean and SD for each condition, the sample size, and the correlation between conditions. 
 
-Bastian et al. requires the independent samples t-test inputs. The first step will be calculating the summary statistics for our two groups and saving them to clearly label and enter into the TOSTER function later. You could enter the values directly, but I like to calculate them down first and save them as objects to avoid copy-paste errors. 
+Bastian et al. requires the independent samples t-test inputs. The first step will be calculating the summary statistics for our two groups and saving them to clearly label and enter into the TOSTER function later. You could enter the values directly into the function, but I like to calculate them first and save them as objects to avoid copy-paste errors. 
 
 ```{r Brandt summary stats}
 # Group by condition to get one row for control and pain values
@@ -72,7 +72,7 @@ Pain_sd <- Brandt_summary[2, 3]
 Pain_n <- Brandt_summary[2, 4]
 ```
 
-Now we have our values, it is time to think about what values we will use for the boundaries. From the lecture, there are different strategies to choosing and justifying your smallest effect size of interest boundaries: 
+Now we have our values, it is time to think about what values we will use for the boundaries. From the lecture, there are different strategies (this is a non-exhaustive list) to choosing and justifying your smallest effect size of interest boundaries: 
 
 1. Your understanding of the applications / mechanisms (e.g., a clinically meaningful decrease in pain). 
 
@@ -100,18 +100,21 @@ For Bastian et al. (2014), they measured bonding on a 5-point Likert scale, so w
 
 We have quite a lot of output to break down and there are essentially three parts. 
 
-The first provides an overview of the two one-sided test procedure you applied and what you can conclude from it. After confirming your inputs, you have one t-test for the equivalence test and one traditional t-test. You only get one for the equivalence test as both must be significant to conclude the effect was statistically equivalent, so you typically report the largest *p*-value as if that is significant, the other test will be even lower. You then get two one sentence statements on what you can conclude from the tests. For this example, the traditional t-test was significant to suggest we can reject the null hypothesis, but the equivalence test was not statistically equivalent for our choice of boundaries. 
+The first provides an overview of the two one-sided test procedure you applied and what you can conclude from it. After confirming your inputs, you have one t-test for the equivalence test and one traditional t-test. You only get one for the equivalence test as both must be significant to conclude the effect was statistically equivalent, so you typically report the largest *p*-value as if that is significant, the other test will be lower. You then get two one sentence statements on what you can conclude from the tests. For this example, the traditional t-test was significant to suggest we can reject the point-null hypothesis, but the equivalence test was not statistically equivalent for our choice of boundaries. 
 
-The second provides the full output for all three t-tests: the traditional t-test and the two one-sided tests. 
+The second provides the full output for all three t-tests: the traditional t-test and the two one-sided tests. This is more helpful for reporting as you can produce the full t-test statistics, for example the one-sided test with the largest p-value would be: *t* (51.70) = 1.48, *p* = .07. The degrees of freedom is not an integer as it produces the Welch version of the t-test ([Delacre et al., 2017](http://www.rips-irsp.com/articles/10.5334/irsp.82/)). If you really want the student t-test, you can use the argument `var.equal = TRUE`.  
 
-Finally, the third provides estimates and 90% confidence intervals for the effect size in raw and standardised units. 
+Finally, the third provides estimates and 90% confidence intervals for the effect size in raw and standardised units. This is the estimate of your effect size and what you can see in the plots below. Remember, you get a 90% confidence interval as the specified alpha is .05 but you are performing two one-sided tests. So, the overall confidence level is .90. 
 
 For the t-test TOSTER function, we do not get an accompanying plot by default. However, since we saved the model object, we can call a plot to visualise the equivalence testing procedure. 
 
-```{r Brandt TOST plot}
+```{r Brandt TOST plot, warning=FALSE}
 plot(Brandt_TOST)
 ```
 
+This plots both the raw and standardised effects from the final part of the output above. The vertical dashed lines represent your user-defined bounds for the smallest effect size of interest. The circle and thick black line at the bottom of each panel represent the estimate for the effect size and its 90% confidence interval. This is what you are using for the equivalence testing procedure. If the confidence interval is entirely within your bounds, the test is statistically equivalent. However, in this scenario, the confidence interval crosses the lower bound, visually reinforcing how the largest one-sided test above was not statistically significant. 
+
+As additional information, note there are different confidence levels plotted above and colour coded. The confidence interval bar reaches the end of the green region for 90%. You also have two further levels of 95% and 99.9% confidence intervals. 
 
 ## Correlation
 
