@@ -45,7 +45,7 @@ tinytex::install_tinytex()
 
 ## Installing the `brms` package
 
-In chapter 10, you will use the <code class='package'>brms</code> to fit Bayesian regression models. Behind the scenes, this package uses a programming language called <a href="https://mc-stan.org/" target="_blank">Stan</a> which requires a C++ compiler. Unlike other packages, you cannot just use the <code><span class='fu'><a target='_blank' href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='op'>)</span></code> function to install it, there are a few steps to follow.
+In chapter 10, you will use the <code class='package'>brms</code> to fit Bayesian regression models. Behind the scenes, this package uses a programming language called <a href="https://mc-stan.org/" target="_blank">Stan</a> which requires a C++ compiler. Unlike other packages, you cannot just use the <code><span><span class='fu'><a target='_blank' href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='op'>)</span></span></code> function to install it, there are a few steps to follow.
 
 The best place to start is referring to the FAQs on the <a href="https://github.com/paul-buerkner/brms#how-do-i-install-brms" target="_blank">package Github page</a>. 
 

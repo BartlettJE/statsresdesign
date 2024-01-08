@@ -10,10 +10,6 @@ Authors@R:
         email = "james.bartlett@glasgow.ac.uk", 
         comment = c(ORCID = "0000-0002-4191-5245")),
     person(
-        given = "Christoph", 
-        family = "Scheepers", 
-        role = c("aut")),
-    person(
         given = "Guillaume", 
         family = "Rousselet", 
         role = c("aut"), 

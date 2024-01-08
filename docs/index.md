@@ -2,7 +2,7 @@
 title: "Statistics and Research Design" # edit
 #subtitle: "optional" 
 author: "James Bartlett" # edit
-date: "2023-04-13"
+date: "2024-01-08"
 site: bookdown::bookdown_site
 documentclass: book
 classoption: oneside # for PDFs
@@ -31,13 +31,13 @@ favicon: images/logos/favicon.ico # replace with your logo
 
 **Summary**: Materials for the Statistics and Research Design course on the MSc Research Methods in Psychological Science programme, University of Glasgow School of Psychology & Neuroscience.
 
-**Authors**: James Bartlett, Guillaume Rousselet, & Christoph Scheepers. 
+**Authors**: James Bartlett and Guillaume Rousselet. 
 
-**Aim**: This course covers advanced statistics concepts you might need in psychological research, but you do not normally learn on standard curricula. The course is split into three segments for each lecturer to outline a core part of your advanced training. The first segment covers the general linear model, building up from simple linear regression to mixed effects models (Scheepers). The second segment covers statistical fallacies, misconceptions, and bootstrapping (Rousselet). The third segment covers Bayesian approaches to hypothesis testing and estimation (Bartlett). 
+**Aim**: This course covers advanced statistics concepts you might need in psychological research, but you do not normally learn on standard curricula. The course is split into three segments for each lecturer to outline a core part of your advanced training. The first segment covers the general linear model, building up from simple linear regression to generalised linear regression (Bartlett). The second segment covers statistical fallacies, misconceptions, and bootstrapping (Rousselet). The third segment covers Bayesian approaches to hypothesis testing and estimation (Bartlett). 
 
 **Contact**: This book is a living document and will be regularly checked and updated for improvements. Should you have any issues using the book or queries, please contact James Bartlett.
 
-**R Version**: This book has been written with R version 4.1.3 (2022-03-10). 
+**R Version**: This book has been written with R version 4.1.2 (2021-11-01). 
 
 
 
