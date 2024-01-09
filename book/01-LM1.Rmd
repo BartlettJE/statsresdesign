@@ -1,7 +1,110 @@
 # Introduction to Linear Regression
 
-Coming soon!
+In this chapter, we start with the foundations of linear regression. We will be focusing on simple linear regression where you have one predictor variable and one outcome. You will apply continuous and categorical predictors to see how the interpretation changes, and start to explore parametric assumptions to make sure 
 
+You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to: 
+
+1. Apply simple linear regression using one categorical predictor.
+
+2. Apply simple linear regression using one continuous predictor. 
+
+3. Evaluate whether your regression model meets parametric assumptions. 
+
+4. Report the results of your findings in APA style. 
+
+To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/01_data.zip).
+
+## Linear regression with one categorical predictor 
+
+We first need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first. 
+
+```{r, warning=FALSE, message=FALSE}
+# load packages you need for these tasks
+library(tidyverse)
+
+# Load data for this task
+zhang_data <- read_csv("data/Zhang_data.csv") %>% 
+  mutate(condition = as.factor(condition))
+```
+
+For the guided example, we will use unpublished data from Bartlett and Zhang who performed a direct replication of Irving et al. (2022). They studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their Specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question and ours for the replication was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group
+
+For an overview of the method, 129 participants completed a continuous influence paradigm where participants read a fictious newspaper article one sentence at a time about a causal link between cognitive decline and watching TV in older adults. There is one independent variable to randomly allocate participants into one of two groups: 
+
+1. The correction group (group `1` in the data) had one sentence saying: “The lead author has since specified that the results have been misrepresented and that TV screen time has not yet been found to cause cognitive decline. Only a correlation has been found…”
+
+2. The no correction group (group `0` in the data) alternatively said: “The lead author of the study could not be reached for comment”
+
+Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make. We then took the sum of the five coded questions to tell us the number of mistaken causal inferences. 
+
+This means we have one between-subjects independent variable of their correction group for a predictor (`condition`), and one outcome of the sum mistaken causal inferences which can range between 0 and 5 (`harsh_DV1_sum`). We can apply simple linear regression to test our hypothesis using this dataset. 
+
+### Exploratory data analysis
+
+When starting any data analysis, it is important to visualise the data for some exploratory data analysis. Using the skills you developed in data skills for reproducible research, we can explore the data to understand its properties and look for potential patterns. At first, this might be very quick plots using a few lines of `ggplot2` code.  
+
+```{r}
+zhang_data %>% 
+  ggplot(aes(x = condition, y = harsh_DV1_sum)) + 
+  geom_boxplot()
+```
+
+From a simple boxplot, we can get a quick understanding of how the responses are distributed for each condition. Remember 0 represents the no correction group and 1 represents the correction group, so it looks like people in the correction group made fewer mistaken causal inferences than people in the no correction group. 
+
+When we have more time, you can customise the plot to be much more publication ready with information titles etc. 
+
+```{r}
+zhang_data %>% 
+  ggplot(aes(x = condition, y = harsh_DV1_sum, fill = condition)) + 
+  geom_violin(alpha = .6, trim = TRUE) +
+  stat_summary(fun = "mean", geom = "point") +
+  stat_summary(fun.data = "mean_cl_normal", geom = "errorbar", width = .1) +
+  scale_fill_viridis_d(option = "E") +
+  scale_y_continuous(name = "Sum of Causal Inferences (0-5)") +
+  scale_x_discrete(name = "Condition", label = c("No Correction", "Correction")) + 
+  guides(fill = FALSE) + 
+  theme_minimal()
+```
+
+# Simple linear regression for comparing two groups 
+
+Now you understand the data a little better, it is time to apply our modelling technique to address our research question and hypothesis. Use `condition` as your predictor variable (categorical with two groups of 0 and 1) and `harsh_DV1_sum` as your outcome variable. 
+
+1. Create an object for the linear model. 
+
+```{r}
+lm_condition <- lm(harsh_DV1_sum ~ condition, data = zhang_data)
+```
+
+2. Get a summary of the linear model object to explore its properties like estimates and model fit.
+
+```{r}
+summary(lm_condition)
+```
+
+3. By default, you do not receive confidence intervals for model estimates, so you can call them using the linear model object. 
+
+```{r}
+confint(lm_condition)
+```
+
+4. Check the assumptions to see if there are any red flags. 
+
+```{r}
+plot(lm_condition)
+```
+
+## Linear regression with one continuous predictor
+
+## Independent activity
+
+## Summary 
+
+## Independent activity solution
 
 
 
