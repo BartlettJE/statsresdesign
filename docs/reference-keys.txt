@@ -1,10 +1,22 @@
 fig:settings-general
 fig:settings-code
 introduction-to-linear-regression
+learning-objectives
+packages-and-the-data-set
+exploratory-data-analysis
+simple-linear-regression-for-comparing-two-groups
+checking-the-statistical-assumptions
+linear-regression-with-one-continuous-predictor
+centering-continuous-predictors
+checking-the-statistical-assumptions-1
+reporting-the-results-of-linear-regression
+independent-activity
+further-resources
+independent-activity-solution
 multiple-linear-regression
 introduction-to-generalised-linear-models
 introduction-to-bayesian-hypothesis-testing
-learning-objectives
+learning-objectives-1
 bayes-logic
 step-1---pick-your-prior
 step-2---update-to-a-posterior
@@ -31,7 +43,7 @@ Zwaan-solution
 Schroeder-ROPE-solution
 Zwaan-ROPE-solution
 introduction-to-bayesian-estimation
-learning-objectives-1
+learning-objectives-2
 simpleregression
 guided-example-schroeder-epley-2015
 identify-data
@@ -73,4 +85,3 @@ webexercises
 alert-boxes
 code-chunks
 glossary
-glossary-1

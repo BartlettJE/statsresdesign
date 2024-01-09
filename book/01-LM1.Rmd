@@ -114,7 +114,7 @@ One thing is missing here. By default, you do not receive confidence intervals f
 confint(lm_condition)
 ```
 
-It's normally a good idea to report all three pieces of inferential information, the point estimate (-0.79), the interval estimate (-1.18, -0.39), and hypothesis testing (*p* < .001). So, to bring it back to the research question and hypothesis, it looks like the replication supported our prediction. Participants in the correction group provided 0.79 (95% CI = [-1.18, -0.39], *p* < .001) fewer causal inferences than those in the no correction group. In your reports, you would then have to think about whether that effect size is consistent with previous research and put your findings in context. 
+It's normally a good idea to report all three pieces of inferential information, the point estimate (-0.79), the interval estimate (-1.18, -0.39), and hypothesis testing (*p* < .001). So, to bring it back to the research question and hypothesis, it looks like the replication supported our prediction. Participants in the correction group provided fewer causal inferences than those in the no correction group ($b_1$ = -0.79, 95% CI = [-1.18, -0.39], *p* < .001). In your reports, you would then have to think about whether that effect size is consistent with previous research and put your findings in context. 
 
 ### Checking the statistical assumptions 
 
@@ -140,20 +140,7 @@ Assumptions 1-4 are pretty straight forward as they relate to your understanding
 
 When you have a categorical predictor, the linearity assumption is met by default. As you are comparing two groups, there can only be straight line between the two of them. We will come back to this for the continuous predictors. 
 
-To check the residuals are normal, we can go back to the model object which saves the model residuals.
-
-```{r}
-lm_condition$residuals %>% # isolate the residuals element of the model list
-  head() # print the first 6 
-```
-
-We want them to be approximately normally distributed, so we could simply plot them using a histogram. This is a base R function to quickly create a histogram. You could always create it in `r pkg("ggplot2")` if you wish, but these checks are normally for your benefit. You want the residuals to look approximately normal, but remember it is a subject visual check, so you are looking out for major red flags rather than perfection. 
-
-```{r}
-hist(lm_condition$residuals)
-```
-
-Alternatively, you can get a series of diagnostic plots by calling the `r hl(plot())` function on the model object. For a categorical predictor, some of these do not work very well, but it will be more useful for continuous predictors and multiple linear regression models. 
+You can get a series of diagnostic plots by calling the `r hl(plot())` function on the model object. For a categorical predictor, some of these do not work very well, but it will be more useful for continuous predictors and multiple linear regression models. 
 
 ```{r}
 plot(lm_condition)
@@ -253,7 +240,7 @@ For the original example, I could summarise the findings as:
 
 "We hypothesised that participants in the correction group would report fewer mistaken causal inferences than those in the no correction group. To test this hypothesis, we applied simple linear regression using correction condition as a predictor variable and the number of mistaken causal inferences as an outcome variable. Figure 1 below shows the difference between the two groups as a violin plot. 
 
-Our model explained a statistically significant amount of variance in our outcome (adjusted $R^2$ = .10, *F*(1, 127) = 15.34, *p* < .001). Participants in the correction group provided a mean of 0.79 (95% CI = [0.38, 1.13], *p* < .001) fewer mistaken causal inferences than those in the no correction group. The results supported our hypothesis where we expected correcting statistical misinformation would result in fewer mistaken causal inferences compared to not correcting misinformation."
+Our model explained a statistically significant amount of variance in our outcome (adjusted $R^2$ = .10, *F*(1, 127) = 15.34, *p* < .001). Participants in the correction group provided a mean of 0.79 (95% CI = [0.39, 1.18], *p* < .001) fewer mistaken causal inferences than those in the no correction group. The results supported our hypothesis where we expected correcting statistical misinformation would result in fewer mistaken causal inferences compared to not correcting misinformation."
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE}
 zhang_data %>% 
@@ -267,6 +254,10 @@ zhang_data %>%
   guides(fill = FALSE) + 
   theme_minimal()
 ```
+
+::: {.warning data-latex=""}
+You might notice I flipped the 95% confidence interval values around here. In this framework, the confidence intervals are symmetrical around the estimate, and the order will depend on whether its positive or negative. In the output, the values were negative as correction group was lower on the outcome, but when I worded the results like this I did not include the sign directly. So, I flipped the two values around as it looks more intuitive when the slope estimate does not have the sign in this context. 
+:::
 
 ## Independent activity
 

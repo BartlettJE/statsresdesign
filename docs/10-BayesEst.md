@@ -86,67 +86,12 @@ get_prior(Schroeder_model1, # Model we defined above
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> prior </th>
-   <th style="text-align:left;"> class </th>
-   <th style="text-align:left;"> coef </th>
-   <th style="text-align:left;"> group </th>
-   <th style="text-align:left;"> resp </th>
-   <th style="text-align:left;"> dpar </th>
-   <th style="text-align:left;"> nlpar </th>
-   <th style="text-align:left;"> bound </th>
-   <th style="text-align:left;"> source </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITION1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 4, 3) </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 0, 3) </td>
-   <td style="text-align:left;"> sigma </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-</tbody>
-</table>
+|prior              |class     |coef       |group |resp |dpar |nlpar |lb |ub |source  |
+|:------------------|:---------|:----------|:-----|:----|:----|:-----|:--|:--|:-------|
+|                   |b         |           |      |     |     |      |   |   |default |
+|                   |b         |CONDITION1 |      |     |     |      |   |   |default |
+|student_t(3, 4, 3) |Intercept |           |      |     |     |      |   |   |default |
+|student_t(3, 0, 3) |sigma     |           |      |     |     |      |0  |   |default |
 
 </div>
 
@@ -260,67 +205,12 @@ prior_summary(Schroeder_fit)
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> prior </th>
-   <th style="text-align:left;"> class </th>
-   <th style="text-align:left;"> coef </th>
-   <th style="text-align:left;"> group </th>
-   <th style="text-align:left;"> resp </th>
-   <th style="text-align:left;"> dpar </th>
-   <th style="text-align:left;"> nlpar </th>
-   <th style="text-align:left;"> bound </th>
-   <th style="text-align:left;"> source </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> normal(1, 1) </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> user </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> CONDITION1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> normal(3, 3) </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> user </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> exponential(1) </td>
-   <td style="text-align:left;"> sigma </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> user </td>
-  </tr>
-</tbody>
-</table>
+|prior          |class     |coef       |group |resp |dpar |nlpar |lb |ub |source  |
+|:--------------|:---------|:----------|:-----|:----|:----|:-----|:--|:--|:-------|
+|normal(1, 1)   |b         |           |      |     |     |      |   |   |user    |
+|               |b         |CONDITION1 |      |     |     |      |   |   |default |
+|normal(3, 3)   |Intercept |           |      |     |     |      |   |   |user    |
+|exponential(1) |sigma     |           |      |     |     |      |0  |   |user    |
 
 </div>
 
@@ -370,57 +260,10 @@ describe_posterior(Schroeder_fit)
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median </th>
-   <th style="text-align:right;"> CI </th>
-   <th style="text-align:right;"> CI_low </th>
-   <th style="text-align:right;"> CI_high </th>
-   <th style="text-align:right;"> pd </th>
-   <th style="text-align:right;"> ROPE_CI </th>
-   <th style="text-align:right;"> ROPE_low </th>
-   <th style="text-align:right;"> ROPE_high </th>
-   <th style="text-align:right;"> ROPE_Percentage </th>
-   <th style="text-align:right;"> Rhat </th>
-   <th style="text-align:right;"> ESS </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> 2 </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.006929 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 2.060903 </td>
-   <td style="text-align:right;"> 3.907041 </td>
-   <td style="text-align:right;"> 1.00000 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0.9999234 </td>
-   <td style="text-align:right;"> 3382.849 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> 1 </td>
-   <td style="text-align:left;"> b_CONDITION1 </td>
-   <td style="text-align:right;"> 1.567213 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.460239 </td>
-   <td style="text-align:right;"> 2.658799 </td>
-   <td style="text-align:right;"> 0.99625 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> -0.2330343 </td>
-   <td style="text-align:right;"> 0.2330343 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0.9999724 </td>
-   <td style="text-align:right;"> 3426.619 </td>
-  </tr>
-</tbody>
-</table>
+|   |Parameter    |   Median|   CI|    CI_low|  CI_high|      pd| ROPE_CI|   ROPE_low| ROPE_high| ROPE_Percentage|      Rhat|      ESS|
+|:--|:------------|--------:|----:|---------:|--------:|-------:|-------:|----------:|---------:|---------------:|---------:|--------:|
+|2  |b_Intercept  | 3.006929| 0.95| 2.0932902| 3.942043| 1.00000|    0.95| -0.2330343| 0.2330343|               0| 0.9999234| 3382.849|
+|1  |b_CONDITION1 | 1.567213| 0.95| 0.4562219| 2.657129| 0.99625|    0.95| -0.2330343| 0.2330343|               0| 0.9999724| 3426.619|
 
 </div>
 
@@ -654,52 +497,13 @@ summary(Schroeder_fit2)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept between both models. The median is similar, both probability of direction values are 100%, and the 95% HDI ranges across similar values. For our user prior, the coefficient is a little more conservative, but the difference is also small here, showing how our results are robust to the choice of prior. 
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Model </th>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median Estimate </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-   <th style="text-align:right;"> Prob Direction </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.01 </td>
-   <td style="text-align:right;"> 2.06 </td>
-   <td style="text-align:right;"> 3.91 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 2.90 </td>
-   <td style="text-align:right;"> 1.91 </td>
-   <td style="text-align:right;"> 3.94 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_CONDITION1 </td>
-   <td style="text-align:right;"> 1.57 </td>
-   <td style="text-align:right;"> 0.46 </td>
-   <td style="text-align:right;"> 2.66 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_CONDITION1 </td>
-   <td style="text-align:right;"> 1.84 </td>
-   <td style="text-align:right;"> 0.49 </td>
-   <td style="text-align:right;"> 3.37 </td>
-   <td style="text-align:right;"> 0.99 </td>
-  </tr>
-</tbody>
-</table>
+
+|Model         |Parameter    | Median Estimate| Lower 95% HDI| Upper 95% HDI| Prob Direction|
+|:-------------|:------------|---------------:|-------------:|-------------:|--------------:|
+|User prior    |b_Intercept  |            3.01|          2.09|          3.94|           1.00|
+|Default prior |b_Intercept  |            2.90|          1.89|          3.93|           1.00|
+|User prior    |b_CONDITION1 |            1.57|          0.46|          2.66|           1.00|
+|Default prior |b_CONDITION1 |            1.84|          0.33|          3.24|           0.99|
 
 ### Independent activity (Brandt et al., 2014)
 
@@ -711,24 +515,11 @@ Participants were randomly allocated (<code><span><span class='st'>"ExpCond"</sp
 
 In the original study, they found that the room was perceived as darker in the unethical condition compared to the ethical condition. The means and standard deviations of Banerjee et al. are reproduced from Table 2 in Brandt et al. below and might be useful for thinking about your priors later.
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Condition </th>
-   <th style="text-align:left;"> Mean (SD) </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Unethical </td>
-   <td style="text-align:left;"> 4.71 (0.85) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Ethical </td>
-   <td style="text-align:left;"> 5.30 (0.97) </td>
-  </tr>
-</tbody>
-</table>
+
+|Condition |Mean (SD)   |
+|:---------|:-----------|
+|Unethical |4.71 (0.85) |
+|Ethical   |5.30 (0.97) |
 
 ::: {.try data-latex=""}
 Using your understanding of the design, apply what you learnt in the guided example to this independent activity to address the research question. Following the Bayesian modelling steps, fit at least two models: one using the default priors and one using informative priors. Explore the model results, think about what you would conclude for the research question, and answer the questions below.    
@@ -751,14 +542,14 @@ Brandt_data <- Brandt_data %>%
 
 - Is the coefficient positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
 
-- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_DGQQZDQQGP'><label><input type="radio" autocomplete="off" name="radio_DGQQZDQQGP" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_DGQQZDQQGP" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
+- Can we be confident in the direction of the coefficient? <div class='webex-radiogroup' id='radio_OWSYMJIMOV'><label><input type="radio" autocomplete="off" name="radio_OWSYMJIMOV" value="x"></input> <span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_OWSYMJIMOV" value="answer"></input> <span>No, the 95% HDI crosses 0</span></label></div>
 
-- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_XOHZHIAJBL'><label><input type="radio" autocomplete="off" name="radio_XOHZHIAJBL" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_XOHZHIAJBL" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
+- What would your conclusion be for the research question? <div class='webex-radiogroup' id='radio_UJBZYCFVXV'><label><input type="radio" autocomplete="off" name="radio_UJBZYCFVXV" value="x"></input> <span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_UJBZYCFVXV" value="answer"></input> <span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label></div>
 
 
-- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_PPHQZOXRCC'><label><input type="radio" autocomplete="off" name="radio_PPHQZOXRCC" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_PPHQZOXRCC" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_ZBCRJQGUDV'><label><input type="radio" autocomplete="off" name="radio_ZBCRJQGUDV" value="answer"></input> <span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_ZBCRJQGUDV" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label></div>
 
-- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_CNSXGYOXKK'><label><input type="radio" autocomplete="off" name="radio_CNSXGYOXKK" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_CNSXGYOXKK" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
+- Does the normal model capture the features of the data? <div class='webex-radiogroup' id='radio_VQNAXQVCFU'><label><input type="radio" autocomplete="off" name="radio_VQNAXQVCFU" value="answer"></input> <span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_VQNAXQVCFU" value="x"></input> <span>Yes, assuming a normal distribution captures key features of the data.</span></label></div>
 
 
 <div class='webex-solution'><button>Explain these answers</button>
@@ -836,122 +627,17 @@ get_prior(Heino_model, data = Heino_data)
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> prior </th>
-   <th style="text-align:left;"> class </th>
-   <th style="text-align:left;"> coef </th>
-   <th style="text-align:left;"> group </th>
-   <th style="text-align:left;"> resp </th>
-   <th style="text-align:left;"> dpar </th>
-   <th style="text-align:left;"> nlpar </th>
-   <th style="text-align:left;"> bound </th>
-   <th style="text-align:left;"> source </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> intervention1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> time1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> time1:intervention1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 3.9, 2.5) </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 0, 2.5) </td>
-   <td style="text-align:left;"> sd </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> sd </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> ID </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> sd </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;"> ID </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 0, 2.5) </td>
-   <td style="text-align:left;"> sigma </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-</tbody>
-</table>
+|prior                  |class     |coef                |group |resp |dpar |nlpar |lb |ub |source  |
+|:----------------------|:---------|:-------------------|:-----|:----|:----|:-----|:--|:--|:-------|
+|                       |b         |                    |      |     |     |      |   |   |default |
+|                       |b         |intervention1       |      |     |     |      |   |   |default |
+|                       |b         |time1               |      |     |     |      |   |   |default |
+|                       |b         |time1:intervention1 |      |     |     |      |   |   |default |
+|student_t(3, 3.9, 2.5) |Intercept |                    |      |     |     |      |   |   |default |
+|student_t(3, 0, 2.5)   |sd        |                    |      |     |     |      |0  |   |default |
+|                       |sd        |                    |ID    |     |     |      |   |   |default |
+|                       |sd        |Intercept           |ID    |     |     |      |   |   |default |
+|student_t(3, 0, 2.5)   |sigma     |                    |      |     |     |      |0  |   |default |
 
 </div>
 
@@ -1047,6 +733,16 @@ plot(p_direction(Heino_fit),
      priors = TRUE) # plot the priors
 ```
 
+```
+## Warning in `==.default`(dens$Parameter, parameter): longer object length is not
+## a multiple of shorter object length
+```
+
+```
+## Warning in is.na(e1) | is.na(e2): longer object length is not a multiple of
+## shorter object length
+```
+
 <img src="10-BayesEst_files/figure-html/Heino pd plot-1.png" width="100%" style="display: block; margin: auto;" />
 
 On this plot, you can see how wide the priors were. They are almost flat to cover coefficients from -10 to 10, with the posterior distributions peaking around 0. These plots also show how there is not much we can conclude from the results. 
@@ -1099,14 +795,14 @@ contrast(Heino_means)
 
 ```
 ## intervention = 0:
-##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0458   -0.1926    0.0926
-##  1 effect   0.0458   -0.0926    0.1926
+##  contrast     estimate lower.HPD upper.HPD
+##  time0 effect  -0.0458   -0.1926    0.0926
+##  time1 effect   0.0458   -0.0926    0.1926
 ## 
 ## intervention = 1:
-##  contrast estimate lower.HPD upper.HPD
-##  0 effect  -0.0893   -0.1948    0.0143
-##  1 effect   0.0893   -0.0143    0.1948
+##  contrast     estimate lower.HPD upper.HPD
+##  time0 effect  -0.0893   -0.1948    0.0143
+##  time1 effect   0.0893   -0.0143    0.1948
 ## 
 ## Point estimate displayed: median 
 ## HPD interval probability: 0.95
@@ -1188,33 +884,12 @@ knitr::kable(R2_table,
              col.names = c("R2 Estimate", "Estimated Error", "Lower 95% HDI", "Upper 95% HDI"))
 ```
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> R2 Estimate </th>
-   <th style="text-align:right;"> Estimated Error </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Model with interaction </td>
-   <td style="text-align:right;"> 0.80 </td>
-   <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.67 </td>
-   <td style="text-align:right;"> 0.88 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Model without interaction </td>
-   <td style="text-align:right;"> 0.81 </td>
-   <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.69 </td>
-   <td style="text-align:right;"> 0.88 </td>
-  </tr>
-</tbody>
-</table>
+
+
+|                          | R2 Estimate| Estimated Error| Lower 95% HDI| Upper 95% HDI|
+|:-------------------------|-----------:|---------------:|-------------:|-------------:|
+|Model with interaction    |        0.80|            0.05|          0.67|          0.88|
+|Model without interaction |        0.81|            0.05|          0.69|          0.88|
 
 #### Model check
 
@@ -1291,75 +966,17 @@ summary(Heino_fit3)
 
 To make it easier to compare, we can isolate the key information from each model and present them side by side. You can see below how there is little difference in the intercept and coefficients between both models. This suggests our results are robust to these two choices of prior. 
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Model </th>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median Estimate </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> User priors </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.69 </td>
-   <td style="text-align:right;"> 3.28 </td>
-   <td style="text-align:right;"> 4.09 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default priors </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 3.68 </td>
-   <td style="text-align:right;"> 3.28 </td>
-   <td style="text-align:right;"> 4.08 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User priors </td>
-   <td style="text-align:left;"> b_intervention1 </td>
-   <td style="text-align:right;"> -0.08 </td>
-   <td style="text-align:right;"> -0.59 </td>
-   <td style="text-align:right;"> 0.44 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default priors </td>
-   <td style="text-align:left;"> b_intervention1 </td>
-   <td style="text-align:right;"> -0.07 </td>
-   <td style="text-align:right;"> -0.57 </td>
-   <td style="text-align:right;"> 0.46 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User priors </td>
-   <td style="text-align:left;"> b_time1 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.19 </td>
-   <td style="text-align:right;"> 0.39 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default priors </td>
-   <td style="text-align:left;"> b_time1 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.20 </td>
-   <td style="text-align:right;"> 0.38 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User priors </td>
-   <td style="text-align:left;"> b_time1:intervention1 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.28 </td>
-   <td style="text-align:right;"> 0.42 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default priors </td>
-   <td style="text-align:left;"> b_time1:intervention1 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -0.28 </td>
-   <td style="text-align:right;"> 0.45 </td>
-  </tr>
-</tbody>
-</table>
+
+|Model          |Parameter             | Median Estimate| Lower 95% HDI| Upper 95% HDI|
+|:--------------|:---------------------|---------------:|-------------:|-------------:|
+|User priors    |b_Intercept           |            3.69|          3.28|          4.09|
+|Default priors |b_Intercept           |            3.68|          3.27|          4.08|
+|User priors    |b_intervention1       |           -0.08|         -0.59|          0.44|
+|Default priors |b_intervention1       |           -0.07|         -0.58|          0.46|
+|User priors    |b_time1               |            0.09|         -0.19|          0.38|
+|Default priors |b_time1               |            0.09|         -0.19|          0.39|
+|User priors    |b_time1:intervention1 |            0.09|         -0.28|          0.43|
+|Default priors |b_time1:intervention1 |            0.09|         -0.29|          0.44|
 
 ### Independent activity (Coleman et al., 2019)
 
@@ -1385,32 +1002,12 @@ Previous studies had explored these components separately and mainly in undergra
 
 If you follow the link to Coleman et al. above, you can see the results of study 2 which focused on undergraduate students. This study is presented second, but you can use it for this example to develop your understanding of the measures for your priors. Keep in mind they are partial effects since there are more predictors in the model, but these are the key parameters apart from the interaction. The interaction was not statistically significant, so it was not retained in the model or reported in the final table.   
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:left;"> Estimate </th>
-   <th style="text-align:left;"> 95% Confidence Interval </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;"> 108.64 </td>
-   <td style="text-align:left;"> 103.81 - 113.46 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Absorption </td>
-   <td style="text-align:left;"> 0.42 </td>
-   <td style="text-align:left;"> 0.29 - 0.54 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Theory of Mind </td>
-   <td style="text-align:left;"> 0.22 </td>
-   <td style="text-align:left;"> -0.11 - 0.55 </td>
-  </tr>
-</tbody>
-</table>
+
+|Parameter      |Estimate |95% Confidence Interval |
+|:--------------|:--------|:-----------------------|
+|Intercept      |108.64   |103.81 - 113.46         |
+|Absorption     |0.42     |0.29 - 0.54             |
+|Theory of Mind |0.22     |-0.11 - 0.55            |
 
 Our research question is: How are absorption (<code><span><span class='st'>"Absorption_SUM"</span></span></code>) and mentalizing (<code><span><span class='st'>"EQ_SUM"</span></span></code>) related to mystical experiences (<code><span><span class='st'>"Mscale_SUM"</span></span></code>) as an outcome? The interaction was of theoretical interest here, so focus on the interaction first. 
 
@@ -1429,15 +1026,15 @@ Coleman_data <- read_csv("data/Coleman_2019.csv") %>%
 
 - Is the coefficient for theory of mind positive or negative? <select class='webex-select'><option value='blank'></option><option value='answer'>Positive</option><option value='x'>Negative</option></select>
 
-- Can we be confident in the direction of the individual predictors? <div class='webex-radiogroup' id='radio_LUEFWYPCGU'><label><input type="radio" autocomplete="off" name="radio_LUEFWYPCGU" value="x"></input> <span>No, the 95% HDI of both coefficients contain 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LUEFWYPCGU" value="x"></input> <span>The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LUEFWYPCGU" value="x"></input> <span>The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LUEFWYPCGU" value="answer"></input> <span>Yes, both individual predictors are positive and their 95% HDI excludes 0.</span></label></div>
+- Can we be confident in the direction of the individual predictors? <div class='webex-radiogroup' id='radio_LSJRWUMKZH'><label><input type="radio" autocomplete="off" name="radio_LSJRWUMKZH" value="x"></input> <span>No, the 95% HDI of both coefficients contain 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LSJRWUMKZH" value="x"></input> <span>The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LSJRWUMKZH" value="x"></input> <span>The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_LSJRWUMKZH" value="answer"></input> <span>Yes, both individual predictors are positive and their 95% HDI excludes 0.</span></label></div>
 
-- How can you interpret the interaction? <div class='webex-radiogroup' id='radio_ZFNTSZWMYM'><label><input type="radio" autocomplete="off" name="radio_ZFNTSZWMYM" value="x"></input> <span>There is no clear interaction.</span></label><label><input type="radio" autocomplete="off" name="radio_ZFNTSZWMYM" value="answer"></input> <span>For lower values of theory of mind, the slope becomes more positive.</span></label><label><input type="radio" autocomplete="off" name="radio_ZFNTSZWMYM" value="x"></input> <span>For lower values of theory of mind, the slope becomes more negative.</span></label></div>
+- How can you interpret the interaction? <div class='webex-radiogroup' id='radio_VZAJWQUOMX'><label><input type="radio" autocomplete="off" name="radio_VZAJWQUOMX" value="x"></input> <span>There is no clear interaction.</span></label><label><input type="radio" autocomplete="off" name="radio_VZAJWQUOMX" value="answer"></input> <span>For lower values of theory of mind, the slope becomes more positive.</span></label><label><input type="radio" autocomplete="off" name="radio_VZAJWQUOMX" value="x"></input> <span>For lower values of theory of mind, the slope becomes more negative.</span></label></div>
 
 **Hint: ** You will need to look at the conditional effects plot and see how one predictor moderates the effect of the other predictor. 
 
-- Comparing the models with and without the interaction term, which would you retain? <div class='webex-radiogroup' id='radio_UXOSYNKGTO'><label><input type="radio" autocomplete="off" name="radio_UXOSYNKGTO" value="x"></input> <span>The model with the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_UXOSYNKGTO" value="x"></input> <span>The model without the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_UXOSYNKGTO" value="answer"></input> <span>There is little difference between the two models, but we would retain the interaction for theoretical interest.</span></label></div>
+- Comparing the models with and without the interaction term, which would you retain? <div class='webex-radiogroup' id='radio_AKSLNFFAAB'><label><input type="radio" autocomplete="off" name="radio_AKSLNFFAAB" value="x"></input> <span>The model with the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_AKSLNFFAAB" value="x"></input> <span>The model without the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_AKSLNFFAAB" value="answer"></input> <span>There is little difference between the two models, but we would retain the interaction for theoretical interest.</span></label></div>
 
-- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_EOVTANYAHK'><label><input type="radio" autocomplete="off" name="radio_EOVTANYAHK" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label><label><input type="radio" autocomplete="off" name="radio_EOVTANYAHK" value="answer"></input> <span>No, there is almost no difference in the parameters and our conclusions do not change.</span></label></div>
+- Are the results sensitive to the choice between default and user priors? <div class='webex-radiogroup' id='radio_JQADSSGDYY'><label><input type="radio" autocomplete="off" name="radio_JQADSSGDYY" value="x"></input> <span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label><label><input type="radio" autocomplete="off" name="radio_JQADSSGDYY" value="answer"></input> <span>No, there is almost no difference in the parameters and our conclusions do not change.</span></label></div>
 
 
 <div class='webex-solution'><button>Explain these answers</button>
@@ -1518,67 +1115,12 @@ get_prior(Brandt_model,
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> prior </th>
-   <th style="text-align:left;"> class </th>
-   <th style="text-align:left;"> coef </th>
-   <th style="text-align:left;"> group </th>
-   <th style="text-align:left;"> resp </th>
-   <th style="text-align:left;"> dpar </th>
-   <th style="text-align:left;"> nlpar </th>
-   <th style="text-align:left;"> bound </th>
-   <th style="text-align:left;"> source </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> ExpCond1 </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 5.5, 2.5) </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 0, 2.5) </td>
-   <td style="text-align:left;"> sigma </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-</tbody>
-</table>
+|prior                  |class     |coef     |group |resp |dpar |nlpar |lb |ub |source  |
+|:----------------------|:---------|:--------|:-----|:----|:----|:-----|:--|:--|:-------|
+|                       |b         |         |      |     |     |      |   |   |default |
+|                       |b         |ExpCond1 |      |     |     |      |   |   |default |
+|student_t(3, 5.5, 2.5) |Intercept |         |      |     |     |      |   |   |default |
+|student_t(3, 0, 2.5)   |sigma     |         |      |     |     |      |0  |   |default |
 
 </div>
 
@@ -1726,47 +1268,14 @@ bind_rows(model1, model2) %>%
                col.names = c("Model", "Parameter", "Median Estimate", "Lower 95% HDI", "Upper 95% HDI"))
 ```
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Model </th>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median Estimate </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 5.16 </td>
-   <td style="text-align:right;"> 4.79 </td>
-   <td style="text-align:right;"> 5.51 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 5.16 </td>
-   <td style="text-align:right;"> 4.83 </td>
-   <td style="text-align:right;"> 5.47 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_ExpCond1 </td>
-   <td style="text-align:right;"> 0.21 </td>
-   <td style="text-align:right;"> -0.28 </td>
-   <td style="text-align:right;"> 0.70 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_ExpCond1 </td>
-   <td style="text-align:right;"> 0.18 </td>
-   <td style="text-align:right;"> -0.27 </td>
-   <td style="text-align:right;"> 0.60 </td>
-  </tr>
-</tbody>
-</table>
+
+
+|Model         |Parameter   | Median Estimate| Lower 95% HDI| Upper 95% HDI|
+|:-------------|:-----------|---------------:|-------------:|-------------:|
+|User prior    |b_Intercept |            5.16|          4.79|          5.52|
+|Default prior |b_Intercept |            5.16|          4.84|          5.48|
+|User prior    |b_ExpCond1  |            0.21|         -0.29|          0.69|
+|Default prior |b_ExpCond1  |            0.18|         -0.26|          0.61|
 
 However, in the posterior predictive check, this is a good example of when the assumed distribution does not capture features of the underlying data. Whereas Schroeder and Epley approximated normal data, there is no getting away from this being characteristically ordinal. For the purposes of the self-test questions, you can persist with the normal model as that's what the original authors and replicators used, but I will include a bonus section below on what it looks like as an ordinal model. 
 
@@ -1884,89 +1393,14 @@ get_prior(Coleman_model, data = Coleman_data)
 
 <div class="kable-table">
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> prior </th>
-   <th style="text-align:left;"> class </th>
-   <th style="text-align:left;"> coef </th>
-   <th style="text-align:left;"> group </th>
-   <th style="text-align:left;"> resp </th>
-   <th style="text-align:left;"> dpar </th>
-   <th style="text-align:left;"> nlpar </th>
-   <th style="text-align:left;"> bound </th>
-   <th style="text-align:left;"> source </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> Absorption_SUM </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> Absorption_SUM:EQ_SUM </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> b </td>
-   <td style="text-align:left;"> EQ_SUM </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 122, 31.1) </td>
-   <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> student_t(3, 0, 31.1) </td>
-   <td style="text-align:left;"> sigma </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> default </td>
-  </tr>
-</tbody>
-</table>
+|prior                   |class     |coef                  |group |resp |dpar |nlpar |lb |ub |source  |
+|:-----------------------|:---------|:---------------------|:-----|:----|:----|:-----|:--|:--|:-------|
+|                        |b         |                      |      |     |     |      |   |   |default |
+|                        |b         |Absorption_SUM        |      |     |     |      |   |   |default |
+|                        |b         |Absorption_SUM:EQ_SUM |      |     |     |      |   |   |default |
+|                        |b         |EQ_SUM                |      |     |     |      |   |   |default |
+|student_t(3, 122, 31.1) |Intercept |                      |      |     |     |      |   |   |default |
+|student_t(3, 0, 31.1)   |sigma     |                      |      |     |     |      |0  |   |default |
 
 </div>
 
@@ -2061,6 +1495,16 @@ plot(p_direction(Coleman_fit),
      priors = TRUE) # plot the priors
 ```
 
+```
+## Warning in `==.default`(dens$Parameter, parameter): longer object length is not
+## a multiple of shorter object length
+```
+
+```
+## Warning in is.na(e1) | is.na(e2): longer object length is not a multiple of
+## shorter object length
+```
+
 <img src="10-BayesEst_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
 
 We can look at this further by plotting the distribution 95% HDI. We can see the 95% HDI clearly excludes 0 and absorption is the partial predictor with less uncertainty. 
@@ -2148,33 +1592,11 @@ bayes_R2(Coleman_fit)
 
 We can also compare the two models side by side. The model with the interaction has the highest $R^2$ estimate, but there is very little difference in how much variance they explain. We will stick with the interaction model since it was of theoretical interest. 
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> R2 Estimate </th>
-   <th style="text-align:right;"> Estimated Error </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Model with interaction </td>
-   <td style="text-align:right;"> 0.33 </td>
-   <td style="text-align:right;"> 0.04 </td>
-   <td style="text-align:right;"> 0.25 </td>
-   <td style="text-align:right;"> 0.40 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Model without interaction </td>
-   <td style="text-align:right;"> 0.32 </td>
-   <td style="text-align:right;"> 0.04 </td>
-   <td style="text-align:right;"> 0.24 </td>
-   <td style="text-align:right;"> 0.39 </td>
-  </tr>
-</tbody>
-</table>
+
+|                          | R2 Estimate| Estimated Error| Lower 95% HDI| Upper 95% HDI|
+|:-------------------------|-----------:|---------------:|-------------:|-------------:|
+|Model with interaction    |        0.33|            0.04|          0.25|          0.40|
+|Model without interaction |        0.32|            0.04|          0.24|          0.39|
 
 To check the sensitivity of the results to different priors, we will fit one final model removing the user priors.
 
@@ -2229,74 +1651,16 @@ summary(Coleman_fit3)
 
 To compare the models side by side, we can summarise the key parameters. As you can see, the only differences are in the second or third decimal place. 
 
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> Model </th>
-   <th style="text-align:left;"> Parameter </th>
-   <th style="text-align:right;"> Median Estimate </th>
-   <th style="text-align:right;"> Lower 95% HDI </th>
-   <th style="text-align:right;"> Upper 95% HDI </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 120.26 </td>
-   <td style="text-align:right;"> 117.26 </td>
-   <td style="text-align:right;"> 123.07 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_Intercept </td>
-   <td style="text-align:right;"> 120.40 </td>
-   <td style="text-align:right;"> 117.44 </td>
-   <td style="text-align:right;"> 123.27 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_EQ_SUM </td>
-   <td style="text-align:right;"> 0.54 </td>
-   <td style="text-align:right;"> 0.21 </td>
-   <td style="text-align:right;"> 0.89 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_EQ_SUM </td>
-   <td style="text-align:right;"> 0.55 </td>
-   <td style="text-align:right;"> 0.20 </td>
-   <td style="text-align:right;"> 0.90 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_Absorption_SUM:EQ_SUM </td>
-   <td style="text-align:right;"> -0.01 </td>
-   <td style="text-align:right;"> -0.03 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_Absorption_SUM:EQ_SUM </td>
-   <td style="text-align:right;"> -0.01 </td>
-   <td style="text-align:right;"> -0.03 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> User prior </td>
-   <td style="text-align:left;"> b_Absorption_SUM </td>
-   <td style="text-align:right;"> 0.60 </td>
-   <td style="text-align:right;"> 0.48 </td>
-   <td style="text-align:right;"> 0.73 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Default prior </td>
-   <td style="text-align:left;"> b_Absorption_SUM </td>
-   <td style="text-align:right;"> 0.60 </td>
-   <td style="text-align:right;"> 0.47 </td>
-   <td style="text-align:right;"> 0.73 </td>
-  </tr>
-</tbody>
-</table>
+
+|Model         |Parameter               | Median Estimate| Lower 95% HDI| Upper 95% HDI|
+|:-------------|:-----------------------|---------------:|-------------:|-------------:|
+|User prior    |b_Intercept             |          120.26|        117.29|        123.19|
+|Default prior |b_Intercept             |          120.40|        117.47|        123.32|
+|User prior    |b_EQ_SUM                |            0.54|          0.20|          0.88|
+|Default prior |b_EQ_SUM                |            0.55|          0.18|          0.89|
+|User prior    |b_Absorption_SUM:EQ_SUM |           -0.01|         -0.03|          0.00|
+|Default prior |b_Absorption_SUM:EQ_SUM |           -0.01|         -0.03|          0.00|
+|User prior    |b_Absorption_SUM        |            0.60|          0.47|          0.73|
+|Default prior |b_Absorption_SUM        |            0.60|          0.48|          0.74|
 
 
