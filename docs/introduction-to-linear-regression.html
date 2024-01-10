@@ -7,7 +7,7 @@
 <title>Chapter 1 Introduction to Linear Regression | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, we start with the foundations of linear regression. We will be focusing on simple linear regression where you have one predictor variable and one outcome. You will apply...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction to Linear Regression | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-linear-regression.html">
@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -107,8 +107,8 @@
 </h2>
 <p>By the end of this chapter, you should be able to:</p>
 <ol style="list-style-type: decimal">
-<li><p>Apply simple linear regression using one categorical predictor.</p></li>
-<li><p>Apply simple linear regression using one continuous predictor.</p></li>
+<li><p>Apply simple linear regression using <a href="introduction-to-linear-regression.html#LM_groups">one categorical predictor</a>.</p></li>
+<li><p>Apply simple linear regression using <a href="introduction-to-linear-regression.html#LM_continuous">one continuous predictor</a>.</p></li>
 <li><p>Evaluate whether your regression model meets parametric assumptions.</p></li>
 <li><p>Report the results of your findings in APA style.</p></li>
 </ol>
@@ -126,7 +126,7 @@
 <span><span class="co"># Load data for this task</span></span>
 <span><span class="va">zhang_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Zhang_data.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>For the guided example, we will use unpublished data from Bartlett and Zhang who performed a direct replication of Irving et al. (2022). They studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their Specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question and ours for the replication was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group</p>
+<p>For the guided example, we will use unpublished data from Bartlett and Zhang who performed a direct replication of <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span>. They studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question and ours for the replication was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group</p>
 <p>For an overview of the method, 129 participants completed a continuous influence paradigm where participants read a fictious newspaper article one sentence at a time about a causal link between cognitive decline and watching TV in older adults. There is one independent variable to randomly allocate participants into one of two groups:</p>
 <ol style="list-style-type: decimal">
 <li><p>The correction group (group <code>1</code> in the data) had one sentence saying: “The lead author has since specified that the results have been misrepresented and that TV screen time has not yet been found to cause cognitive decline. Only a correlation has been found…”</p></li>
@@ -145,7 +145,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>From a simple boxplot, we can get a quick understanding of how the responses are distributed for each condition. Remember 0 represents the no correction group and 1 represents the correction group, so it looks like people in the correction group made fewer mistaken causal inferences than people in the no correction group.</p>
-<p>When we have more time, you can customise the plot to be much more publication ready with information titles etc. For example, we can create a violin plot showing the distribution of responses with the mean and 95% confidence superimposed.</p>
+<p>When we have more time, you can customise the plot to be much more publication ready with informative titles etc. For example, we can create a violin plot showing the distribution of responses with the mean and 95% confidence superimposed.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">zhang_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">condition</span>, y <span class="op">=</span> <span class="va">harsh_DV1_sum</span>, fill <span class="op">=</span> <span class="va">condition</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -160,16 +160,16 @@
 <div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></div>
 </div>
 </div>
-<div id="simple-linear-regression-for-comparing-two-groups" class="section level2" number="1.3">
+<div id="LM_groups" class="section level2" number="1.3">
 <h2>
-<span class="header-section-number">1.3</span> Simple linear regression for comparing two groups<a class="anchor" aria-label="anchor" href="#simple-linear-regression-for-comparing-two-groups"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.3</span> Simple linear regression for one categorical predictor<a class="anchor" aria-label="anchor" href="#LM_groups"><i class="fas fa-link"></i></a>
 </h2>
 <p>Now you understand the data a little better, it is time to apply our modelling technique to address our research question and hypothesis. We want to know whether participants made fewer mistaken causal inferences in the correction group compared to the non-correction group.</p>
 <p>Below, we use <code>condition</code> as the predictor variable (which is categorical with two groups of 0 and 1) and <code>harsh_DV1_sum</code> as the outcome variable. The first step is to create an object (<code>lm_condition</code>) for the linear model.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">harsh_DV1_sum</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">zhang_data</span><span class="op">)</span></span></code></pre></div>
 <p>The function <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="op">)</span></span></code> is built into R and is very flexible for creating linear regression models. The first argument is to specify a formula which defines our model. The first component (<code>harsh_DV1_sum</code>) is our outcome variable for what we are interested in modelling. The tilde (~) separates the equation, where everything on the right is your predictor variable(s). In simple linear regression, we just have one which is <code>condition</code> in our model here. This is saying we want to predict <code>harsh_DV1_sum</code> as our outcome from <code>condition</code> as our predictor. We then specify the data frame we want to use.</p>
-<p>When you create this object, it stores a bunch of information, but does not really tell us all the statistics we expect. If you simply print the object in the console, it will tell you intercept and coefficient(s), but none of the model fitting nor null hypothesis significance testing.</p>
+<p>When you create this object, it stores a bunch of information, but does not really tell us all the statistics we expect. If you simply print the object in the console, it will tell you the intercept and coefficient(s), but none of the model fitting nor null hypothesis significance testing. If you look at the object in the R environment, you will see it is a list containing loads of elements. It stores things like the model, the residuals, and other information you can use.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lm_condition</span></span></code></pre></div>
 <pre><code>## 
@@ -207,6 +207,7 @@
 </ol>
 <div class="info">
 <p>Does it matter if the slope/coefficient is positive or negative? When you have two groups, it does not really matter which group is the reference and which is the target, you just need to know which is which for interpretation. In the output, R appends the target group to the predictor name (<code>condition1</code>). We typically use the 0 and 1 system as its closely aligned with the slope interpretation, but you do not need it. If you used character variables, it will still work, but it will default to alphabetical order unless you turn it into a factor.</p>
+<p>When it comes to continuous predictors later, the sign <em>does</em> matter. A positive slope would mean an increase in the predictor is associated with increased values of your outcome. A negative slope would mean an increase in the predictor is associated with decreased values of your outcome.</p>
 </div>
 <p>At the bottom of the model output, you then get the fit statistics. Multiple <span class="math inline">\(R^2\)</span> tells you how much variance in your outcome your predictor(s) explain. Adjusted <span class="math inline">\(R^2\)</span> tends to be more conservative as it adjusts for the number of predictors in the model, but they will be very similar when you have one predictor. Adjusted <span class="math inline">\(R^2\)</span> is 0.10, suggesting <code>condition</code> explains 10% of the variance in <code>harsh_DV1_sum</code>. Remember in psychology / life sciences, this will be on the smaller side as we are studying messier / more complicated things.</p>
 <p>Finally, we have the model fit statistics to tell us whether the model explains a significant amount of variance in the outcome. With one predictor, the <em>p</em>-value next to the coefficient and next to the model fit will be almost identical, but they represent two things when it comes to multiple linear regression. The F-statistic is 15.34, the model degrees of freedom is 1, the residual degrees of freedom is 127, and the <em>p</em>-value is <em>p</em> = .0001.</p>
@@ -233,7 +234,7 @@
 <li><p>There should be homoscedasticity.</p></li>
 </ol>
 <p>Assumptions 1-4 are pretty straight forward as they relate to your understanding of the design or a simple check on the data for non-zero variance.</p>
-<p>When you have a categorical predictor, the linearity assumption is met by default. As you are comparing two groups, there can only be straight line between the two of them. We will come back to this for the continuous predictors.</p>
+<p>When you have a categorical predictor, the linearity assumption is met by default. As you are comparing two groups, there can only be a straight line between the two of them. We will come back to this for the continuous predictors.</p>
 <p>You can get a series of diagnostic plots by calling the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code> function on the model object. For a categorical predictor, some of these do not work very well, but it will be more useful for continuous predictors and multiple linear regression models.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lm_condition</span><span class="op">)</span></span></code></pre></div>
@@ -244,9 +245,9 @@
 <p>In summary, there are no major red flags here. These checks rely on your subjective opinion, so you are looking for major deviations which would question whether using this model is appropriate or not. A general approach is if you squint and it looks fine, its probably fine. Major deviations tend to be pretty obvious.</p>
 </div>
 </div>
-<div id="linear-regression-with-one-continuous-predictor" class="section level2" number="1.4">
+<div id="LM_continuous" class="section level2" number="1.4">
 <h2>
-<span class="header-section-number">1.4</span> Linear regression with one continuous predictor<a class="anchor" aria-label="anchor" href="#linear-regression-with-one-continuous-predictor"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4</span> Simple linear regression with one continuous predictor<a class="anchor" aria-label="anchor" href="#LM_continuous"><i class="fas fa-link"></i></a>
 </h2>
 <p>We have established how to run linear regression using one categorical predictor, but its also important to make sure you understand how to interpret the results of a continuous predictor.</p>
 <p>In the Bartlett and Zhang data, there is not really a useful continuous predictor as we were interested in the effect of condition, but we can explore whether <code>age</code> is associated with the number of mistaken causal inferences. Maybe we expect older participants to make more mistakes.</p>
@@ -290,17 +291,24 @@
 <pre><code>##                   2.5 %      97.5 %
 ## (Intercept)  1.28654390 2.709509824
 ## age         -0.02539211 0.008753155</code></pre>
-<p>Likewise, the model fit statistics shows we did not explain a significant amount of variance in the outcome. <span class="math inline">\(R^2\)</span> is essentially 0, with adjusted <span class="math inline">\(R^2\)</span> a negative value. You would just round to 0 though as a negative value does not make sense.</p>
+<p>Likewise, the model fit statistics shows we did not explain a significant amount of variance in the outcome. <span class="math inline">\(R^2\)</span> is essentially 0, with adjusted <span class="math inline">\(R^2\)</span> a negative value. You would just round to 0 though as a negative value does not make sense. Only the adjusted <span class="math inline">\(R^2\)</span> can be negative when it adds the correction, otherwise its impossible and would stop at 0.</p>
 <div id="centering-continuous-predictors" class="section level3" number="1.4.1">
 <h3>
 <span class="header-section-number">1.4.1</span> Centering continuous predictors<a class="anchor" aria-label="anchor" href="#centering-continuous-predictors"><i class="fas fa-link"></i></a>
 </h3>
-<p>One way to make the intercept more interpretable is by centering the predictor. This means you subtract each participant's score from the mean of all the participants scores - kind of like the residuals. This means the variable will have a mean of 0 for the centre point and participant's values for age will be spread around 0 instead of their original values. The relationship between the numbers is the same, but it shifts the centre point. We can see its impact on the model below.</p>
+<p>One way to make the intercept more interpretable is by centering the predictor. This means you subtract each participant's score from the mean of all the participants scores - kind of like the residuals. This means the variable will now have a mean of 0 for the center point and participant's values for age will be spread around 0 instead of their original values. The relationship between the numbers is the same, but it shifts the center point.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">zhang_data</span> <span class="op">&lt;-</span> <span class="va">zhang_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>age_center <span class="op">=</span> <span class="va">age</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lm_age_centre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">harsh_DV1_sum</span> <span class="op">~</span> <span class="va">age_center</span>, data <span class="op">=</span> <span class="va">zhang_data</span><span class="op">)</span></span>
+<span><span class="va">zhang_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age_center</span>, y <span class="op">=</span> <span class="va">harsh_DV1_sum</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="co"># add a line of best fit using linear regression</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>We can see its impact on the model below.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lm_age_centre</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">harsh_DV1_sum</span> <span class="op">~</span> <span class="va">age_center</span>, data <span class="op">=</span> <span class="va">zhang_data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">lm_age_centre</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
@@ -328,9 +336,9 @@
 <span class="header-section-number">1.4.2</span> Checking the statistical assumptions<a class="anchor" aria-label="anchor" href="#checking-the-statistical-assumptions-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>Now we have a continuous predictor, the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></span></code> function for checking the model assumptions now looks as intended.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lm_age</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01-LM1_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-13-2.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-13-3.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-13-4.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="01-LM1_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-14-2.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-14-3.png" width="100%" style="display: block; margin: auto;"><img src="01-LM1_files/figure-html/unnamed-chunk-14-4.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Plots 1 and 3 are useful for checking homoscedasticity. We want the variance to be approximately equal across the range of predictor values. We are looking for a roughly straight red line and the dots to have an equal density across the x-axis.</p>
 <p>Plot 2 is similar to the categorical predictor. We want the points to roughly follow the line to support the model residuals being approximately normal.</p>
 <p>Finally, plot 4 would show high leverage observations that could be potentially problematic as outliers, but there is nothing flagged here.</p>
@@ -351,7 +359,7 @@
 <p>For the original example, I could summarise the findings as:</p>
 <p>"We hypothesised that participants in the correction group would report fewer mistaken causal inferences than those in the no correction group. To test this hypothesis, we applied simple linear regression using correction condition as a predictor variable and the number of mistaken causal inferences as an outcome variable. Figure 1 below shows the difference between the two groups as a violin plot.</p>
 <p>Our model explained a statistically significant amount of variance in our outcome (adjusted <span class="math inline">\(R^2\)</span> = .10, <em>F</em>(1, 127) = 15.34, <em>p</em> &lt; .001). Participants in the correction group provided a mean of 0.79 (95% CI = [0.39, 1.18], <em>p</em> &lt; .001) fewer mistaken causal inferences than those in the no correction group. The results supported our hypothesis where we expected correcting statistical misinformation would result in fewer mistaken causal inferences compared to not correcting misinformation."</p>
-<div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></div>
+<div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></div>
 <div class="warning">
 <p>You might notice I flipped the 95% confidence interval values around here. In this framework, the confidence intervals are symmetrical around the estimate, and the order will depend on whether its positive or negative. In the output, the values were negative as correction group was lower on the outcome, but when I worded the results like this I did not include the sign directly. So, I flipped the two values around as it looks more intuitive when the slope estimate does not have the sign in this context.</p>
 </div>
@@ -360,6 +368,66 @@
 <h2>
 <span class="header-section-number">1.6</span> Independent activity<a class="anchor" aria-label="anchor" href="#independent-activity"><i class="fas fa-link"></i></a>
 </h2>
+<p>Now you have followed along to a guided example, it is important you can transfer your knowledge to a new scenario. So, we have a new data set for you to try out your understanding of these techniques on. Follow the instructions below and answer the questions, you can then scroll down to the <a href="introduction-to-linear-regression.html#C1_solution">end of the chapter</a> to see the solution we based on the questions on.</p>
+<p>For an independent activity, we will use data from <span class="citation">Dawtry et al. (<a href="references.html#ref-dawtry_why_2015" role="doc-biblioref">2015</a>)</span> who investigated how people can differently view an increase in wealth inequality. 305 participants completed measures like:</p>
+<ul>
+<li><p>Household and estimated population income ($)</p></li>
+<li><p>Perceived fairness and satisfaction of the current system of wealth redistribution (1 extremely fair – 9 extremely unfair). The measure uses the mean of two scale items.</p></li>
+<li><p>Attitudes on wealth redistribution (1 strongly disagree – 6 strongly agree). The measure uses the mean of four scale items.</p></li>
+</ul>
+<p>For this independent activity, you will create two simple linear regression models:</p>
+<ol style="list-style-type: decimal">
+<li><p>You will use perceived fairness and satisfaction (<code>fairness_satisfaction</code>) as the outcome and attitudes on wealth redistribution (<code>redistribution</code>) as a continuous predictor. We want to address the research question: “Is there a relationship between perceived fairness and satisfaction and attitudes on wealth redistribution?”</p></li>
+<li><p>You will use perceived fairness and satisfaction (<code>fairness_satisfaction</code>) as the outcome and gender (<code>gender</code>) as a categorical predictor. We want to address the research question: “Is there a difference between men and women on perceived fairness and satisfaction?”</p></li>
+</ol>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dawtry</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Dawtry-2015.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dawtry</span> <span class="op">&lt;-</span> <span class="va">dawtry</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>fairness_satisfaction <span class="op">=</span> <span class="op">(</span><span class="va">fairness</span> <span class="op">+</span> <span class="va">satisfaction</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>, <span class="co"># Calculate mean of fairness and satisfaction</span></span>
+<span>         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span>.cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">redist2</span>, <span class="va">redist4</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span><span class="va">.</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="fl">6</span>, <span class="co"># Reverse code two variables</span></span>
+<span>                                                         <span class="va">.</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="fl">5</span>,</span>
+<span>                                                         <span class="va">.</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="fl">4</span>,</span>
+<span>                                                         <span class="va">.</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="fl">3</span>,</span>
+<span>                                                         <span class="va">.</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">~</span> <span class="fl">2</span>,</span>
+<span>                                                         <span class="va">.</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         redistribution <span class="op">=</span> <span class="op">(</span><span class="va">redist1</span> <span class="op">+</span> <span class="va">redist2</span> <span class="op">+</span> <span class="va">redist3</span> <span class="op">+</span> <span class="va">redist4</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4</span>, <span class="co"># Calculate mean of support for redistribution</span></span>
+<span>         gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gender</span>, <span class="co">#Convert gender to a factor</span></span>
+<span>                         levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="co"># original levels as 1 and 2</span></span>
+<span>                         labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Men"</span>, <span class="st">"Women"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Create more informative labels</span></span></code></pre></div>
+<div class="try">
+<p>From here, apply what you learnt in the guided examples above to this new independent task and complete the questions below to check your understanding. Careful in interpreting the fairness and satisfaction item. It is coded a little weird in the original study where higher values mean greater <em>dissatisfaction</em> with the current system of wealth redistribution.</p>
+</div>
+<div id="predicting-fairness-and-satisfaction-from-redistribution-attitude" class="section level3" number="1.6.1">
+<h3>
+<span class="header-section-number">1.6.1</span> Predicting fairness and satisfaction from redistribution attitude<a class="anchor" aria-label="anchor" href="#predicting-fairness-and-satisfaction-from-redistribution-attitude"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li><p>Rounding to two decimals, what is the intercept for fairness and satisfaction when redistribution is 0? <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["8.36"]'></p></li>
+<li><p>Rounding to two decimals, the slope for the effect of redistribution on fairness and satisfaction is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["-1.23"]'> with a 95% confidence interval spanning from <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["-1.38"]'> to <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["-1.09"]'>.</p></li>
+<li><p>There is a <select class="webex-select"><option value="blank"></option>
+<option value="x">positive</option>
+<option value="answer">negative</option>
+<option value="x">non-significant</option></select> relationship between fairness and satisfaction and attitudes to wealth redistribution, meaning as attitudes on wealth distribution increase, people are more <select class="webex-select"><option value="blank"></option>
+<option value="x">satisfied</option>
+<option value="answer">dissatisfied</option></select> with the current system of wealth distribution.</p></li>
+<li><p>Rounding to three decimals, adjusted <span class="math inline">\(R^2\)</span> for the model is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["0.489",".489"]'>, meaning the predictor explains <input class="webex-solveme nospaces" data-tol="0.001" size="2" data-answer='["49"]'>% of the variance in our outcome.</p></li>
+</ul>
+</div>
+<div id="predicting-fairness-and-satisfaction-from-gender" class="section level3" number="1.6.2">
+<h3>
+<span class="header-section-number">1.6.2</span> Predicting fairness and satisfaction from gender<a class="anchor" aria-label="anchor" href="#predicting-fairness-and-satisfaction-from-gender"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li><p>Rounding to two decimals, what is the intercept for fairness and satisfaction for men as the reference group? <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["3.54"]'></p></li>
+<li><p>Rounding to two decimals, the slope for the difference between men and women on perceived fairness and satisfaction is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["-0.02","-.02"]'> with a 95% confidence interval spanning from <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["-0.48","-.48"]'> to <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["0.44",".44"]'>.</p></li>
+<li><p>There is a <select class="webex-select"><option value="blank"></option>
+<option value="x">positive</option>
+<option value="x">negative</option>
+<option value="answer">non-significant</option></select> difference between men and women on perceived fairness and satisfaction and attitudes to wealth redistribution.</p></li>
+<li><p>Rounding to three decimals, adjusted <span class="math inline">\(R^2\)</span> for the model is <input class="webex-solveme nospaces" data-tol="0.001" size="6" data-answer='["-0.003","-.003"]'>, meaning the predictor explains <input class="webex-solveme nospaces" data-tol="0.001" size="1" data-answer='["0"]'>% of the variance in our outcome.</p></li>
+</ul>
+</div>
 </div>
 <div id="further-resources" class="section level2" number="1.7">
 <h2>
@@ -371,11 +439,103 @@
 <li><p><a href="https://psyteachr.github.io/stat-models-v1/" target="_blank">Learning Statistical Models Through Simulation in R</a> covers similar content to this course, but it has slightly longer to walk through different concepts, so you might find it useful as a supplementary source.</p></li>
 </ol>
 </div>
-<div id="independent-activity-solution" class="section level2" number="1.8">
+<div id="C1_solution" class="section level2" number="1.8">
 <h2>
-<span class="header-section-number">1.8</span> Independent activity solution<a class="anchor" aria-label="anchor" href="#independent-activity-solution"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.8</span> Independent activity solution<a class="anchor" aria-label="anchor" href="#C1_solution"><i class="fas fa-link"></i></a>
 </h2>
+<div id="predicting-fairness-and-satisfaction-from-redistribution-attitude-1" class="section level3" number="1.8.1">
+<h3>
+<span class="header-section-number">1.8.1</span> Predicting fairness and satisfaction from redistribution attitude<a class="anchor" aria-label="anchor" href="#predicting-fairness-and-satisfaction-from-redistribution-attitude-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>First, we can plot the data to check out the relationship and initial patterns.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dawtry</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">fairness_satisfaction</span>, y <span class="op">=</span> <span class="va">redistribution</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Fairness and Satisfaction"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Support for Redistribution"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>We can then fit the model using one outcome and one continuous predictor. We get a summary of the model and calculate the confidence intervals for the estimates.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dawtry_continuous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fairness_satisfaction</span> <span class="op">~</span> <span class="va">redistribution</span>, data <span class="op">=</span> <span class="va">dawtry</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dawtry_continuous</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">dawtry_continuous</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = fairness_satisfaction ~ redistribution, data = dawtry)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.8957 -0.9281 -0.1197  0.9128  6.4226 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     8.36323    0.29437   28.41   &lt;2e-16 ***
+## redistribution -1.23378    0.07224  -17.08   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.448 on 303 degrees of freedom
+## Multiple R-squared:  0.4905, Adjusted R-squared:  0.4888 
+## F-statistic: 291.7 on 1 and 303 DF,  p-value: &lt; 2.2e-16
+## 
+##                    2.5 %    97.5 %
+## (Intercept)     7.783963  8.942498
+## redistribution -1.375942 -1.091622</code></pre>
+</div>
+<div id="predicting-fairness-and-satisfaction-from-gender-1" class="section level3" number="1.8.2">
+<h3>
+<span class="header-section-number">1.8.2</span> Predicting fairness and satisfaction from gender<a class="anchor" aria-label="anchor" href="#predicting-fairness-and-satisfaction-from-gender-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>First, we can plot the data to check out the relationship and initial patterns.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dawtry</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html">drop_na</a></span><span class="op">(</span><span class="va">gender</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="co"># Avoid plotting the NAs</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">gender</span>, y <span class="op">=</span> <span class="va">redistribution</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Gender"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Support for Redistribution"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-LM1_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>We can then fit the model using one outcome and one continuous predictor. We get a summary of the model and calculate the confidence intervals for the estimates.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dawtry_gender</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">fairness_satisfaction</span> <span class="op">~</span> <span class="va">gender</span>, data <span class="op">=</span> <span class="va">dawtry</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dawtry_gender</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">dawtry_gender</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = fairness_satisfaction ~ gender, data = dawtry)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5414 -1.5371 -0.5241  1.4586  5.4759 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  3.54140    0.16246  21.798   &lt;2e-16 ***
+## genderWomen -0.01726    0.23446  -0.074    0.941    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.036 on 300 degrees of freedom
+##   (3 observations deleted due to missingness)
+## Multiple R-squared:  1.807e-05,  Adjusted R-squared:  -0.003315 
+## F-statistic: 0.005421 on 1 and 300 DF,  p-value: 0.9414
+## 
+##                  2.5 %    97.5 %
+## (Intercept)  3.2216926 3.8611099
+## genderWomen -0.4786594 0.4441327</code></pre>
 
+</div>
 </div>
 </div>
 <script>
@@ -591,18 +751,28 @@ $( document ).ready(function() {
 <a class="nav-link" href="#packages-and-the-data-set"><span class="header-section-number">1.2</span> Packages and the data set</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#exploratory-data-analysis"><span class="header-section-number">1.2.1</span> Exploratory data analysis</a></li></ul>
 </li>
 <li>
-<a class="nav-link" href="#simple-linear-regression-for-comparing-two-groups"><span class="header-section-number">1.3</span> Simple linear regression for comparing two groups</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#checking-the-statistical-assumptions"><span class="header-section-number">1.3.1</span> Checking the statistical assumptions</a></li></ul>
+<a class="nav-link" href="#LM_groups"><span class="header-section-number">1.3</span> Simple linear regression for one categorical predictor</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#checking-the-statistical-assumptions"><span class="header-section-number">1.3.1</span> Checking the statistical assumptions</a></li></ul>
 </li>
 <li>
-<a class="nav-link" href="#linear-regression-with-one-continuous-predictor"><span class="header-section-number">1.4</span> Linear regression with one continuous predictor</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#LM_continuous"><span class="header-section-number">1.4</span> Simple linear regression with one continuous predictor</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#centering-continuous-predictors"><span class="header-section-number">1.4.1</span> Centering continuous predictors</a></li>
 <li><a class="nav-link" href="#checking-the-statistical-assumptions-1"><span class="header-section-number">1.4.2</span> Checking the statistical assumptions</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#reporting-the-results-of-linear-regression"><span class="header-section-number">1.5</span> Reporting the results of linear regression</a></li>
-<li><a class="nav-link" href="#independent-activity"><span class="header-section-number">1.6</span> Independent activity</a></li>
+<li>
+<a class="nav-link" href="#independent-activity"><span class="header-section-number">1.6</span> Independent activity</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#predicting-fairness-and-satisfaction-from-redistribution-attitude"><span class="header-section-number">1.6.1</span> Predicting fairness and satisfaction from redistribution attitude</a></li>
+<li><a class="nav-link" href="#predicting-fairness-and-satisfaction-from-gender"><span class="header-section-number">1.6.2</span> Predicting fairness and satisfaction from gender</a></li>
+</ul>
+</li>
 <li><a class="nav-link" href="#further-resources"><span class="header-section-number">1.7</span> Further resources</a></li>
-<li><a class="nav-link" href="#independent-activity-solution"><span class="header-section-number">1.8</span> Independent activity solution</a></li>
+<li>
+<a class="nav-link" href="#C1_solution"><span class="header-section-number">1.8</span> Independent activity solution</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#predicting-fairness-and-satisfaction-from-redistribution-attitude-1"><span class="header-section-number">1.8.1</span> Predicting fairness and satisfaction from redistribution attitude</a></li>
+<li><a class="nav-link" href="#predicting-fairness-and-satisfaction-from-gender-1"><span class="header-section-number">1.8.2</span> Predicting fairness and satisfaction from gender</a></li>
+</ul>
+</li>
 </ul>
 
       <div class="book-extra">
@@ -620,7 +790,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-09.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-10.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -633,7 +803,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

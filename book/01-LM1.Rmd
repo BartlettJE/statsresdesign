@@ -8,9 +8,9 @@ You are always welcome to provide feedback on our resources, but this book is pa
 
 By the end of this chapter, you should be able to: 
 
-1. Apply simple linear regression using [one categorical predictor](##LM_groups).
+1. Apply simple linear regression using [one categorical predictor](#LM_groups).
 
-2. Apply simple linear regression using [one continuous predictor](##LM_continuous). 
+2. Apply simple linear regression using [one continuous predictor](#LM_continuous). 
 
 3. Evaluate whether your regression model meets parametric assumptions. 
 
@@ -284,9 +284,9 @@ For an independent activity, we will use data from @dawtry_why_2015 who investig
 
 For this independent activity, you will create two simple linear regression models:
 
-1. You will use perceived fairness and satisfaction (`fairness_satisfaction`) as the outcome and `redistribution` as a continuous predictor. We want to address the research question: “Is there a relationship between perceived fairness and satisfaction and attitudes on wealth redistribution?” 
+1. You will use perceived fairness and satisfaction (`fairness_satisfaction`) as the outcome and attitudes on wealth redistribution (`redistribution`) as a continuous predictor. We want to address the research question: “Is there a relationship between perceived fairness and satisfaction and attitudes on wealth redistribution?” 
 
-2. You will use perceived fairness and satisfaction (`fairness_satisfaction`) as the outcome and `gender` as a categorical predictor. We want to address the research question: “Is there a difference between men and women on perceived fairness and satisfaction?” 
+2. You will use perceived fairness and satisfaction (`fairness_satisfaction`) as the outcome and gender (`gender`) as a categorical predictor. We want to address the research question: “Is there a difference between men and women on perceived fairness and satisfaction?” 
 
 ```{r, message=FALSE, warning=FALSE}
 dawtry <- read_csv("data/Dawtry-2015.csv")
