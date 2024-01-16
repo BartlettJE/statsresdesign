@@ -92,7 +92,7 @@ james_nocoding <- lm(post_intrusions ~ Condition, data = james_data)
 summary(james_nocoding)
 ```
 
-Although we use `Condition` as a single predictor, we actually get three different predictors. In regression, it can only compare two groups at a time, so it will apply dummy coding to your groups. You get k-1 predictors, where there will be one fewer predictor than there are groups. 
+Although we use `Condition` as a single predictor, we actually get three different predictors. In regression, it can only compare two groups at a time, so it will apply dummy coding to your groups. You get *k*-1 predictors, where there will be one fewer predictor than there are groups. 
 
 Using what you learnt in chapter 1, we can see its a significant model, but the only significant predictor is `Condition2`. Group 1 is the reference group as the intercept, so `Condition2` tells you the mean difference between group 1 and group 2. We compare each group successively to the reference, so `Condition3` is the mean difference between group 1 and group 3 etc.  
 
@@ -135,7 +135,204 @@ summary(james_dummy)
 
 ```
 
+This gives us a similar result to before, some of the coefficients are even the same, but we are controlling what the reference group is for the intercept, and what each target comparison is. They are all positive predictors showing the number of intrusive memories is higher in each control group compared to the combined reactivation and Tetris group. However, the difference to Tetris in isolation is not statistically significant. 
 
+For these initial steps, it is also a good opportunity to sense check how the comparisons work. The intercept is the mean for our reference group - reactivation plus Tetris. Each coefficient is then the mean difference for each target group against the reference. We can show this is the case by comparing the means. 
 
+```{r}
+# Calculate and isolate the mean for group 2 as our reference group
+RT_mean <- james_data %>% 
+  filter(Condition == 2) %>% 
+  summarise(mean_intrusions = mean(post_intrusions)) %>% 
+  pluck(1)
 
+# For each other group, calculate the mean difference between the group mean and RT mean
+james_data %>% 
+  filter(Condition != 2) %>% 
+  group_by(Condition) %>% 
+  summarise(mean_difference = mean(post_intrusions) - RT_mean)
+```
 
+::: {.warning data-latex=""}
+We can see the mean for group 2 and the mean differences align with exactly what we expect. It is important to work through the process now as the group means align with the model estimates. This will not be the case when we have multiple predictors since the coefficients become partial predictors. 
+:::
+
+### Deviation coding `Condition`
+
+Finally, we have deviation coding. This is more useful once we get to interactions later, but it is easier to see the logic behind what it is doing when we have no other predictors to worry about. 
+
+Remember, in dummy coding, the intercept is the reference group mean, and each dummy coded predictor is the mean difference against the reference group. 
+
+In deviation coding, the interpretation of the intercept changes to be the grand mean of all observations, i.e., taking the mean of all four groups. The coefficients are then the difference between each comparison group with the grand mean for a main effect. We still need to create a new predictor for *k*-1 groups, but instead of coding 0 and 1, we use 0.5 and -0.5. 
+
+You might see different ways of deviation coding. When you use 0.5/-0.5, you can calculate the effect of the group as 0.5 * the slope, which tells you the difference to the grand mean. For 1/-1. you calculate the effect of the group as 1 * the slope, which tells you the difference to the grand mean. We will typically use 0.5/-0.5 for consistency with other materials, but be aware you might see each approach.
+ 
+```{r}
+# Create deviation coding for k-1 groups
+# In this method, group 2 as our reference will be -0.5 in each comparison. 
+# Variables not included in the predictor are set to 0
+# The target group is set to 0.5 for each predictor
+james_data <- james_data %>% 
+  mutate(control_deviation = case_when(Condition == 1 ~ 0.5,
+                                       Condition %in% c(3, 4) ~ 0,
+                                       Condition == 2 ~ -0.5),
+         tetris_deviation = case_when(Condition == 3 ~ 0.5,
+                                       Condition %in% c(1, 4) ~ 0,
+                                       Condition == 2 ~ -0.5),
+         reactivation_deviation = case_when(Condition == 4 ~ 0.5,
+                                       Condition %in% c(1, 3) ~ 0,
+                                       Condition == 2 ~ -0.5))
+
+```
+
+As before, we can get an overview of how this looks by checking the distinct values against `Condition`. 
+
+```{r}
+james_data %>% 
+  distinct(Condition, control_deviation, tetris_deviation, reactivation_deviation)
+```
+
+The three predictors show how each comparison is deviation coded. For `control_deviation`, group 1 is coded 0.5, the predictors to ignore are coded 0, and the target group is coded -0.5. For `tetris_deviation`, group 3 is coded 0.5 etc. Group 2 is always coded -0.5 in this case. 
+
+::: {.info data-latex=""}
+Remember the interpretation of the intercept is what the outcome value is when the predictors are set to 0. The interpretation shifts here as the intercept represents the grand mean across the group. When the predictors are set to 0, the outcome is in the middle of -0.5 and 0.5, so its the mid point or average. When you do not have interactions, this might not be as useful, but its easier to understand the logic when there are no partial effects.  
+:::
+
+We can now see what this looks like for our regression model containing deviation coded predictors. 
+
+```{r}
+james_deviation <- lm(post_intrusions ~ control_deviation + tetris_deviation + reactivation_deviation, data = james_data)
+
+summary(james_deviation)
+```
+
+This time, the results look a little different. None of the coefficients are significant, but importantly, the model is exactly the same. We are still explaining the same amount of variance in the outcome, but the way we are expressing it is different. 
+
+Deviation coding is tricky at first to appreciate what its doing, so working through the logic is even more important than for dummy coding. This time, we need to calculate the grand mean of all observations, then compare the coefficients against the grand mean. 
+
+```{r}
+# Calculate and isolate the grand mean of all groups
+grand_mean <- james_data %>% 
+  summarise(mean_intrusions = mean(post_intrusions)) %>% 
+  pluck(1)
+
+# Calculate the mean number of intrusions for each group
+# Then calculate the deviations as 2 times the mean difference 
+james_data %>% 
+  group_by(Condition) %>% 
+  summarise(mean_intrusions = mean(post_intrusions),
+            deviations = (grand_mean - mean(post_intrusions)) * 2)
+```
+
+::: {.warning data-latex=""}
+We can see the grand mean and deviations align with exactly what we expect. It is trickier than dummy coding, but this is what deviation coding does. Note in the model you do not get the group 2 contrast as that's always the reference group. Also pay attention to calculating 2 times the difference, since we used 0.5/-0.5 as the coding scheme. 
+
+It is important to work through the process now as the deviations align with the model estimates. This will not be the case when we have multiple predictors since the coefficients become partial predictors. 
+:::
+
+### Unstandardised vs standardised betas
+
+In this final demonstration, we will use this data set as an opportunity to demonstrate the difference between unstandardised and standardised beta coefficients. 
+
+When you use the raw data, the interpretation of the intercept and slopes relates to the units of measurement. So, how your outcome changes for a 1 unit change in your predictor. That 1 unit will be relative to the units of measurement and the interpretation changes depending on what your variables are. 
+
+When you have multiple predictors, the units might be different in each predictor, so it can be difficult to judge which predictor has the biggest impact. Alternatively, standardising predictors is comparable to Cohen's d when you compare groups which you see all the time in psychology. 
+
+You can do this manually by scaling all the variables. This means you transform each variable to have a mean of 0 and standard deviation of 1. Instead of being in the raw units, the units are expressed in standard deviations. 
+
+```{r}
+# Select our four variables of interest for the dummy coded version of the model
+standardise_variables <- james_data %>% 
+  select(post_intrusions, RT_control, RT_tetris, RT_reactivation)
+
+# Standardise the variables by using the scale() function on them
+# There are two layers here as scale() saves the variables just as a matrix, so we need to store it in a data frame
+standardise_variables <- data.frame(scale(standardise_variables))
+
+# See what the standardised variables look like
+head(standardise_variables)
+```
+
+We can now refit the dummy-coded model using the standardised version of the data set. All the predictor and outcome names remained the same. 
+
+```{r}
+standardised_dummy <- lm(post_intrusions ~ RT_control + RT_tetris + RT_reactivation, data = standardise_variables)
+
+# Temporarily turn off scientific notation 
+options(scipen = 15)
+summary(standardised_dummy)
+options(scipen = 0)
+```
+
+Instead of the original units, our coefficients are now expressed as a standardised mean difference. This means instead of the reference group having an average of 3.22 fewer intrusive memories than control, the difference was 0.42 standard deviations. Standardised units are reported all the time in psychology as its easier to compare studies using different measures, but its important the measures and comparisons are comparable to make sense. 
+
+Now you know the logic behind standardising predictors and how it works, there is a shortcut you can use to standardise the estimates of a model you have already created. The `r pkg("effectsize")` package has a handy function called `r hl(standardize_parameters())` which will refit a model and return standardised estimates, helpfully also including the 95% CI around the estimates. 
+
+```{r}
+standardize_parameters(james_dummy)
+```
+
+Reassuringly, we get the same estimates as when we converted the variables ourselves. 
+
+## Multiple linear regression with individual predictors
+
+### Introduction to the dataset
+
+To demonstrate multiple linear regression models, we will use data from Evans et al. (2023) who performed a multi-site registered replication report containing 2218 participants. They wanted to replicate Jones and Kavanagh (1996) - an influential study in organisational psychology on unethical workplace behaviour. The variables can be split into two types. The first are situational factors and relate to experimental manipulations on a vignette that participants read:
+
+1. Workplace environment (`QWE`): Your workplace environment is described as high or low quality. 
+
+2. Manager influence (`MI`): Your manager is described as behaving ethically or unethically. 
+
+3. Peer influence (`PI`): Your peers are described as behaving ethically or unethically. 
+
+The second group of variables are individual and relate to the participant rather than being experimentally manipulated: 
+
+1. Locus of control (`LOCTot`): A measure of whether someone attributes events internally or externally. 
+
+2. Social desirability (`SocDesTot`): A measure of whether someone would respond in a way that would make them look better than they would typically act. 
+
+3. Machiavellianism (`MachTot`): A personality trait that is part of the dark-triad, showing a lack of empathy and willingness to manipulate others. 
+
+The outcome in the study was then the participant's unethical workplace behaviour intention (`BehIntTot`). The vignette described a situation in a company and the unethical behaviour was whether you would manipulate expense requests to claim more money than you really should. There were four questions which were added up to range from 4 to 20, with higher values meaning greater intention to behave unethically.  
+
+Our research question for this study is: What is the effect of individual and situational factors on unethical workplace behaviour intentions? We will not pose specific hypotheses, but we essentially predict that these six factors will affect someone's unethical workplace behaviour intention. 
+
+### Visualise the relationship 
+
+When starting any data analysis, it is important to visualise the data for some exploratory data analysis. Using the skills you developed in data skills for reproducible research, explore the data understand its properties and look for potential patterns. 
+
+Please try this yourself and explore different variables and their relationship to unethical workplace behaviour. For example, we can look at the effect of quality of workplace environment: 
+
+```{r}
+evans_data %>% 
+  ggplot(aes(x = QWE, y = BehIntTot)) + 
+  geom_boxplot() + 
+  scale_y_continuous(name = "Sum of Behavioural Intentions") +
+  scale_x_discrete(name = "Quality of Workplace Environment", label = c("Low", "High")) +
+  theme_minimal()
+```
+Alternatively, we might look at the relationship between unethical behaviour intention and Machiavellianism: 
+
+```{r}
+evans_data %>% 
+  ggplot(aes(x = MachTot, y = BehIntTot)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  scale_y_continuous(name = "Sum of Behavioural Intentions") +
+  scale_x_continuous(name = "Machiavellianism") +
+  theme_minimal()
+```
+
+### Model 1: Situational factors
+
+Now you understand the data a little better, it is time to apply our modelling techniques to address our research question. We will go with the hierarchical approach to entering predictors to enter them in two steps. First, situational factors, then the individual factors on top of them. 
+
+```{r}
+individual_model1 <- lm(BehIntTot ~ QWE + MI + PI, data = evans_data)
+
+summary(individual_model1)
+```
+All three predictors are statistically significant and are all negative. Since we coded the positive manipulations as the target groups, this shows people reported lower unethical workplace behaviour intentions in the high/ethical groups. 
+
+We explain a significant amount of variance in unethical behaviour intentions, but note the $R^2$ and adjusted $R^2$ values. They are approximately .01 or 1%, showing with 2000 plus participants, we can reject the null, but we explain only a modest proportion of variance. 
