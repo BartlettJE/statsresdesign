@@ -1,6 +1,139 @@
 # Multiple Linear Regression
 
-Coming soon!
+In this chapter, we build on the chapter 1 content where you learnt about the general linear model and applied it to the case of simple linear regression. In this chapter, we will extend that framework for when you want to want to include multiple predictor variables and interactions between predictors. We will cover concepts like standardised and unstandardised predictors, and different coding schemes for predictor variables.  
+
+You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
+
+## Learning objectives
+
+By the end of this chapter, you should be able to: 
+
+1. Understand [different predictor coding schemes](#coding-schemes).
+
+2. Understand the difference between unstandardised and standardised beta coefficients.
+
+3. Understand how to run and interpret a regression for multiple predictors.
+
+4. Understand how to run and interpret a regression containing interaction terms.
+
+To follow along to this chapter and try the code yourself, please download the data files we will be using in [this zip file](data/02_data.zip).
+
+## Packages and the data sets
+
+We first need to load some packages and the data for this task. If you do not have any of the packages, make sure you install them first.
+
+```{r, warning=FALSE, message=FALSE}
+# wrangling and visualisation functions 
+library(tidyverse)
+# Regression interaction plots
+library(sjPlot)
+# Standardise model coefficients
+library(effectsize)
+# VIF and other regression functions
+library(car)
+# Interaction estimates
+library(emmeans)
+
+# Load data for coding schemes
+james_data <- read_csv("data/James_2015.csv") %>% 
+  mutate(Condition = as.factor(Condition)) %>% 
+  rename(post_intrusions = Days_One_to_Seven_Number_of_Intrusions)
+
+# Load data for multiple linear regression
+evans_data <- read_csv("data/Evans_2023.csv") %>% 
+  mutate(QWE = factor(QWE, levels = c("low", "high")),
+         MI = factor(MI, levels = c("unethical", "ethical")),
+         PI = factor(PI, levels = c("unethical", "ethical")))
+
+```
+
+## Different predictor coding schemes{#coding-schemes}
+
+### Introduction to the dataset
+
+For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate different predictor coding schemes, we will use James et al. (2015) who wanted to find non-pharmacological interventions for reducing intrusive memories of traumatic events. They compared four conditions: 
+
+1. No-task control: Participants completed a 10-minute filler task.
+
+2. Reactivation + Tetris: Participants were shown a series of images from a trauma film to
+reactivate traumatic memories. After a filler task, participants played Tetris for 12 minutes.
+
+3. Tetris Only: Participants played Tetris for 12 minutes in isolation. 
+
+4. Reactivation Only: Participants completed the reactivation task in isolation. 
+
+Their research question was: Would the reactivation and Tetris condition lead to fewer intrusive memories? They predicted the reactivation and Tetris group will have fewer intrusive memories in the week after experimental trauma exposure compared to the other three groups. 
+
+This means there is one predictor variable `Condition` with four levels, one for each experimental condition. We then have one outcome variable `post_intrusions` for the number of intrusive memories they recorded in the week after the experiment. To support the hypothesis, `post_intrusions` should decrease in group 2 compared to the three other groups. 
+
+### Exploratory data analysis
+
+When starting any data analysis, it is important to visualise the data for some exploratory data analysis. Using the skills you developed in data skills for reproducible research, you can explore the data to understand its properties and look for potential patterns. We can create a boxplot to get a brief overview of how the number of intrusive memories changes across the four condition groups.
+
+```{r}
+james_data %>% 
+  ggplot(aes(x = Condition, y = post_intrusions)) + 
+  geom_boxplot() + 
+  scale_y_continuous(name = "Number of Intrusive Memories") +
+  scale_x_discrete(name = "Experimental Task", label = c("Control", "Reactivation + Tetris", "Tetris", "Reactivation")) + 
+  theme_minimal()
+  
+```
+
+We can see group 2 (reactivation + Tetris) has the lowest score, but we need inferential statistics to test the hypothesis. 
+
+### No specific coding
+
+For a starting point, we can see what it looks like if you enter `post_intrusions` as the outcome and `Condition` as the predictor in simple linear regression with no specific coding scheme.
+
+```{r}
+james_nocoding <- lm(post_intrusions ~ Condition, data = james_data)
+
+summary(james_nocoding)
+```
+
+Although we use `Condition` as a single predictor, we actually get three different predictors. In regression, it can only compare two groups at a time, so it will apply dummy coding to your groups. You get k-1 predictors, where there will be one fewer predictor than there are groups. 
+
+Using what you learnt in chapter 1, we can see its a significant model, but the only significant predictor is `Condition2`. Group 1 is the reference group as the intercept, so `Condition2` tells you the mean difference between group 1 and group 2. We compare each group successively to the reference, so `Condition3` is the mean difference between group 1 and group 3 etc.  
+
+### Dummy coding `Condition`
+
+To demonstrate different coding schemes, we will start with dummy coding. Dummy coding is the default in R and when we entered `Condition` as a predictor, this is what R does behind the scenes. However, we have no control over the process and the reference group/intercept will be first in numerical or alphabetical order, then each successive k-1 group will be added as separate predictors.
+
+Instead, we can define our own dummy coding to control the reference and target groups. This is particularly useful when you have specific hypotheses like in James et al. (2015), as we are interested in the combined reactivation and Tetris group (group 2). This means we can code for condition 2 as the reference group / intercept, and the other groups are coded as individual predictors. 
+
+For dummy coding, you will have k-1 predictors, meaning one fewer predictor than the number of groups. Since we have four groups, we will need to create three predictors. In the code below, our reference group will always be set to 0. Then, for each dummy coded predictor, we will set the target group to 1. Each target group will be 1 for when it is a predictor, but reactivation and Tetris (condition 2) will always be set to 0. 
+
+```{r}
+# Dummy code condition 2 as 0 for each comparison, and each successive group as 1
+james_data <- james_data %>% 
+  # For each group at a time, code as 1, with the default set to 0 for all other groups
+  mutate(RT_control = case_when(Condition == 1 ~ 1, .default = 0),
+         RT_tetris = case_when(Condition == 3 ~ 1, .default = 0),
+         RT_reactivation = case_when(Condition == 4 ~ 1, .default = 0))
+```
+
+We can get an overview of how this looks by checking the distinct values against `Condition`. 
+
+```{r}
+james_data %>% 
+  distinct(Condition, RT_control, RT_tetris, RT_reactivation)
+```
+
+The three predictors show how each comparison is dummy coded. For `RT_control`, group 1 is coded 1 and all the others are coded 0. For `RT_tetris`, group 3 is coded 1 and all the others are coded 0 etc. Group is the only one without ever being coded 1. 
+
+::: {.info data-latex=""}
+Remember the interpretation of the intercept is what the outcome value is when the predictors are set to 0. Setting all the predictors to 0 would indicate group 2 in this case, so that represents our reference group. See the predictors as little switches to turn on and off, and when they are all turned off (0), that represents the reference group. 
+:::
+
+We can now see what this looks like as our regression model containing dummy coded predictors. 
+
+```{r}
+james_dummy <- lm(post_intrusions ~ RT_control + RT_tetris + RT_reactivation, data = james_data)
+
+summary(james_dummy)
+
+```
 
 
 
