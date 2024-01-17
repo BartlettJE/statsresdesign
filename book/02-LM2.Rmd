@@ -10,7 +10,7 @@ By the end of this chapter, you should be able to:
 
 1. Understand [different predictor coding schemes](#coding-schemes).
 
-2. Understand the difference between unstandardised and standardised beta coefficients.
+2. Understand the difference between [unstandardised and standardised beta coefficients](#standardised-betas).
 
 3. Understand how to run and interpret a regression for multiple predictors.
 
@@ -98,11 +98,11 @@ Using what you learnt in chapter 1, we can see its a significant model, but the 
 
 ### Dummy coding `Condition`
 
-To demonstrate different coding schemes, we will start with dummy coding. Dummy coding is the default in R and when we entered `Condition` as a predictor, this is what R does behind the scenes. However, we have no control over the process and the reference group/intercept will be first in numerical or alphabetical order, then each successive k-1 group will be added as separate predictors.
+To demonstrate different coding schemes, we will start with dummy coding. Dummy coding is the default in R and when we entered `Condition` as a predictor, this is what R does behind the scenes. However, we have no control over the process and the reference group/intercept will be first in numerical or alphabetical order, then each successive *k*-1 group will be added as separate predictors.
 
-Instead, we can define our own dummy coding to control the reference and target groups. This is particularly useful when you have specific hypotheses like in James et al. (2015), as we are interested in the combined reactivation and Tetris group (group 2). This means we can code for condition 2 as the reference group / intercept, and the other groups are coded as individual predictors. 
+Instead, we can define our own dummy coding to control the reference and target groups. This is particularly useful when you have specific hypotheses like in @james_computer_2015, as we are interested in the combined reactivation and Tetris group (group 2). This means we can code for condition 2 as the reference group / intercept, and the other groups are coded as individual predictors. 
 
-For dummy coding, you will have k-1 predictors, meaning one fewer predictor than the number of groups. Since we have four groups, we will need to create three predictors. In the code below, our reference group will always be set to 0. Then, for each dummy coded predictor, we will set the target group to 1. Each target group will be 1 for when it is a predictor, but reactivation and Tetris (condition 2) will always be set to 0. 
+For dummy coding, you will have *k*-1 predictors, meaning one fewer predictor than the number of groups. Since we have four groups, we will need to create three predictors. In the code below, our reference group will always be set to 0. Then, for each dummy coded predictor, we will set the target group to 1. Each target group will be 1 for when it is a predictor, but reactivation and Tetris (condition 2) will always be set to 0. 
 
 ```{r}
 # Dummy code condition 2 as 0 for each comparison, and each successive group as 1
@@ -142,19 +142,23 @@ For these initial steps, it is also a good opportunity to sense check how the co
 ```{r}
 # Calculate and isolate the mean for group 2 as our reference group
 RT_mean <- james_data %>% 
+  # Isolate group 2
   filter(Condition == 2) %>% 
   summarise(mean_intrusions = mean(post_intrusions)) %>% 
+  # Isolate the first value
   pluck(1)
 
 # For each other group, calculate the mean difference between the group mean and RT mean
 james_data %>% 
+  # Omit group 2
   filter(Condition != 2) %>% 
+  # Get mean difference for all other groups
   group_by(Condition) %>% 
   summarise(mean_difference = mean(post_intrusions) - RT_mean)
 ```
 
 ::: {.warning data-latex=""}
-We can see the mean for group 2 and the mean differences align with exactly what we expect. It is important to work through the process now as the group means align with the model estimates. This will not be the case when we have multiple predictors since the coefficients become partial predictors. 
+We can see the mean for group 2 and the mean differences align with exactly what we expect. It is important to work through the process now as the group means align with the model estimates. This will not be the case when we have multiple predictors since the coefficients become partial effects. 
 :::
 
 ### Deviation coding `Condition`
@@ -225,12 +229,12 @@ james_data %>%
 ```
 
 ::: {.warning data-latex=""}
-We can see the grand mean and deviations align with exactly what we expect. It is trickier than dummy coding, but this is what deviation coding does. Note in the model you do not get the group 2 contrast as that's always the reference group. Also pay attention to calculating 2 times the difference, since we used 0.5/-0.5 as the coding scheme. 
+We can see the grand mean and deviations align with exactly what we expect. It is trickier than dummy coding, but this is what deviation coding does. Note in the model you do not get the group 2 contrast as that's always the reference group and we are ignoring the sign of the deviation to check its consistency. Also pay attention to calculating 2 times the difference, since we used 0.5/-0.5 as the coding scheme. 
 
 It is important to work through the process now as the deviations align with the model estimates. This will not be the case when we have multiple predictors since the coefficients become partial predictors. 
 :::
 
-### Unstandardised vs standardised betas
+### Unstandardised vs standardised betas{#standardised-betas}
 
 In this final demonstration, we will use this data set as an opportunity to demonstrate the difference between unstandardised and standardised beta coefficients. 
 
@@ -258,9 +262,10 @@ We can now refit the dummy-coded model using the standardised version of the dat
 ```{r}
 standardised_dummy <- lm(post_intrusions ~ RT_control + RT_tetris + RT_reactivation, data = standardise_variables)
 
-# Temporarily turn off scientific notation 
+# Temporarily turn off scientific notation so we can see the numbers clearer
 options(scipen = 15)
 summary(standardised_dummy)
+# Turn scientific notation back on to stop everything else printing to loads of decimals
 options(scipen = 0)
 ```
 
@@ -314,7 +319,7 @@ evans_data %>%
 ```
 Alternatively, we might look at the relationship between unethical behaviour intention and Machiavellianism: 
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 evans_data %>% 
   ggplot(aes(x = MachTot, y = BehIntTot)) + 
   geom_point() + 
@@ -337,7 +342,7 @@ All three predictors are statistically significant and are all negative. Since w
 
 We explain a significant amount of variance in unethical behaviour intentions, but note the $R^2$ and adjusted $R^2$ values. They are approximately .01 or 1%, showing with 2000 plus participants, we can reject the null, but we explain only a modest proportion of variance. 
 
-At this point, it is an important lesson to see how the presence of other predictors affects the estimates of another predictor. For a demonstration, we will create another regression model, but only including on situational variable at a time. Feel free to create the other two yourself and compare.
+At this point, it is an important lesson to see how the presence of other predictors affects the estimates of another predictor. For a demonstration, we will create another regression model, but only including one situational variable at a time. Feel free to create the other two yourself and compare.
 
 ```{r}
 individual_model1a <- lm(BehIntTot ~ QWE, data = evans_data)
@@ -393,7 +398,7 @@ At this point, we can check whether there any red flags by checking the assumpti
 plot(individual_model2)
 ```
 
-There do not appear to be any major red flags. Plots 1 and 3 show homoscedasticity as the residuals are roughly consistent across the x-axis. The qq plot in plot 2 is fine, with values at the lower and upper scale moving away from the line. Combined with plots 1 and 3, there are characteristic signs that the outcome may not be truly interval. The residuals are organised into lines as remember our outcome is the sum of a Likert question, so there are only so many possible values. We will come back to this idea in chapter 3. Finally, plot 4 is not flagging any observations as high in leverage for potential outliers. 
+There do not appear to be any major red flags (apart from discrete looking data which we will get onto). Plots 1 and 3 show homoscedasticity as the residuals are roughly consistent across the x-axis. The qq plot in plot 2 is fine, just with values at the lower and upper scale moving away from the line. Combined with plots 1 and 3, there are characteristic signs that the outcome may not be truly interval. The residuals are organised into lines as remember our outcome is the sum of a Likert question, so there are only so many possible values. We will come back to this idea in chapter 3. Finally, plot 4 is not flagging any observations as high in leverage for potential outliers. 
 
 So far, this is the same as chapter 1. We have a new assumption to check when we have multiple predictors though. We do not want predictors to be too heavily correlated with each other, known as multicollinearity. We can check this using a function from `r pkg("car")` called `r hl(vif())`.
 
@@ -415,7 +420,7 @@ First, we can compare the two models using analysis of variance (ANOVA) to see w
 anova(individual_model1, individual_model2)
 ```
 
-It does seem to be care here. The difference between the models is statistically significant, suggesting model 2 explains more variance than model 1. 
+It does seem to be the case here. Careful of the rounding as the *p*-value is tiny and its rounded to 0 in the rendering of the book. The difference between the models is statistically significant, suggesting model 2 explains more variance than model 1. 
 
 #### Comparing R2 for each model
 
@@ -427,7 +432,7 @@ Remember, adjusted $R^2$ is particularly useful here as it corrects for model co
 
 Finally, we can check the Akaike Information Criterion (AIC) as a measure of model fit. It calculates prediction error in the model and it can only be interpreted as a relative value. There is not an inherent good or bad threshold, its relative to the data and models you are working with. 
 
-As it represents prediction error, lower AIC values mean better model fit relative to another model. If a more complicated model has a higher AIC than a less complicated model, there is potential overfitting when you have redundant predictors. 
+As it represents prediction error, lower AIC values mean better model fit relative to another model. If a more complicated model has a higher AIC than a less complicated model, there is potential overfitting when you have redundant predictors, so its better to retain the less complex model. 
 
 ```{r}
 AIC(individual_model1)
@@ -478,7 +483,7 @@ summary(interaction_model1_dummy)
 ```
 
 ::: {.info data-latex=""}
-There are different symbols you can use for model formulae. Using * is shorthand for "give me the individual and interaction effects of these variables". You could specify it fully by using `predictor1 + predictor 2 + predictor1:predictor2`. You can find a full list of formula syntax in places like this <a href="https://www.econometrics.blog/post/the-r-formula-cheatsheet/" target="_blank">Econometrics blog</a>.
+There are different symbols you can use for model formulae. Using * is shorthand for "give me the individual and interaction effects of these variables". You could also specify it fully by using `predictor1 + predictor 2 + predictor1:predictor2`. You can find a full list of formula syntax in places like this <a href="https://www.econometrics.blog/post/the-r-formula-cheatsheet/" target="_blank">Econometrics blog</a>.
 :::
 
 Manager influence and peer influence are both significant, but the interaction between them is not statistically significant. 
@@ -494,17 +499,19 @@ summary(interaction_model1_deviation)
 
 ```
 
-You will see that the model fit and coefficient for the interaction is identical, but the individual predictor coefficients changed. This happens because of the interpretation of the intercept and coefficient in dummy coding. When you dummy code these variables, the intercept is the value for the outcome for unethical manager influence and unethical peer influence. The coefficient for manager influence is then how we expect the outcome to change for ethical managers, when there is an unethical peer influence. These are **simple effects**, which can be useful information, but it might not be what you are expecting. 
+You will see that the model fit and coefficient for the interaction is identical, but the individual predictor coefficients changed. This happens because of the interpretation of the intercept and coefficient in dummy coding. When you dummy code these variables, the intercept is the value for the outcome when both manager influence is unethical and peer influence is unethical. The coefficient for manager influence is then how we expect the outcome to change for ethical managers, when there is an unethical peer influence. These are **simple effects**, which can be useful information, but it might not be what you are expecting. 
 
-In the deviation model, this turns into something more familiar to those working with ANOVA to compare categorical variables. The intercept is the grand mean now, so the individual predictors become **main effects**, or the effect of one predictor, when the second predictor is held constant at 0. 
+In the deviation model, this turns into something more familiar to those working with ANOVA to compare categorical variables. The intercept is the grand mean now, so the individual predictors become **main effects**, or the effect of one predictor, when the second predictor is held constant at 0. For instance, an ethical manager decreases the unethical behaviour intention by 0.35 (0.5 * 0.69 because of the deviation coding scheme) compared to the grand mean. 
 
-Both approaches provide useful information, but think about what information you are looking for. Typically, main effects are more useful when you want to know the individual effect of predictors on the outcome. Simple effects are then normally more useful when you are trying to break down each element of an interaction and you want the condition effect of one predictor on another. 
+Both approaches provide useful information, but think about what information you are looking for. Typically, main effects are more useful when you want to know the individual effect of predictors on the outcome. Simple effects are then normally more useful when you are trying to break down each element of an interaction and you want the conditional effect of one predictor on another. 
+
+Its always about your research question and what information you want to know. 
 
 #### Plotting interactions
 
-In these examples, the dataset is great for a large sample of different variables, but there are not really any meaningful interactions to explore. But, we can still demonstrate what you would do if there is an interaction to explore. 
+In these examples, the dataset is great for a large sample of different variables, but there are not really any meaningful interactions to explore. But, we can still demonstrate what you would do if there *was* an interaction to explore. 
 
-First, plotting is your friend. Sometimes you can plot your design fine using `r pkg("ggplot2")`, but you often miss out on the inferential parts for the confidence intervals around estimates etc. So, it can be useful to use the `r pkg("sjPlot")` package which can take regression models and plot the model predictions. To decomponse an interaction, it is normally more useful to use the original / dummy-coded variables, as we are interested in the simple effects here. 
+First, plotting is your friend. Sometimes you can plot your design fine using `r pkg("ggplot2")`, but you often miss out on the inferential parts for the confidence intervals around estimates, particularly when there are interactions to explore. So, the `r pkg("sjPlot")` package can be useful as it can take regression models and plot the model predictions. To decomponse an interaction, it is normally more useful to use the original / dummy-coded variables, as we are interested in the simple effects here, and the units will be more interpretation for the average reader. 
 
 ```{r}
 # sjPlot makes it easy to plot estimates from the model
@@ -535,7 +542,7 @@ plot_model(interaction_model1_dummy,
   labs(title = "")
 ```
 
-#### Break down model estimates
+#### Breaking down model estimates
 
 Another way of breaking down interactions is by reporting the estimated marginal means. When there is an interaction, you often want to known whether the mean difference in predictor 1 is different across the levels of predictor 2. Plotting shows you this visually, but you might want to report effect sizes in your write-up. 
 
@@ -577,7 +584,7 @@ interaction_model2_dummy <- lm(BehIntTot ~ QWE * MachTot, data = evans_data)
 plot_model(interaction_model2_dummy, type = "pred", terms = c("MachTot", "QWE"))
 ```
 
-In a continuous by categorical interaction, it will tell you whether the slope between your outcome and continuous predictor is different/moderated by the levels of your categorical predictor. For example, whether the relationship flips from positive to negative, one is very weak, or the gradient of the slopes are just different. Here, we can see the relationship is slightly weaker / shallower in high quality workplaces compared to low quality, but ultimately that difference is not statistically significant. 
+In a continuous by categorical interaction, it will tell you whether the slope between your outcome and continuous predictor is different/moderated by the levels of your categorical predictor. For example, whether the relationship flips from positive to negative, one is very weak, or the gradient of the slopes are just different. Here, we can see the relationship is slightly weaker / shallower in high quality workplaces compared to low quality, but ultimately that difference is not statistically significant as shown by the interaction term in the model. 
 
 ### Continuous by continuous interactions
 
@@ -607,7 +614,90 @@ In a simple slopes analysis, it will tell you whether the slope between your out
 
 Now you have followed along to a guided example, it is important you can transfer your knowledge to a new scenario. So, we have a new data set for you to try out your understanding of these techniques on. Follow the instructions below and answer the questions, you can then scroll down to the [end of the chapter](#C2_solution) to see the solution we based on the questions on. 
 
-For an independent activity, we will use data from Tulloch et al. who performed an unpublished replication of @troy_change_2017. 
+For an independent activity, we will use data from Tulloch et al. who performed an unpublished replication of @troy_change_2017. Troy et al. conducted three studies exploring the effect of emotion regulation and socioeconomic status on depressive symptoms. The data you will use comes from a dissertation project where we replicated study one to investigate if socioeconomic status moderates the link between cognitive reappraisal ability and depressive symptoms. For the purposes of this task, the key variables from the study included: 
+
+- Socioeconomic Status (SES; `SES`) - Current annual family income was rated on a 1 to 12 scale aligning with income bands. The bands were converted from the original study's values in US dollars, to the replication study's target population of UK (in British Pounds) and Malaysia (in Malaysian Ringgit). Its an odd way of recording this data, but go with it...
+
+- Country (`Country`) - Categorical variable showing whether the participant completed the study in Malaysia or the UK. 
+
+- Cognitive Reappraisal Ability (CRA; `CRA_mean`) - A scale measuring cognitive reappraisal ability. The variable was calculated from the mean of eight items measured on a 1 (strongly disagree) - 7 (strongly agree) scale, with higher values meaning higher cognitive reappraisal ability. 
+
+- Depressive Symptoms (`DS_sum`) - This was measured as current non-clinical symptoms of depression from the Center for Epidemiological Studies Depression Scale. Participants reported the presence of depression symptoms in the past week across five items on a 0 (none of the time) to 3 (all of the time) scale. The variable was calculated from the sum of the five items, meaning the scale could range from 0 to 15, with higher values meaning greater depression symptoms in the past week. 
+
+- Life Stress (`LS_mean`) - This was measured as perceptions of life stress in the past two years. Participants completed four questions on a 1 (never) to 5 (very often) scale. The variable was calculated from the mean of four questions, with higher values meaning greater life stress in the past two years. 
+
+In the original Troy et al. study, they investigated if socioeconomic status moderates the link between cognitive reappraisal ability and depressive symptoms. In study one, they applied a multiple regression model with depressive symptoms as the outcome, life stress as an individual predictor, and an interaction between cognitive reappraisal ability and socioeconomic status. They found that:
+
+- Life stress was a significant positive predictor of depressive symptoms.
+
+- Cognitive reappraisal was a significant negative predictor of depressive symptoms.
+
+- There was a significant interaction between cognitive reappraisal and socioeconomic status. They found that there was a stronger negative relationship between cognitive reappraisal and depressive symptoms for lower values of socioeconomic status compared to higher values (i.e., simple slopes analysis).   
+
+In the replication study, we wanted to replicate the study to see if we would observe similar findings by including two different countries of origin (Malaysia and UK) compared to the original sample from the United States. The research questions were: 
+
+1) Does country of origin, life stress, cognitive reappraisal ability, and socioeconomic status predict depressive symptoms? 
+
+2) Does socioeconomic status moderate the relationship between cognitive reappraisal ability and depressive symptoms?     
+
+```{r, warning=FALSE, message=FALSE}
+# Load data for coding schemes
+# We are applying the coding scheme, just so its crystal clear whether your answers align
+tulloch_data <- read_csv("data/Tulloch_2022.csv") %>% 
+  mutate(Country = factor(Country, levels = c("Malaysia", "UK")),
+         Country_deviation = case_when(Country == "UK" ~ 0.5, .default = -0.5),
+         SES_center = SES - mean(SES), 
+         CRA_center = CRA_mean - mean(CRA_mean),
+         LS_center = LS_mean - mean(LS_mean))
+```
+
+::: {.try data-latex=""}
+Fit two models:
+
+1. Predict depressive symptoms (`DS_sum`) from country of origin (`Country_deviation`), life stress (`LS_center`), cognitive reappraisal (`CRA_center`), and socioeconomic status (`SES_center`) as individual predictors. 
+
+2. Predict depressive symptoms (`DS_sum`) from country of origin (`Country_deviation`), life stress (`LS_center`), and the interaction between cognitive reappraisal (`CRA_center`) and socioeconomic status (`SES_center`). 
+
+From here, apply what you learnt in the guided examples above to this new independent task and complete the questions below to check your understanding. 
+:::
+
+### Model 1: Individual predictors
+
+- Rounding to three decimals, adjusted $R^2$ for the model is `r fitb(answer = 0.239, num = TRUE, tol = .001)`, meaning the predictors explain `r fitb(answer = 24, num = TRUE, tol = .001)`% of the variance in our outcome of depressive symptoms. 
+
+- Rounding to two decimals, the slope for `Country_deviation` is`r fitb(answer = 1.33, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
+
+- Rounding to two decimals, the slope for `LS_center` is`r fitb(answer = 1.70, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
+
+- Rounding to two decimals, the slope for `CRA_center` is`r fitb(answer = -0.48, num = TRUE, tol = .001)`, suggesting cognitive reappraisal is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+
+- Rounding to two decimals, the slope for `SES_center` is`r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+
+- Converting the model to standardised predictors, `r mcq(opts = c(x = "country of origin", answer = "life stress", x = "cognitive reappraisal", x = "socioeconomic status"))` has the largest effect on depressive symptoms. 
+
+### Model 2: Interaction term
+
+- Rounding to three decimals, adjusted $R^2$ for the model is `r fitb(answer = 0.235, num = TRUE, tol = .001)`, meaning the predictors explain `r fitb(answer = 24, num = TRUE, tol = .001)`% of the variance in our outcome of depressive symptoms. 
+
+- Rounding to two decimals, the slope for `Country_deviation` is `r fitb(answer = 1.31, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
+
+- Rounding to two decimals, the slope for `LS_center` is`r fitb(answer = 1.69, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
+
+- Rounding to two decimals, the slope for `CRA_center` is`r fitb(answer = -0.49, num = TRUE, tol = .001)`, suggesting cognitive reappraisal is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+
+- Rounding to two decimals, the slope for `SES_center` is`r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+
+- Rounding to two decimals, the slope for `CRA_center:SES_center` is`r fitb(answer = 0.02, num = TRUE, tol = .001)`, and it is a `r mcq(opts = c(x = "significant", answer = "non-significant"))` predictor. 
+
+### Model comparison
+
+- Comparing the two models using ANOVA, model 2 `r mcq(opts = c(x = "does", answer = "does not"))` explain significantly more variance in depressive symptoms than model 1. 
+
+- Adjusted $R^2$ is larger in `r mcq(opts = c(answer = "model 1", x = "model 2"))`. 
+
+- The AIC value is lower in `r mcq(opts = c(answer = "model 1", x = "model 2"))`. 
+
+- Looking at these model comparison criteria, `r mcq(opts = c(answer = "model 1", x = "model 2"))` seems to be the most appropriate model. 
 
 ## Further resources
 
@@ -616,3 +706,42 @@ Within the School of Psychology and Neuroscience, we have a series of PsyTeachR 
 1. <a href="https://psyteachr.github.io/stat-models-v1/" target="_blank">Learning Statistical Models Through Simulation in R</a> will be particularly helpful for the concepts covered in this chapter. Chapters 3 and 4 cover multiple regression and interactions. 
 
 ## Independent activity solution{#C2_solution}
+
+### Model 1
+
+```{r}
+tulloch_model1 <- lm(DS_sum ~ Country_deviation + LS_center + CRA_center + SES_center,
+                     data = tulloch_data) 
+
+summary(tulloch_model1)
+```
+
+```{r}
+standardize_parameters(tulloch_model1)
+```
+
+### Model 2
+
+```{r}
+tulloch_model2 <- lm(DS_sum ~ Country_deviation + LS_center + CRA_center*SES_center,
+                     data = tulloch_data) 
+
+summary(tulloch_model2)
+```
+
+```{r}
+standardize_parameters(tulloch_model2)
+```
+
+### Model comparison 
+
+```{r}
+anova(tulloch_model1, tulloch_model2)
+```
+
+```{r}
+AIC(tulloch_model1)
+
+AIC(tulloch_model2)
+```
+
