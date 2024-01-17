@@ -665,13 +665,13 @@ From here, apply what you learnt in the guided examples above to this new indepe
 
 - Rounding to three decimals, adjusted $R^2$ for the model is `r fitb(answer = 0.239, num = TRUE, tol = .001)`, meaning the predictors explain `r fitb(answer = 24, num = TRUE, tol = .001)`% of the variance in our outcome of depressive symptoms. 
 
-- Rounding to two decimals, the slope for `Country_deviation` is`r fitb(answer = 1.33, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
+- Rounding to two decimals, the slope for `Country_deviation` is `r fitb(answer = 1.33, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
 
-- Rounding to two decimals, the slope for `LS_center` is`r fitb(answer = 1.70, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
+- Rounding to two decimals, the slope for `LS_center` is `r fitb(answer = 1.70, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
 
-- Rounding to two decimals, the slope for `CRA_center` is`r fitb(answer = -0.48, num = TRUE, tol = .001)`, suggesting cognitive reappraisal is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+- Rounding to two decimals, the slope for `CRA_center` is `r fitb(answer = -0.48, num = TRUE, tol = .001)`, suggesting cognitive reappraisal is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
 
-- Rounding to two decimals, the slope for `SES_center` is`r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+- Rounding to two decimals, the slope for `SES_center` is `r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
 
 - Converting the model to standardised predictors, `r mcq(opts = c(x = "country of origin", answer = "life stress", x = "cognitive reappraisal", x = "socioeconomic status"))` has the largest effect on depressive symptoms. 
 
@@ -679,15 +679,15 @@ From here, apply what you learnt in the guided examples above to this new indepe
 
 - Rounding to three decimals, adjusted $R^2$ for the model is `r fitb(answer = 0.235, num = TRUE, tol = .001)`, meaning the predictors explain `r fitb(answer = 24, num = TRUE, tol = .001)`% of the variance in our outcome of depressive symptoms. 
 
-- Rounding to two decimals, the slope for `Country_deviation` is `r fitb(answer = 1.31, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
+- Rounding to two decimals, the slope for `Country_deviation` is `r fitb(answer = 1.32, num = TRUE, tol = .001)`, suggesting depressive symptoms were higher in `r mcq(opts = c(answer = "the UK", x = "Malaysia"))`. 
 
-- Rounding to two decimals, the slope for `LS_center` is`r fitb(answer = 1.69, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
+- Rounding to two decimals, the slope for `LS_center` is `r fitb(answer = 1.69, num = TRUE, tol = .001)`, suggesting life stress is a `r mcq(opts = c(answer = "positive", x = "negative"))` predictor. 
 
 - Rounding to two decimals, the slope for `CRA_center` is`r fitb(answer = -0.49, num = TRUE, tol = .001)`, suggesting cognitive reappraisal is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
 
-- Rounding to two decimals, the slope for `SES_center` is`r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
+- Rounding to two decimals, the slope for `SES_center` is `r fitb(answer = -0.21, num = TRUE, tol = .001)`, suggesting socioeconomic status is a `r mcq(opts = c(x = "positive", answer = "negative"))` predictor. 
 
-- Rounding to two decimals, the slope for `CRA_center:SES_center` is`r fitb(answer = 0.02, num = TRUE, tol = .001)`, and it is a `r mcq(opts = c(x = "significant", answer = "non-significant"))` predictor. 
+- Rounding to two decimals, the slope for `CRA_center:SES_center` is `r fitb(answer = 0.02, num = TRUE, tol = .001)`, and it is a `r mcq(opts = c(x = "significant", answer = "non-significant"))` predictor. 
 
 ### Model comparison
 
