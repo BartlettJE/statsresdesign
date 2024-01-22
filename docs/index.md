@@ -2,7 +2,7 @@
 title: "Statistics and Research Design" # edit
 #subtitle: "optional" 
 author: "James Bartlett" # edit
-date: "2024-01-17"
+date: "2024-01-22"
 site: bookdown::bookdown_site
 documentclass: book
 classoption: oneside # for PDFs
