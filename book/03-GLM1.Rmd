@@ -45,7 +45,7 @@ Brandt_data <- read_csv("data/Brandt_unlit.csv") %>%
 
 ### Introduction to the dataset
 
-For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate different predictor coding schemes, we will use data from @james_computer_2015 who wanted to find non-pharmacological interventions for reducing intrusive memories of traumatic events.
+For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original @irving_correcting_2022 study, which Bartlett and Zhang from chapter 1's data replicated.
 
 ## Ordinal Regression{#ordinal-regression}
 
@@ -105,6 +105,232 @@ The intercept suggests the mean brightness rating for participants in the ethica
 
 The first problem comes in the interpretation. As a linear model expecting normally distributed residuals, we get means for the intercept and coefficient, and they could - at least theoretically - be any values. So, we get an average of 5.16 and 5.37 for our two groups, but the scale items could only be integers from 1-7. So, you can question how informative it is to treat these data as interval, when they are only labels for arbitrary numbers ranging from 1 (not bright at all) to 7 (very bright). 
 
-The second problem comes in the assumptions of the model. 
+The second problem comes in the assumptions of the model. If the means are around the middle of the scale, it can behave approximately normal. If the means are closer to the boundaries, then you start running into problems as the residuals that the model thinks are theoretically boundless, hit a boundary. Let's look at the checks for this model. 
 
+```{r}
+plot(brandt_model1)
+```
+
+The qq plot in pane 2 of the residuals against the theoretical distribution is key here. Most of the points follow the dashes line, but it shifts away towards the lower boundary. There are also telltale signs of discrete ordinal data as the residuals move in set points. This is because the outcome can only be 1-7, but the theoretical quantiles are boundless. 
+
+So, while the assumptions do not look catastrophic, we will explore how we can model the ordinal nature of the outcome better. 
+
+### Ordinal regression
+
+Ordinal regression models are a kind of logistic regression model. They are also known as cumulative link or ordered logit models. They work on the same logic as logistic regression where we want to model the probability of a discrete outcome, but instead of only two possible outcomes, ordinal regression models split a scale up into an ordered series of discrete outcomes. Between each scale point, the model estimates the threshold and sees how the outcome shifts across your predictor(s). 
+
+To get an idea of cumulative probability, we can plot the Brandt et al. data to see how the cumulative percentage of responses across the scale shifts for each group. 
+
+```{r}
+Brandt_data %>% 
+  ggplot(aes(x = welllit, colour = ExpCond)) + 
+  stat_ecdf() +
+  scale_x_continuous(breaks = 1:7, name = "Brightness Perception") + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2), name = "Cumulative Percent") + 
+  theme_minimal()
+```
+For each group, the lines corresponds with the cumulative percentage at each scale point. When the line is horizontal, there is no change. When the line moves vertically, it represents the next percentage increase, adding to the cumulative percentage from the previous shift, until you reach 100%. 
+
+Ordinal regression models estimate these shifts in probability and you get *k*-1 estimates for the thresholds, meaning you get one fewer estimate than the total number of scale points. Behind the scenes, the model interprets the outcome as a Gaussian looking latent variable, meaning the ordinal scale points are tapping into some kind of construct, but honouring there are discrete scale points. 
+
+The coefficient in the model represents the probability shift of a 1 scale point increase from one distribution to another on the scale of your predictors. So, for every 1-unit increase in a continuous predictor how the probability shifts, or how the probability shifts for the difference between two groups in a categorical predictor. 
+
+We will fit ordinal regression models using the `r pkg("ordinal")` [@Christensen2023] package as nicely supports cumulative links as regular regression models or scaled up to mixed effects models. 
+
+First, we need to convert the outcome into a factor, so there are a discrete ordered number of points.
+
+```{r}
+Brandt_data <- Brandt_data %>% 
+  mutate(WellLitFactor = factor(welllit))
+
+levels(Brandt_data$WellLitFactor)
+```
+
+We can see here the scale points are in ascending order as we want them to be, and no one in the data ever responded 2. Next, we can fit our ordinal regression model using the same format as all our regression models. 
+
+```{r}
+# clm = cumulative link model
+brandt_model2 <- clm(WellLitFactor ~ ExpCond, data = Brandt_data)
+
+summary(brandt_model2)
+
+confint(brandt_model2)
+```
+In the first segment of the output, its somewhat similar to the other models we have fitted, but there is no intercept at the top. We just have the coefficients for each predictor (1 in this case), then the threshold coefficients for *k*-1 scale points. 
+
+As this is an adapted version of logistic regression, the units are in log odds. So, they are easier to interpret as an odds ratio by taking the exponential. 
+
+```{r}
+exp(brandt_model2$beta)
+
+exp(confint(brandt_model2))
+```
+
+The results correspond with what we plotted previously, we have an odds ratio of 1.30 [0.64, 2.64], meaning there are 1.3 higher odds of a brighter rating in the unethical condition compared to the ethical condition. However, the confidence interval is pretty wide here and the *p*-value is not statistically significant, so we cannot conclude there is a shift in probability here.
+
+Returning to the idea of model comparison, it will not let us compare them using `r hl(anova())` as we cannot compare the same outcome when its numeric vs a factor. However, we can compare the AIC values for model fit between the two models. Lower values of AIC are better and if we subtract model 1 (the linear model) from model 2 (the ordinal model), a negative difference would indicate better model fit from the ordinal model. 
+
+```{r}
+AIC(brandt_model2) - AIC(brandt_model1)
+```
+
+That does seem to be the case here. Although both models were non-significant, modelling the outcome as ordinal - reassuringly - fits the data better with less prediction error. 
+
+#### Breaking down threshold coefficients
+
+We would normally focus on the coefficient as the main outcome of the modelling, but we can also break down the threshold coefficients. These represent the estimates for the cumulative probability of choosing a scale point. These relate to the reference group, so we see the cumulative probability of the ethical condition. Remember, these are still in log odds, so we can calculate the probability like we did for logistic regression. 
+
+```{r}
+# Cumulative percentage for ethical group choosing less than 3 - coefficient 1
+exp(coef(brandt_model2)[1]) / (1 + exp(coef(brandt_model2)[1]))
+
+# Cumulative percentage for ethical group choosing less than 4 - coefficient 2
+exp(coef(brandt_model2)[2]) / (1 + exp(coef(brandt_model2)[2]))
+
+# Cumulative percentage for ethical group choosing less than 5- coefficient 3
+exp(coef(brandt_model2)[3]) / (1 + exp(coef(brandt_model2)[3]))
+
+# Cumulative percentage for ethical group choosing less than 6- coefficient 4
+exp(coef(brandt_model2)[4]) / (1 + exp(coef(brandt_model2)[4]))
+
+# Cumulative percentage for ethical group choosing less than 7- coefficient 5
+exp(coef(brandt_model2)[5]) / (1 + exp(coef(brandt_model2)[5]))
+
+```
+
+This means choosing less than 3 (remember no one responded 2) represents .011 or 1.12%. Choosing less than 4 represents .144 or 14.4%, as so on. Once we get to the final threshold, this represents less than 7 at .875/87.5%. The cumulative probability of 7 or less is then 1/100%, which is why you get *k*-1 thresholds. So, you can work that final step out as 1 - .875 = .125/12.5%. 
+
+These cumulative percentage estimates are for the reference group (ethical), so you could calculate the estimate for the unethical group by subtracting the slope coefficient (0.2594) from each threshold. For example, for the first threshold: 
+
+```{r}
+# Cumulative percentage for unethical group choosing less than 3
+# Coefficient 1 minus coefficient 6 as the slope is weirdly the last one here, not the first
+exp(coef(brandt_model2)[1] - coef(brandt_model2)[6]) / (1 + exp(coef(brandt_model2)[1] - coef(brandt_model2)[6]))
+```
+
+This means the cumulative probability estimate for less than 3 is .009 or 0.87%. 
+
+#### Different threshold assumptions
+
+Finally, the default option in `r pkg("ordinal")` is for `flexible` thresholds between scale points. This estimates a coefficient for threshold and makes the fewest assumptions about the outcome. Alternative options are `equidistant` which assume evenly spaced scale points, or `symmetric` which assume scale points are evenly spaced above and below the scale center. These two make stronger assumptions about the outcome but require fewer parameters, so you would need to think carefully about whether they would suit the outcome you are modelling. 
+
+To see how the `equidistant` option would compare: 
+
+```{r}
+# clm = cumulative link model with equidistant thresholds
+brandt_model3 <- clm(WellLitFactor ~ ExpCond, data = Brandt_data, threshold = "equidistant")
+
+summary(brandt_model3)
+```
+
+This time, you only get one threshold estimate and a spacing parameter. Instead of calculating the cumulative probability at each threshold, you must successively add them together:
+
+```{r}
+# Cumulative percentage for ethical group choosing less than 3 equally spaced
+exp(coef(brandt_model3)[1] + 0 * coef(brandt_model3)[2]) / (1 + exp(coef(brandt_model3)[1] + 0 * coef(brandt_model3)[2]))
+
+# Cumulative percentage for ethical group choosing less than 4 equally spaced
+exp(coef(brandt_model3)[1] + 1 * coef(brandt_model3)[2]) / (1 + exp(coef(brandt_model3)[1] + 1 * coef(brandt_model3)[2]))
+
+# Etc. 
+```
+
+## Independent activity
+
+Now you have followed along to the guided examples, it is important you can transfer your knowledge to a new scenario. So, we have two new exercises for you to try out your understanding of these techniques on. Follow the instructions below and answer the questions, you can then scroll down to the [end of the chapter](#C3_solution) to see the solution we based on the questions on. 
+
+### Independent logistic regression
+
+### Independent ordinal regression
+
+For an independent activity, we will use data from @schroeder_sound_2015. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.
+
+The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.
+
+For this example, we will focus on the hire rating (variable `Hire_Rating` to see whether the audio condition had a would lead to higher ratings than the transcript condition (variable `CONDITION`).
+
+```{r, warning=FALSE, message=FALSE}
+schroeder_data <- read_csv("data/Schroeder_hiring.csv") %>% 
+  mutate(condition = as.factor(CONDITION))
+```
+
+::: {.try data-latex=""}
+From here, apply what you learnt in the guided example for ordinal regression to this new independent task and complete the questions below to check your understanding. Remember you will need to treat the outcome as a factor to fit the ordinal model. 
+:::
+
+- The experimental condition is a `r mcq(opts = c(answer = "significant", x = "non-significant"))` and `r mcq(opts = c(answer = "positive", x = "negative"))` predictor of hire rating.  
+
+- Rounding to two decimals, the slope coefficient converted to an odds ratio is `r fitb(answer = 4.66, num = TRUE, tol = .001)` [lower 95% CI = `r fitb(answer = 1.44, num = TRUE, tol = .001)`, upper 95% CI = `r fitb(answer = 16.31, num = TRUE, tol = .001)`].
+
+- This suggests there are `r fitb(answer = 4.66, num = TRUE, tol = .001)` higher odds of a larger hire rating in the `r mcq(opts = c(x = "transcript", answer = "audio"))` condition compared to the `r mcq(opts = c(answer = "transcript", x = "audio"))` condition. 
+
+- Rounding to three decimals, the estimated cumulative probability for the transcript group choosing a hire rating of lower than 3 (hint: coefficient 3) is `r fitb(answer = .498, num = TRUE, tol = .001)` and the cumulative probability for the audio group  choosing a hire rating of lower than 3 (hint: coefficient 3 minus coefficient 9) is `r fitb(answer = .175, num = TRUE, tol = .001)`. 
+
+## Further resources
+
+1. <a href="https://cran.r-project.org/web/packages/ordinal/vignettes/clm_article.pdf" target="_blank">The ordinal package vignette</a> by Christensen (2023) outlines ordinal regression and the models you can fit using the package in lots of detail. 
+
+## Independent activity solution{#C3_solution}
+
+### Independent logistic regression
+
+### Independent ordinal regression
+
+First, we need to convert hire rating to a factor for the ordinal model to work. 
+
+```{r}
+schroeder_data <- schroeder_data %>% 
+  mutate(hire_factor = factor(Hire_Rating))
+```
+
+We can explore the distribution of the two groups and see there is a clearer difference here, with more low ratings in the transcript (`0`) group and more high ratings in the audio (`1`) group. 
+
+```{r, warning=FALSE, message=FALSE}
+schroeder_data %>% 
+  ggplot(aes(x = Hire_Rating, fill = condition)) + 
+  geom_histogram(position = "dodge") + 
+  scale_x_continuous(breaks = 0:8, name = "Hire Rating") +
+  theme_minimal()
+```
+
+Alternatively, we can visualise the cumulative probability and see how it climbs steeper for the transcript group (more lower responses) and shallow for the audio group (more higher responses). 
+
+```{r}
+schroeder_data %>% 
+  ggplot(aes(x = Hire_Rating, colour = condition)) + 
+  stat_ecdf() +
+  scale_x_continuous(breaks = 0:8, name = "Hire Rating") + 
+  scale_y_continuous(breaks = seq(0, 1, 0.2), name = "Cumulative Percent") + 
+  theme_minimal()
+```
+
+Finally, we can fit our ordinal regression model and see the slope coefficient is positive and it is statistically significant. 
+
+```{r}
+schroeder_model2 <- clm(hire_factor ~ condition, data = schroeder_data)
+
+summary(schroeder_model2)
+
+confint(schroeder_model2)
+```
+
+To be easier to interpret, we can convert the log odds to the odds ratio by taking the exponential for the slope coefficient and its 95% confidence interval. 
+
+```{r}
+# Get beta as odds ratio instead of logit
+exp(schroeder_model2$beta)
+
+# Convert CI to odds ratio
+exp(confint(schroeder_model2))
+```
+
+Finally, as a demonstration, we can calculate the estimated cumulative probability of choosing a rating of less than 3 (0-2) for the transcript group and the audio group. Note we are using coefficient 3 as that is the third threshold. We then subtract coefficient 9 as the slope coefficient is added on to the end. 
+
+```{r}
+# Cumulative percentage for transcript group choosing less than 3 - coefficient 1
+exp(coef(schroeder_model2)[3]) / (1 + exp(coef(schroeder_model2)[3]))
+
+# Cumulative percentage for audio group choosing less than 3 - coefficient 1 minus coefficient 9
+exp(coef(schroeder_model2)[3] - coef(schroeder_model2)[9]) / (1 + exp(coef(schroeder_model2)[3] - coef(schroeder_model2)[9]))
+```
 
