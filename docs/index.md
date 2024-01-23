@@ -2,7 +2,7 @@
 title: "Statistics and Research Design" # edit
 #subtitle: "optional" 
 author: "James Bartlett" # edit
-date: "2024-01-22"
+date: "2024-01-23"
 site: bookdown::bookdown_site
 documentclass: book
 classoption: oneside # for PDFs
@@ -37,7 +37,7 @@ favicon: images/logos/favicon.ico # replace with your logo
 
 **Contact**: This book is a living document and will be regularly checked and updated for improvements. Should you have any issues using the book or queries, please contact James Bartlett.
 
-**R Version**: This book has been written with R version 4.3.2 (2023-10-31). 
+**R Version**: This book has been written with R version 4.1.2 (2021-11-01). 
 
 
 

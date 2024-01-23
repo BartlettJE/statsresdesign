@@ -7,7 +7,7 @@
 <title>Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-generalised-linear-models.html">
@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -99,7 +99,7 @@
 <h1>
 <span class="header-section-number">3</span> Introduction to Generalised Linear Models<a class="anchor" aria-label="anchor" href="#introduction-to-generalised-linear-models"><i class="fas fa-link"></i></a>
 </h1>
-<p>In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not appropriate to assume normality. It is a popular and convenient choice as assuming normality is often robust, but for some outcomes it would simply not the appropriate choice. Generalised linear models allow you to specify a link and link function for the model residuals, so you can apply a linear model to alternative distributions. In this chapter, we will cover two types of generalised linear models: logistic regression and ordinal regression.</p>
+<p>In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not appropriate to assume normality. It is a popular and convenient choice as assuming normality is often robust, but for some outcomes it would simply not be the appropriate choice. Generalised linear models allow you to specify a link and link function for the model residuals, so you can apply a linear model to alternative distributions. In this chapter, we will cover two types of generalised linear models: logistic regression and ordinal regression.</p>
 <p>You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.</p>
 <div id="learning-objectives-2" class="section level2" number="3.1">
 <h2>
@@ -146,7 +146,7 @@
 <h3>
 <span class="header-section-number">3.3.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-2"><i class="fas fa-link"></i></a>
 </h3>
-<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
+<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
 </div>
 </div>
 <div id="ordinal-regression" class="section level2" number="3.4">
@@ -157,7 +157,7 @@
 <h3>
 <span class="header-section-number">3.4.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-3"><i class="fas fa-link"></i></a>
 </h3>
-<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
+<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014" role="doc-biblioref">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
 <p>In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results.</p>
 <p>Participants were randomly allocated (<code>ExpCond</code>) to recall an unethical behaviour (<code>1</code>; n = 49) or an ethical behaviour (<code>0</code>; n = 51). The key outcome was their perception of how bright the room was (<code>welllit</code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
 </div>
@@ -246,12 +246,11 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">7</span>, name <span class="op">=</span> <span class="st">"Brightness Perception"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.2</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Cumulative Percent"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure">
-<img src="03-GLM1_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;">
-For each group, the lines corresponds with the cumulative percentage at each scale point. When the line is horizontal, there is no change. When the line moves vertically, it represents the next percentage increase, adding to the cumulative percentage from the previous shift, until you reach 100%.</div>
+<div class="inline-figure"><img src="03-GLM1_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></div>
+<p>For each group, the lines corresponds with the cumulative percentage at each scale point. When the line is horizontal, there is no change. When the line moves vertically, it represents the next percentage increase, adding to the cumulative percentage from the previous shift, until you reach 100%.</p>
 <p>Ordinal regression models estimate these shifts in probability and you get <em>k</em>-1 estimates for the thresholds, meaning you get one fewer estimate than the total number of scale points. Behind the scenes, the model interprets the outcome as a Gaussian looking latent variable, meaning the ordinal scale points are tapping into some kind of construct, but honouring there are discrete scale points.</p>
-<p>The coefficient in the model represents the probability shift of a 1 scale point increase from one distribution to another on the scale of your predictors. So, for every 1-unit increase in a continuous predictor how the probability shifts, or how the probability shifts for the difference between two groups in a categorical predictor.</p>
-<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023">Christensen, 2023</a>)</span> package as nicely supports cumulative links as regular regression models or scaled up to mixed effects models.</p>
+<p>The coefficient in the model represents the probability shift of a 1 scale point increase from one distribution to another on the scale of your predictors. So, for every 1-unit increase in a continuous predictor, you see how the probability shifts, or how the probability shifts for the difference between two groups in a categorical predictor. A positive slope coefficient would mean an increase in probability along your predictor scale, while a negative slope coefficient would mean a decrease in probability along your predictor scale.</p>
+<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023" role="doc-biblioref">Christensen, 2023</a>)</span> package as it nicely supports cumulative link models as regular regression models we have used until this point or scaled up to mixed effects models.</p>
 <p>First, we need to convert the outcome into a factor, so there are a discrete ordered number of points.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="va">Brandt_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -286,7 +285,7 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 ## 6|7   1.9504     0.3460   5.637
 ##               2.5 %    97.5 %
 ## ExpCond1 -0.4465061 0.9702407</code></pre>
-<p>In the first segment of the output, its somewhat similar to the other models we have fitted, but there is no intercept at the top. We just have the coefficients for each predictor (1 in this case), then the threshold coefficients for <em>k</em>-1 scale points.</p>
+<p>In the first segment of the output, its somewhat similar to the other models we have fitted, but there is no intercept at the top. We just have the slope coefficients for each predictor (1 in this case), then the threshold coefficients for <em>k</em>-1 scale points.</p>
 <p>As this is an adapted version of logistic regression, the units are in log odds. So, they are easier to interpret as an odds ratio by taking the exponential.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span>
@@ -296,7 +295,7 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 ## 1.296112 
 ##              2.5 %  97.5 %
 ## ExpCond1 0.6398599 2.63858</code></pre>
-<p>The results correspond with what we plotted previously, we have an odds ratio of 1.30 [0.64, 2.64], meaning there are 1.3 higher odds of a brighter rating in the unethical condition compared to the ethical condition. However, the confidence interval is pretty wide here and the <em>p</em>-value is not statistically significant, so we cannot conclude there is a shift in probability here.</p>
+<p>The results correspond with what we plotted previously, we have an odds ratio of 1.30 [0.64, 2.64], meaning there are 1.3 higher odds of a brighter rating in the unethical condition compared to the ethical condition. However, the confidence interval is pretty wide here and the <em>p</em>-value is not statistically significant, so we cannot conclude there is a shift in probability between the two groups here.</p>
 <p>Returning to the idea of model comparison, it will not let us compare them using <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="op">)</span></span></code> as we cannot compare the same outcome when its numeric vs a factor. However, we can compare the AIC values for model fit between the two models. Lower values of AIC are better and if we subtract model 1 (the linear model) from model 2 (the ordinal model), a negative difference would indicate better model fit from the ordinal model.</p>
 <div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">brandt_model1</span><span class="op">)</span></span></code></pre></div>
@@ -306,7 +305,10 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 <h4>
 <span class="header-section-number">3.4.4.1</span> Breaking down threshold coefficients<a class="anchor" aria-label="anchor" href="#breaking-down-threshold-coefficients"><i class="fas fa-link"></i></a>
 </h4>
-<p>We would normally focus on the coefficient as the main outcome of the modelling, but we can also break down the threshold coefficients. These represent the estimates for the cumulative probability of choosing a scale point. These relate to the reference group, so we see the cumulative probability of the ethical condition. Remember, these are still in log odds, so we can calculate the probability like we did for logistic regression.</p>
+<p>We would normally focus on the coefficient as the main outcome of the modelling, but we can also break down the threshold coefficients so they are not a mystery. These represent the estimates for the cumulative probability of choosing a given scale point. These relate to the reference group, so we see the cumulative probability of the ethical condition. Remember, these are still in log odds, so we can calculate the probability like we did for logistic regression by dividing the odds ratio by 1 plus the odds ratio.</p>
+<div class="info">
+<p>The code below uses <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="op">)</span></span></code> function and subsetting (the <code>[1]</code>etc.) to avoid writing out the numbers manually and reduce copy and paste errors. Try <code>coef(brandt_model2)</code> in the console to see the coefficients it returns.</p>
+</div>
 <div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cumulative percentage for ethical group choosing less than 3 - coefficient 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -332,7 +334,7 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 ## 0.5326661 
 ##       6|7 
 ## 0.8754855</code></pre>
-<p>This means choosing less than 3 (remember no one responded 2) represents .011 or 1.12%. Choosing less than 4 represents .144 or 14.4%, as so on. Once we get to the final threshold, this represents less than 7 at .875/87.5%. The cumulative probability of 7 or less is then 1/100%, which is why you get <em>k</em>-1 thresholds. So, you can work that final step out as 1 - .875 = .125/12.5%.</p>
+<p>This means choosing less than 3 (remember no one responded 2) represents .011 or 1.12%. Choosing less than 4 represents .144 or 14.4%, and so on. Once we get to the final threshold, this represents less than 7 at .875/87.5%. The cumulative probability of 7 or less is then 1/100%, which is why you get <em>k</em>-1 thresholds. So, you can work that final step out as 1 - .875 = .125/12.5%.</p>
 <p>These cumulative percentage estimates are for the reference group (ethical), so you could calculate the estimate for the unethical group by subtracting the slope coefficient (0.2594) from each threshold. For example, for the first threshold:</p>
 <div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cumulative percentage for unethical group choosing less than 3</span></span>
@@ -340,7 +342,10 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">brandt_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##         1|3 
 ## 0.008710377</code></pre>
-<p>This means the cumulative probability estimate for less than 3 is .009 or 0.87%.</p>
+<div class="info">
+<p>As before, we are using the <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="op">)</span></span></code> function and subsetting (the <code>[1]</code>etc.) to avoid writing out the numbers manually and reduce copy and paste errors. This time, we are using two coefficients to subtract the slope coefficient from each threshold coefficient. So, if you apply this to a new data set, make sure you check how many coefficients there are to subset them accurately.</p>
+</div>
+<p>This means the cumulative probability estimate for less than 3 is .009 or 0.87% in the unethical group.</p>
 </div>
 <div id="different-threshold-assumptions" class="section level4" number="3.4.4.2">
 <h4>
@@ -383,9 +388,9 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 </div>
 </div>
 </div>
-<div id="independent-activity-2" class="section level2" number="3.5">
+<div id="independent-activities" class="section level2" number="3.5">
 <h2>
-<span class="header-section-number">3.5</span> Independent activity<a class="anchor" aria-label="anchor" href="#independent-activity-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.5</span> Independent activities<a class="anchor" aria-label="anchor" href="#independent-activities"><i class="fas fa-link"></i></a>
 </h2>
 <p>Now you have followed along to the guided examples, it is important you can transfer your knowledge to a new scenario. So, we have two new exercises for you to try out your understanding of these techniques on. Follow the instructions below and answer the questions, you can then scroll down to the <a href="introduction-to-generalised-linear-models.html#C3_solution">end of the chapter</a> to see the solution we based on the questions on.</p>
 <div id="independent-logistic-regression" class="section level3" number="3.5.1">
@@ -397,14 +402,14 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 <h3>
 <span class="header-section-number">3.5.2</span> Independent ordinal regression<a class="anchor" aria-label="anchor" href="#independent-ordinal-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
-<p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a Likert scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
+<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015" role="doc-biblioref">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
+<p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a rating scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
 <p>For this example, we will focus on the hire rating (variable <code>Hire_Rating</code> to see whether the audio condition had a would lead to higher ratings than the transcript condition (variable <code>CONDITION</code>).</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">schroeder_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/Schroeder_hiring.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">CONDITION</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="try">
-<p>From here, apply what you learnt in the guided example for ordinal regression to this new independent task and complete the questions below to check your understanding. Remember you will need to treat the outcome as a factor to fit the ordinal model.</p>
+<p>From here, apply what you learnt in the guided example for ordinal regression to this new independent task and complete the questions below to check your understanding. Remember you will need to treat the outcome as a factor to fit the ordinal model. The answers are based on the default approach for estimating flexible thresholds.</p>
 </div>
 <ul>
 <li><p>The experimental condition is a <select class="webex-select"><option value="blank"></option>
@@ -412,8 +417,8 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 <option value="x">non-significant</option></select> and <select class="webex-select"><option value="blank"></option>
 <option value="answer">positive</option>
 <option value="x">negative</option></select> predictor of hire rating.</p></li>
-<li><p>Rounding to two decimals, the slope coefficient converted to an odds ratio is <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["4.66"]'> [lower 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["1.44"]'>, upper 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["16.31"]'>].</p></li>
-<li><p>This suggests there are <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["4.66"]'> higher odds of a larger hire rating in the <select class="webex-select"><option value="blank"></option>
+<li><p>Rounding to two decimals, the slope coefficient converted to an odds ratio is <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["4.67"]'> [lower 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["1.44"]'>, upper 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["16.31"]'>].</p></li>
+<li><p>This suggests there are <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["4.67"]'> higher odds of a larger hire rating in the <select class="webex-select"><option value="blank"></option>
 <option value="x">transcript</option>
 <option value="answer">audio</option></select> condition compared to the <select class="webex-select"><option value="blank"></option>
 <option value="answer">transcript</option>
@@ -433,7 +438,7 @@ For each group, the lines corresponds with the cumulative percentage at each sca
 </div>
 <div id="C3_solution" class="section level2" number="3.7">
 <h2>
-<span class="header-section-number">3.7</span> Independent activity solution<a class="anchor" aria-label="anchor" href="#C3_solution"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.7</span> Independent activity solutions<a class="anchor" aria-label="anchor" href="#C3_solution"><i class="fas fa-link"></i></a>
 </h2>
 <div id="independent-logistic-regression-1" class="section level3" number="3.7.1">
 <h3>
@@ -744,14 +749,14 @@ $( document ).ready(function() {
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#independent-activity-2"><span class="header-section-number">3.5</span> Independent activity</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#independent-activities"><span class="header-section-number">3.5</span> Independent activities</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#independent-logistic-regression"><span class="header-section-number">3.5.1</span> Independent logistic regression</a></li>
 <li><a class="nav-link" href="#independent-ordinal-regression"><span class="header-section-number">3.5.2</span> Independent ordinal regression</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#further-resources-2"><span class="header-section-number">3.6</span> Further resources</a></li>
 <li>
-<a class="nav-link" href="#C3_solution"><span class="header-section-number">3.7</span> Independent activity solution</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#C3_solution"><span class="header-section-number">3.7</span> Independent activity solutions</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#independent-logistic-regression-1"><span class="header-section-number">3.7.1</span> Independent logistic regression</a></li>
 <li><a class="nav-link" href="#independent-ordinal-regression-1"><span class="header-section-number">3.7.2</span> Independent ordinal regression</a></li>
 </ul>
@@ -773,7 +778,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-22.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -786,7 +791,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

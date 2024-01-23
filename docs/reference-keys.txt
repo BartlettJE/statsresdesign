@@ -68,7 +68,7 @@ would-linear-regression-work
 ordinal-regression-1
 breaking-down-threshold-coefficients
 different-threshold-assumptions
-independent-activity-2
+independent-activities
 independent-logistic-regression
 independent-ordinal-regression
 further-resources-2
