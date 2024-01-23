@@ -177,6 +177,14 @@ Expressed this way, there are 1.65 [0.82, 3.38] lower odds of making a mistaken 
 In this scenario, you would get the same reciprocal odds ratio if you changed the groups around with correction as the reference group. Taking the reciprocal is the same information expressed differently, but its important you are clear about the model estimates to avoid confusing your reader. If you do this yourself, make sure you explain what the model estimates were and how you took the reciprocal. 
 :::
 
+Returning to the idea of model comparison, we could compare the two GLM models using `r hl(anova())` and it will tell you the change in deviance (relating the maximum likelihood fitting process), but we can focus on comparing the AIC values for model fit between the two models. Lower values of AIC are better and if we subtract model 1 (the linear model) from model 2 (the logistic model), a negative difference would indicate better model fit from the ordinal model. 
+
+```{r}
+AIC(irving_model2) - AIC(irving_model1_glm)
+```
+
+Reassuringly, the logistic regression model fits the data better with less prediction error when we use a binomial distribution for the errors, compared to when we force it into a normal residual model.
+
 #### Calculating the model probability estimates
 
 Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by the exponential of the log odds divided by 1 plus the exponential log odds. 
