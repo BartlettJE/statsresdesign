@@ -21,10 +21,6 @@ We first need to load some packages and the data for this task. If you do not ha
 ```{r, warning=FALSE, message=FALSE}
 # wrangling and visualisation functions 
 library(tidyverse)
-# Standardise model coefficients
-library(effectsize)
-# VIF and other regression functions
-library(car)
 # Parameter estimates
 library(emmeans)
 # Ordinal regression
@@ -93,6 +89,128 @@ Both the bar plot and summary statistics support our prediction, participants in
 The most important part of data analysis is your role as the decision maker and thinking about what would be the most appropriate choice of modelling. Sometimes, there are equally valid approaches, while other times there is one better suited approach. If you apply an inappropriate test, R will gladly follow your instructions. Its your job to think critically about your modelling approach and check its an appropriate choice. 
 :::
 
+When we have a dichotomous outcome coded 0 and 1, it has numerical value, so R will happily apply regular linear regression. 
+
+```{r}
+irving_model1 <- lm(DV1_1 ~ Condition, data = irving_data)
+
+summary(irving_model1)
+```
+
+It is somewhat interpretable as when you take the mean of binary data, you get the proportion. So, the intercept represents the proportion of mistaken causal inferences in the no correction group, and the slope coefficient represents the mean difference in proportion, suggesting there are .12/12% fewer mistakes in the correction group. 
+
+Although it works and we can make sense of the results, the question is whether it is an informative and appropriate way of modelling a binary outcome. Lets check the assumptions to see if anything looks off. 
+
+```{r}
+plot(irving_model1)
+```
+
+Now we can see the problems. Because we only have two possible outcomes, the assumption checks are all off. The qq plot in panel 2 particularly shows the problem, as there is a giant chunk missing where the values between 0 and 1 should at, at least theoretically if we assume normal residuals. 
+
+Now we can apply logistic regression to more appropriately model the dichotomous nature of the outcome. 
+
+### Logistic regression
+
+#### Generalised linear regression
+
+In a linear model, we model the outcome as a product of an intercept, a slope, and error. Its that final error part which is why we have worried about normality so far. In a regular linear regression model, we need the model residuals (the difference between the expected and observed values) to be normally distributed. 
+
+Logistic regression is an adaptation of the linear regression framework we have worked with so far, where we can replace that error component. This is called generalised linear regression and we can specify a link and link function, instead of normal residuals being built into the model. 
+
+So far, we have always used `r hl(lm())`, but R comes with another called `r hl(glm())` for generalised linear regression models. To demonstrate how we can set the link family, we can use it to recreate a regular linear regression model, but this time explicitly calling a normal distribution as the link (using its alternate name a Gaussian distribution) and `r hl("identity")` as the link function. 
+
+```{r}
+irving_model1_glm <- glm(DV1_1 ~ Condition, 
+                     family = gaussian(link = "identity"), 
+                     data = irving_data)
+
+summary(irving_model1_glm)
+```
+
+The link specifies the distribution family and the link function is the transformation for the model units. So, for our normal/Gaussian distribution, we have an identity link which essentially means no transformation, just the values we input. A normal distribution is described by a mean and standard deviation, so we just interpret the raw units in the model. 
+
+The results here are accurate to the third decimal to show its an identical process. The only difference to our regular model output is the model fit statistics. Regular linear regression uses ordinal least squares to fit the model, whereas generalised linear regression fits the models using maximum likelihood. Holding everything else constant, this requires greater computing power, so its redundant to use `r hl(glm())` when you just want to assume normal/Gaussian errors, but its important to show the logic behind these procedures. 
+
+#### Logistic regression in `glm()`
+
+After that brief detour, we will now actually fit the logistic regression model using `r hl(glm())`. As we have a dichotomous outcome, one useful distribution is the binomial. This applies when you want to calculate the probability of an dichotomous outcome from a series of successes (1s) and failures (0s). This models that probability nicely as it has a boundary of 0 or 0% (no successes) and 1 or 100% (all successes). Traditionally, we refer to successes and failures, but you can apply it to any binary outcome where one response is labelled 0 and the other response is labelled 1. 
+
+To apply the linear model element, we then use the `r hl("logit")` link function as the unit transformation. Probability ranges between 0 and 1, odds range between 0 and infinity, but log odds (the logit bit) range between minus infinity and infinity, meaning we can fit straight lines to it. Let's see what a logistic regression model looks like. 
+
+```{r}
+irving_model2 <- glm(DV1_1 ~ Condition, 
+                     family = binomial(link = "logit"), 
+                     data = irving_data)
+
+summary(irving_model2)
+
+confint(irving_model2)
+```
+
+The model looks reassuringly similar. We have our coefficients for the intercept and slope, with their standard errors and *p*-values. There are no *p*-values for the model fit though as remember they are based on maximum likelihood, rather than least squares. 
+
+The main difference here is the interpretation of the coefficients. The link function is logit, so we get them in log odds. These are not intuitive to interpret, so we can take the exponential to interpret the slope coefficient as an odds ratio with its 95% CI. 
+
+```{r}
+# Take the exponential of the second coefficient to avoid typing it manually
+exp(coef(irving_model2)[2])
+
+# Exponential of the confidence interval
+exp(confint(irving_model2))
+```
+
+An odds ratio is a ratio of the odds of the event happening in one group compared to the odds of the event happening in another group. In this context, a ratio of making a mistaken causal inference (1s compared to 0s) in the no correction group, compared to the correction group. 
+
+An odds ratio of 1 means they are equally likely to happen. An odds ratio of less than 1 means something is less likely to happen, whereas more than 1 means something is more likely to happen. The odds ratio is 0.61 here, suggesting the odds of making a mistaken causal inference is lower in the correction group (our target group - `1`) compared to the no correction group (the reference group - `0`). Odds ratios below 1 can be tricky to interpret, so you can flip them around by taking the reciprocal. 
+
+```{r}
+# Take the reciprocal of the exponential of the second coefficient 
+1 / exp(coef(irving_model2)[2])
+
+# Reciprocal of the exponential of the confidence interval
+1 / exp(confint(irving_model2))
+```
+
+Expressed this way, there are 1.65 [0.82, 3.38] lower odds of making a mistaken causal inference in the correction group compared to the no correction group. In this model, it is not statistically significant and we can see there is a decent amount of uncertainty around the estimate, with an odds ratio spanning above and below 1. 
+
+::: {.warning data-latex=""}
+In this scenario, you would get the same reciprocal odds ratio if you changed the groups around with correction as the reference group. Taking the reciprocal is the same information expressed differently, but its important you are clear about the model estimates to avoid confusing your reader. If you do this yourself, make sure you explain what the model estimates were and how you took the reciprocal. 
+:::
+
+#### Calculating the model probability estimates
+
+Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by the exponential of the log odds divided by 1 plus the exponential log odds. 
+
+```{r}
+# Estimated probability of making an error in the 0 condition 
+exp(coef(irving_model2)[1]) / (1 + exp(coef(irving_model2)[1]))
+```
+
+This means the estimated probability of a mistaken causal inference in the no correction condition is .47 or 47%. Then for the correction group, we repeat the process, but adding together the intercept and slope coefficient. Given the slope was negative, this is the equivalent of subtracting the slope. 
+
+```{r}
+# Estimated probability of making an error in the 0 condition 
+exp(coef(irving_model2)[1] + coef(irving_model2)[2]) / (1 + exp(coef(irving_model2)[1] + coef(irving_model2)[2]))
+```
+
+This means the estimated probability of a mistaken causal inference in the correction condition is .35 or 35%. These values line up nicely with our original summary statistics, but keep in mind they are model estimates. They are closer here as its a very simple model and we are demonstrating the principles, but they will not line up this close when you have more complex models. 
+
+#### Using `emmeans` to get model estimates
+
+Another way of getting model estimates is using `r hl(emmeans())` function from the `r pkg("emmeans")` package [@Lenth2022]. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients. 
+
+```{r}
+emmeans(irving_model2, specs = "Condition")
+```
+
+These are still in log odds units, so you can calculate the probability using the same $exp(logit) / 1 + exp(logit)$ method. For example, the estimated probability of a mistaken causal conclusion in the no correction group (`0`) is:
+
+```{r}
+exp(-0.121) / (1 + exp(-0.121))
+```
+
+Which corresponds nicely with what we reconstructed from the model coefficients. 
+
 ## Ordinal Regression{#ordinal-regression}
 
 ### Introduction to the dataset
@@ -147,6 +265,7 @@ summary(brandt_model1)
 # Confidence intervals around estimates
 confint(brandt_model1)
 ```
+
 The intercept suggests the mean brightness rating for participants in the ethical group was 5.16. The coefficient and model are not statistically significant - explaining very little variance in the outcome - and suggests those in the unethical group had a mean increase in brightness rating of 0.21 [-0.29, 0.71]. 
 
 The first problem comes in the interpretation. As a linear model expecting normally distributed residuals, we get means for the intercept and coefficient, and they could - at least theoretically - be any values. So, we get an average of 5.16 and 5.37 for our two groups, but the scale items could only be integers from 1-7. So, you can question how informative it is to treat these data as interval, when they are only labels for arbitrary numbers ranging from 1 (not bright at all) to 7 (very bright). 
@@ -297,6 +416,22 @@ Now you have followed along to the guided examples, it is important you can tran
 
 ### Independent logistic regression
 
+For an independent activity, we will use the same data set from @irving_correcting_2022, but this time using a different question as a binary outcome. If you are coming to this fresh, make sure to remind yourself of the data set outlined in the [logistic regression section](#logistic-regression) and load the data. 
+
+Instead of using `DV1_1`, you will use `DV1_3` instead. This asked participants "Based on the results of this study, can we conclude that watching TV causes cognitive decline?". Coded responses were 1 for if the participant's responded with a mistaken causal conclusion and 0 if they did not provide a mistaken causal conclusion. 
+
+::: {.try data-latex=""}
+From here, apply what you learnt in the guided example for logistic regression to this new independent task and complete the questions below to check your understanding. Remember you are predicting `DV1_3` from `Condition` to see if the probability of a mistaken causal inference is greater in the correction condition compared to the no correction condition. 
+:::
+
+- The correction condition is a `r mcq(opts = c(answer = "significant", x = "non-significant"))` and `r mcq(opts = c(x = "positive", answer = "negative"))` predictor of the third mistaken causal inference question.  
+
+- Rounding to two decimals, the slope coefficient converted to an odds ratio is `r fitb(answer = 0.09, num = TRUE, tol = .001)`. Taking the reciprocal, the odds ratio is `r fitb(answer = 10.58, num = TRUE, tol = .001)` [lower 95% CI = `r fitb(answer = 2.85, num = TRUE, tol = .001)`, upper 95% CI = `r fitb(answer = 68.80, num = TRUE, tol = .001)`].
+
+- This suggests there are `r fitb(answer = 10.58, num = TRUE, tol = .001)` lower odds of making a mistaken causal inference in the `r mcq(opts = c(x = "no correction", answer = "audio"))` condition compared to the `r mcq(opts = c(answer = "no correction", x = "audio"))` condition. 
+
+- Rounding to three decimals, the estimated probability of making a mistaken causal inference in the no correction group is `r fitb(answer = .258, num = TRUE, tol = .001)` and the estimated probability of making a mistaken causal inference in the correction group is `r fitb(answer = .032, num = TRUE, tol = .001)`. 
+
 ### Independent ordinal regression
 
 For an independent activity, we will use data from @schroeder_sound_2015. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.
@@ -324,11 +459,65 @@ From here, apply what you learnt in the guided example for ordinal regression to
 
 ## Further resources
 
-1. <a href="https://cran.r-project.org/web/packages/ordinal/vignettes/clm_article.pdf" target="_blank">The ordinal package vignette</a> by Christensen (2023) outlines ordinal regression and the models you can fit using the package in lots of detail. 
+1. <a href="https://openintro-ims.netlify.app/model-logistic" target="_blank">The online textbook Introduction to Modern Statistics</a> by Çetinkaya-Rundel and Hardin (2021) outlines logistic regression in chapter 9, then separatly covers the inferential element in chapter 26. 
+
+2. <a href="https://cran.r-project.org/web/packages/ordinal/vignettes/clm_article.pdf" target="_blank">The ordinal package vignette</a> by Christensen (2023) outlines ordinal regression and the models you can fit using the package in lots of detail. 
 
 ## Independent activity solutions{#C3_solution}
 
 ### Independent logistic regression
+
+To produce a logistic regression model for the third causal question, we will predict `DV1_3` from `Condition` as a single predictor. 
+
+```{r}
+irving_model3 <- glm(DV1_3 ~ Condition, 
+                     family = binomial(link = "logit"), 
+                     data = irving_data)
+
+summary(irving_model3)
+```
+
+We can calculate the odds ratio from the coefficients in log odds by taking the exponential for the slope and its 95% CI. 
+
+```{r}
+# Odds ratio from log odds of making an error in condition 1 compared to 0
+exp(coef(irving_model3)[2])
+
+# Confidence interval on odds ratio
+exp(confint(irving_model3))
+```
+
+When the odds ratio is below 1, it can be easier to interpret by taking the reciprocal and flip the comparison around. 
+
+```{r}
+# Reciprocal of odds ratio from log odds of making an error in condition 1 compared to 0
+1 / exp(coef(irving_model3)[2])
+
+# Reciprocal of confidence interval on odds ratio
+1 / exp(confint(irving_model3))
+```
+
+You can calculate the probabilities for each group by using the intercept in the probability equation, then the intercept plus the slope coefficient. 
+
+```{r}
+# Estimated probability of making an error in the 0 condition 
+exp(coef(irving_model3)[1]) / (1 + exp(coef(irving_model3)[1]))
+
+# Estimated probability of making an error in the 1 condition 
+exp(coef(irving_model3)[1] + coef(irving_model3)[2]) / (1 + exp(coef(irving_model3)[1] + coef(irving_model3)[2]))
+```
+
+Alternatively, you could use `r hl(emmeans())` to get the model estimates and use the logit estimates to calculate the probabilities.  
+
+```{r}
+emmeans(irving_model3, "Condition")
+```
+
+```{r}
+exp(-1.06) / (1 + exp(-1.06))
+
+exp(-3.42) / (1 + exp(-3.42))
+```
 
 ### Independent ordinal regression
 
