@@ -47,6 +47,52 @@ Brandt_data <- read_csv("data/Brandt_unlit.csv") %>%
 
 For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original @irving_correcting_2022 study, which Bartlett and Zhang from chapter 1's data replicated.
 
+Irving et al. studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group
+
+129 participants completed a continuous influence paradigm where participants read a fictious newspaper article one sentence at a time about a causal link between cognitive decline and watching TV in older adults. There is one independent variable (`Condition`) to randomly allocate participants into one of two groups: 
+
+1. The correction group (group `1` in the data) had one sentence saying: “The lead author has since specified that the results have been misrepresented and that TV screen time has not yet been found to cause cognitive decline. Only a correlation has been found…”
+
+2. The no correction group (group `0` in the data) alternatively said: “The lead author of the study could not be reached for comment”
+
+Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make (`DV1_1` to `DV1_5` in the data set). 
+
+In chapter 1, we looked at the sum of these inferences to approach the data analysis assuming normality, but here we will treat the questions individually. Instead of questioning whether people in the correction group would produce fewer mistaken causal inferences than those in the no correction group, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.
+
+For the guided example, we will focus on `DV1_1` which coded `1` or `0` for whether participant's provided a mistaken causal inference in the question "Based on the news story, why is binge watching TV seen as bad?". So, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.
+
+### Exploratory data analysis
+
+When starting any data analysis, it is important to visualise the data for some exploratory data analysis. Using the skills you developed in data skills for reproducible research, you can explore the data to understand its properties and look for potential patterns. In this scenario, a bar plot might be handy as we have a dichotomous outcome, so we can explore the frequency of responses across each group. 
+
+```{r}
+irving_data %>% 
+  mutate(DV1_1 = factor(DV1_1)) %>% 
+  ggplot(aes(x = DV1_1, fill = Condition)) + 
+  geom_bar(position = "dodge") + 
+  scale_x_discrete(name = "Mistaken Causal Inference in Question 1") + 
+  scale_y_continuous(name = "Frequency", breaks = seq(0, 45, 5), limits = c(0,45)) + 
+  theme_minimal()
+```
+
+It looks like more participants in the correction group compared to the no correction group did not make a mistaken causal inference (0), whereas more participants in the no correction group compared to the correction group made a mistaken causal inference (1).
+
+Instead of counts, we can also express binary 0 and 1 data as a proportion or probability of making a mistake. If you take the mean of binary data, it tells you the probability, so we can calculate the proportion of participant's making a mistake in each group. 
+
+```{r}
+irving_data %>% 
+  group_by(Condition) %>% 
+  summarise(proportion_causal_inference = mean(DV1_1))
+```
+
+Both the bar plot and summary statistics support our prediction, participants in the no correction condition (47%) were more likely to make a mistaken causal inference than participants in the correction condition (35%). These are just descriptive statistics though, so need to think about modelling to make inferences from these data. 
+
+### Would linear regression work? 
+
+::: {.warning data-latex=""}
+The most important part of data analysis is your role as the decision maker and thinking about what would be the most appropriate choice of modelling. Sometimes, there are equally valid approaches, while other times there is one better suited approach. If you apply an inappropriate test, R will gladly follow your instructions. Its your job to think critically about your modelling approach and check its an appropriate choice. 
+:::
+
 ## Ordinal Regression{#ordinal-regression}
 
 ### Introduction to the dataset
