@@ -49,11 +49,11 @@ Irving et al. studied statistical misinformation, meaning a scientific result th
 
 2. The no correction group (group `0` in the data) alternatively said: “The lead author of the study could not be reached for comment”
 
-Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make (`DV1_1` to `DV1_5` in the data set). 
+Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make one (`DV1_1` to `DV1_5` in the data set). 
 
 In chapter 1, we looked at the sum of these inferences to approach the data analysis assuming normality, but here we will treat the questions individually. Instead of questioning whether people in the correction group would produce fewer mistaken causal inferences than those in the no correction group, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.
 
-For the guided example, we will focus on `DV1_1` which coded `1` or `0` for whether participant's provided a mistaken causal inference in the question "Based on the news story, why is binge watching TV seen as bad?". So, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.
+For the guided example, we will focus on `DV1_1` which coded `1` or `0` for whether participant's provided a mistaken causal inference in the question "Based on the news story, why is binge watching TV seen as bad?".
 
 ### Exploratory data analysis
 
@@ -71,7 +71,7 @@ irving_data %>%
 
 It looks like more participants in the correction group compared to the no correction group did not make a mistaken causal inference (0), whereas more participants in the no correction group compared to the correction group made a mistaken causal inference (1).
 
-Instead of counts, we can also express binary 0 and 1 data as a proportion or probability of making a mistake. If you take the mean of binary data, it tells you the probability, so we can calculate the proportion of participant's making a mistake in each group. 
+Instead of counts, we can also express binary 0 and 1 data as a proportion or probability of making a mistake. If you take the mean of binary data, it tells you the proportion, so we can calculate the proportion of participant's making a mistake in each group. 
 
 ```{r}
 irving_data %>% 
@@ -79,7 +79,7 @@ irving_data %>%
   summarise(proportion_causal_inference = mean(DV1_1))
 ```
 
-Both the bar plot and summary statistics support our prediction, participants in the no correction condition (47%) were more likely to make a mistaken causal inference than participants in the correction condition (35%). These are just descriptive statistics though, so need to think about modelling to make inferences from these data. 
+Both the bar plot and summary statistics support our prediction, participants in the no correction condition (47%) were more likely to make a mistaken causal inference than participants in the correction condition (35%). These are just descriptive statistics though, so you need to think about modelling to make inferences from these data. 
 
 ### Would linear regression work? 
 
@@ -95,7 +95,7 @@ irving_model1 <- lm(DV1_1 ~ Condition, data = irving_data)
 summary(irving_model1)
 ```
 
-It is somewhat interpretable as when you take the mean of binary data, you get the proportion. So, the intercept represents the proportion of mistaken causal inferences in the no correction group, and the slope coefficient represents the mean difference in proportion, suggesting there are .12/12% fewer mistakes in the correction group. 
+It is somewhat interpretable as when you take the mean of binary data, you get the proportion. So, the intercept represents the proportion of mistaken causal inferences in the no correction group, and the slope coefficient represents the mean difference in proportion, suggesting there are .12/12% fewer mistakes in the correction group, but its not statistically significant. 
 
 Although it works and we can make sense of the results, the question is whether it is an informative and appropriate way of modelling a binary outcome. Lets check the assumptions to see if anything looks off. 
 
@@ -115,7 +115,7 @@ In a linear model, we model the outcome as a product of an intercept, a slope, a
 
 Logistic regression is an adaptation of the linear regression framework we have worked with so far, where we can replace that error component. This is called generalised linear regression and we can specify a link and link function, instead of normal residuals being built into the model. 
 
-So far, we have always used `r hl(lm())`, but R comes with another called `r hl(glm())` for generalised linear regression models. To demonstrate how we can set the link family, we can use it to recreate a regular linear regression model, but this time explicitly calling a normal distribution as the link (using its alternate name a Gaussian distribution) and `r hl("identity")` as the link function. 
+So far, we have always used `r hl(lm())`, but R comes with another function called `r hl(glm())` for generalised linear regression models. To demonstrate how we can set the link family, we can use it to recreate a regular linear regression model, but this time explicitly calling a normal distribution as the link (using its alternate name a Gaussian distribution) and `r hl("identity")` as the link function. 
 
 ```{r}
 irving_model1_glm <- glm(DV1_1 ~ Condition, 
@@ -128,6 +128,10 @@ summary(irving_model1_glm)
 The link specifies the distribution family and the link function is the transformation for the model units. So, for our normal/Gaussian distribution, we have an identity link which essentially means no transformation, just the values we input. A normal distribution is described by a mean and standard deviation, so we just interpret the raw units in the model. 
 
 The results here are accurate to the third decimal to show its an identical process. The only difference to our regular model output is the model fit statistics. Regular linear regression uses ordinal least squares to fit the model, whereas generalised linear regression fits the models using maximum likelihood. Holding everything else constant, this requires greater computing power, so its redundant to use `r hl(glm())` when you just want to assume normal/Gaussian errors, but its important to show the logic behind these procedures. 
+
+::: {.info data-latex=""}
+In this chapter, we are focusing on logistic regression and ordinal regression as variations of generalised linear regression. There are more possibilities though, so type `?family` into the console to see the different families you could enter for the link and link function. 
+:::
 
 #### Logistic regression in `glm()`
 
@@ -157,7 +161,7 @@ exp(coef(irving_model2)[2])
 exp(confint(irving_model2))
 ```
 
-An odds ratio is a ratio of the odds of the event happening in one group compared to the odds of the event happening in another group. In this context, a ratio of making a mistaken causal inference (1s compared to 0s) in the no correction group, compared to the correction group. 
+An odds ratio is a ratio of the odds of an event happening in one group compared to the odds of an event happening in another group. In this context, a ratio of making a mistaken causal inference (1s compared to 0s) in the no correction group, compared to the correction group. 
 
 An odds ratio of 1 means they are equally likely to happen. An odds ratio of less than 1 means something is less likely to happen, whereas more than 1 means something is more likely to happen. The odds ratio is 0.61 here, suggesting the odds of making a mistaken causal inference is lower in the correction group (our target group - `1`) compared to the no correction group (the reference group - `0`). Odds ratios below 1 can be tricky to interpret, so you can flip them around by taking the reciprocal. 
 
@@ -169,7 +173,7 @@ An odds ratio of 1 means they are equally likely to happen. An odds ratio of les
 1 / exp(confint(irving_model2))
 ```
 
-Expressed this way, there are 1.65 [0.82, 3.38] lower odds of making a mistaken causal inference in the correction group compared to the no correction group. In this model, it is not statistically significant and we can see there is a decent amount of uncertainty around the estimate, with an odds ratio spanning above and below 1. 
+Expressed this way, there are 1.65 [0.82, 3.38] lower odds (or expressed in probability 65% lower) of making a mistaken causal inference in the correction group compared to the no correction group. In this model, it is not statistically significant and we can see there is a decent amount of uncertainty around the estimate, with an odds ratio spanning above and below 1. 
 
 ::: {.warning data-latex=""}
 In this scenario, you would get the same reciprocal odds ratio if you changed the groups around with correction as the reference group. Taking the reciprocal is the same information expressed differently, but its important you are clear about the model estimates to avoid confusing your reader. If you do this yourself, make sure you explain what the model estimates were and how you took the reciprocal. 
@@ -185,27 +189,32 @@ Reassuringly, the logistic regression model fits the data better with less predi
 
 #### Calculating the model probability estimates
 
-Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by the exponential of the log odds divided by 1 plus the exponential log odds. 
+Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by taking the exponential of the log odds divided by 1 plus the exponential log odds. 
 
 ```{r}
 # Estimated probability of making an error in the 0 condition 
+# We use coef() to isolate the model coefficients and subset the 1st item - the intercept
 exp(coef(irving_model2)[1]) / (1 + exp(coef(irving_model2)[1]))
 ```
 
 This means the estimated probability of a mistaken causal inference in the no correction condition is .47 or 47%. Then for the correction group, we repeat the process, but adding together the intercept and slope coefficient. Given the slope was negative, this is the equivalent of subtracting the slope. 
 
 ```{r}
-# Estimated probability of making an error in the 0 condition 
+# Estimated probability of making an error in the 1 condition
+# We use coef() to isolate the model coefficients and subset the 1st item - the intercept 
+# We then add the 2nd item in coef() - the slope 
 exp(coef(irving_model2)[1] + coef(irving_model2)[2]) / (1 + exp(coef(irving_model2)[1] + coef(irving_model2)[2]))
 ```
 
-This means the estimated probability of a mistaken causal inference in the correction condition is .35 or 35%. These values line up nicely with our original summary statistics, but keep in mind they are model estimates. They are closer here as its a very simple model and we are demonstrating the principles, but they will not line up this close when you have more complex models. 
+This means the estimated probability of a mistaken causal inference in the correction condition is .35 or 35%. These values line up nicely with our original summary statistics, but keep in mind they are model estimates. They are closer here as its a very simple model and we are demonstrating the principles, but they will not line up this close when you have more complex models with partial effects to understand. 
 
 #### Using `emmeans` to get model estimates
 
 Another way of getting model estimates is using `r hl(emmeans())` function from the `r pkg("emmeans")` package [@Lenth2022]. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients. 
 
 ```{r}
+# logistic regression model as the object
+# Specifying Condition as the predictor we want marginal effects for
 emmeans(irving_model2, specs = "Condition")
 ```
 
@@ -434,7 +443,7 @@ From here, apply what you learnt in the guided example for logistic regression t
 
 - Rounding to two decimals, the slope coefficient converted to an odds ratio is `r fitb(answer = 0.09, num = TRUE, tol = .001)`. Taking the reciprocal, the odds ratio is `r fitb(answer = 10.58, num = TRUE, tol = .001)` [lower 95% CI = `r fitb(answer = 2.85, num = TRUE, tol = .001)`, upper 95% CI = `r fitb(answer = 68.80, num = TRUE, tol = .001)`].
 
-- This suggests there are `r fitb(answer = 10.58, num = TRUE, tol = .001)` lower odds of making a mistaken causal inference in the `r mcq(opts = c(x = "no correction", answer = "audio"))` condition compared to the `r mcq(opts = c(answer = "no correction", x = "audio"))` condition. 
+- This suggests there are `r fitb(answer = 10.58, num = TRUE, tol = .001)` lower odds of making a mistaken causal inference in the `r mcq(opts = c(x = "no correction", answer = "correction"))` condition compared to the `r mcq(opts = c(answer = "no correction", x = "correction"))` condition. 
 
 - Rounding to three decimals, the estimated probability of making a mistaken causal inference in the no correction group is `r fitb(answer = .258, num = TRUE, tol = .001)` and the estimated probability of making a mistaken causal inference in the correction group is `r fitb(answer = .032, num = TRUE, tol = .001)`. 
 
