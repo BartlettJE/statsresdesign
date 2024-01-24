@@ -2,8 +2,6 @@
 
 In this chapter, we start with the foundations of linear regression. We will be focusing on simple linear regression where you have one predictor variable and one outcome. You will apply continuous and categorical predictors to see how the interpretation changes, and start to explore parametric assumptions to make sure this kind of model is appropriate for your data. 
 
-You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
-
 ## Learning objectives
 
 By the end of this chapter, you should be able to: 

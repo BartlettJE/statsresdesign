@@ -2,8 +2,6 @@
 
 In this chapter, we build on the chapter 1 content where you learnt about the general linear model and applied it to the case of simple linear regression. In this chapter, we will extend that framework for when you want to want to include multiple predictor variables and interactions between predictors. We will cover concepts like standardised and unstandardised predictors, and different coding schemes for predictor variables.  
 
-You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
-
 ## Learning objectives
 
 By the end of this chapter, you should be able to: 
