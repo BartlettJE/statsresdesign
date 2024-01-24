@@ -2,8 +2,6 @@
 
 In this chapter, we will be exploring how you can perform hypothesis testing under a Bayesian framework. After working through some interactive apps to understand the logic behind Bayesian statistics and Bayes factors, we will calculate Bayes factors for two independent samples and two dependent samples using real data. The application of Bayes factors still mostly relies on testing against a point null hypothesis, so we will end on an alternative known as a Region of Practical Equivalence (ROPE). Here, we try to reject parameter values inside boundaries for your smallest effect size of interest. 
 
-You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.
-
 ## Learning objectives
 
 By the end of this chapter, you should be able to: 
@@ -32,7 +30,7 @@ This is a handy demonstration for the logic behind Bayesian inference as it is t
 
 ### Step 1 - Pick your prior 
 
-First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a <a class='glossary'>beta distribution<span class='def'></span></a>. There are only two parameters to set: *a* and *b*. 
+First, we define what our prior expectations are for the proportion of yellow candies. For a dichotomous outcome like this (yellow or not yellow), we can model the prior as a <a class='glossary' target='_blank' title='A family of distributions of data that are characterised by two parameters: α and β' href='https://psyteachr.github.io/glossary/b#beta-distribution'>beta distribution</a>. There are only two parameters to set: *a* and *b*. 
 
 Explore changing the parameters and their impact on the distribution, but here are a few observations to orient yourself: 
 
@@ -218,11 +216,28 @@ This will be more important for modelling in the next chapter, but it is good pr
 
 <div class="kable-table">
 
-|Prior     | BayesFactor|
-|:---------|-----------:|
-|Medium    |        1.45|
-|Wide      |        1.22|
-|Ultrawide |        0.97|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Prior </th>
+   <th style="text-align:right;"> BayesFactor </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Medium </td>
+   <td style="text-align:right;"> 1.45 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wide </td>
+   <td style="text-align:right;"> 1.22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ultrawide </td>
+   <td style="text-align:right;"> 0.97 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -325,13 +340,48 @@ point_estimate(Bastian_samples)
 
 <div class="kable-table">
 
-|Parameter             |     Median|       Mean|        MAP|
-|:---------------------|----------:|----------:|----------:|
-|mu                    |  3.4261304|  3.4262019|  3.4131426|
-|beta (Control - Pain) | -0.4848002| -0.4892667| -0.4665795|
-|sig2                  |  1.1061817|  1.1348647|  1.0803148|
-|delta                 | -0.4619808| -0.4664735| -0.4443186|
-|g                     |  0.5448393|  7.6797358|  0.0236393|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> Mean </th>
+   <th style="text-align:right;"> MAP </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.4261304 </td>
+   <td style="text-align:right;"> 3.4262019 </td>
+   <td style="text-align:right;"> 3.4131426 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> beta (Control - Pain) </td>
+   <td style="text-align:right;"> -0.4848002 </td>
+   <td style="text-align:right;"> -0.4892667 </td>
+   <td style="text-align:right;"> -0.4665795 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 1.1061817 </td>
+   <td style="text-align:right;"> 1.1348647 </td>
+   <td style="text-align:right;"> 1.0803148 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.4619808 </td>
+   <td style="text-align:right;"> -0.4664735 </td>
+   <td style="text-align:right;"> -0.4443186 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.5448393 </td>
+   <td style="text-align:right;"> 7.6797358 </td>
+   <td style="text-align:right;"> 0.0236393 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -346,13 +396,48 @@ hdi(Bastian_samples)
 
 <div class="kable-table">
 
-|Parameter             |   CI|     CI_low|   CI_high|
-|:---------------------|----:|----------:|---------:|
-|mu                    | 0.95|  3.1355925| 3.7088678|
-|beta (Control - Pain) | 0.95| -1.0362104| 0.0505082|
-|sig2                  | 0.95|  0.7316134| 1.5957396|
-|delta                 | 0.95| -0.9816252| 0.0549678|
-|g                     | 0.95|  0.0321040| 7.7710573|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1355925 </td>
+   <td style="text-align:right;"> 3.7088678 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> beta (Control - Pain) </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.0362104 </td>
+   <td style="text-align:right;"> 0.0505082 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.7316134 </td>
+   <td style="text-align:right;"> 1.5957396 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.9816252 </td>
+   <td style="text-align:right;"> 0.0549678 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0321040 </td>
+   <td style="text-align:right;"> 7.7710573 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -367,13 +452,90 @@ describe_posterior(Bastian_samples)
 
 <div class="kable-table">
 
-|   |Parameter             |     Median|   CI|     CI_low|    CI_high|      pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------------------|----------:|----:|----------:|----------:|-------:|-------:|--------:|---------:|---------------:|
-|4  |mu                    |  3.4261304| 0.95|  3.1373459|  3.7109673| 1.00000|    0.95|     -0.1|       0.1|       0.0000000|
-|1  |beta (Control - Pain) | -0.4848002| 0.95| -1.0426880|  0.0452834| 0.96438|    0.95|     -0.1|       0.1|       0.0540526|
-|5  |sig2                  |  1.1061817| 0.95|  0.7707757|  1.6676312| 1.00000|    0.95|     -0.1|       0.1|       0.0000000|
-|2  |delta                 | -0.4619808| 0.95| -0.9985058|  0.0413485| 0.96438|    0.95|     -0.1|       0.1|       0.0585263|
-|3  |g                     |  0.5448393| 0.95|  0.0928315| 15.8435212| 1.00000|    0.95|     -0.1|       0.1|       0.0076000|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.4261304 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1355925 </td>
+   <td style="text-align:right;"> 3.7088678 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> beta (Control - Pain) </td>
+   <td style="text-align:right;"> -0.4848002 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.0362104 </td>
+   <td style="text-align:right;"> 0.0505082 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0552626 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 1.1061817 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.7316134 </td>
+   <td style="text-align:right;"> 1.5957396 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.4619808 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.9816252 </td>
+   <td style="text-align:right;"> 0.0549678 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0617783 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.5448393 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0321040 </td>
+   <td style="text-align:right;"> 7.7710573 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0338944 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -511,12 +673,77 @@ describe_posterior(Mehr_samples)
 
 <div class="kable-table">
 
-|   |Parameter |     Median|   CI|     CI_low|    CI_high|     pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------|----------:|----:|----------:|----------:|------:|-------:|--------:|---------:|---------------:|
-|3  |mu        | -0.0665270| 0.95| -0.1260660| -0.0079075| 0.9866|    0.95|     -0.1|       0.1|       0.8898737|
-|4  |sig2      |  0.0288372| 0.95|  0.0182590|  0.0492998| 1.0000|    0.95|     -0.1|       0.1|       1.0000000|
-|1  |delta     | -0.3926439| 0.95| -0.7480745| -0.0438846| 0.9866|    0.95|     -0.1|       0.1|       0.0260000|
-|2  |g         |  0.4905500| 0.95|  0.0877182| 13.6082978| 1.0000|    0.95|     -0.1|       0.1|       0.0140421|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> -0.0665270 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1250551 </td>
+   <td style="text-align:right;"> -0.0070477 </td>
+   <td style="text-align:right;"> 0.9866 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.8917275 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 0.0288372 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0167153 </td>
+   <td style="text-align:right;"> 0.0461617 </td>
+   <td style="text-align:right;"> 1.0000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 1.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.3926439 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.7453336 </td>
+   <td style="text-align:right;"> -0.0412643 </td>
+   <td style="text-align:right;"> 0.9866 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0269050 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.4905500 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0310898 </td>
+   <td style="text-align:right;"> 6.6585659 </td>
+   <td style="text-align:right;"> 1.0000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0403364 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -583,13 +810,90 @@ describe_posterior(Bastian_samples)
 
 <div class="kable-table">
 
-|   |Parameter             |     Median|   CI|     CI_low|    CI_high|      pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------------------|----------:|----:|----------:|----------:|-------:|-------:|--------:|---------:|---------------:|
-|4  |mu                    |  3.4261304| 0.95|  3.1373459|  3.7109673| 1.00000|    0.95|     -0.1|       0.1|       0.0000000|
-|1  |beta (Control - Pain) | -0.4848002| 0.95| -1.0426880|  0.0452834| 0.96438|    0.95|     -0.1|       0.1|       0.0540526|
-|5  |sig2                  |  1.1061817| 0.95|  0.7707757|  1.6676312| 1.00000|    0.95|     -0.1|       0.1|       0.0000000|
-|2  |delta                 | -0.4619808| 0.95| -0.9985058|  0.0413485| 0.96438|    0.95|     -0.1|       0.1|       0.0585263|
-|3  |g                     |  0.5448393| 0.95|  0.0928315| 15.8435212| 1.00000|    0.95|     -0.1|       0.1|       0.0076000|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.4261304 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1355925 </td>
+   <td style="text-align:right;"> 3.7088678 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> beta (Control - Pain) </td>
+   <td style="text-align:right;"> -0.4848002 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.0362104 </td>
+   <td style="text-align:right;"> 0.0505082 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0552626 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 1.1061817 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.7316134 </td>
+   <td style="text-align:right;"> 1.5957396 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.4619808 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.9816252 </td>
+   <td style="text-align:right;"> 0.0549678 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0617783 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.5448393 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0321040 </td>
+   <td style="text-align:right;"> 7.7710573 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0338944 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -621,13 +925,90 @@ describe_posterior(Bastian_samples,
 
 <div class="kable-table">
 
-|   |Parameter             |     Median|   CI|     CI_low|    CI_high|      pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------------------|----------:|----:|----------:|----------:|-------:|-------:|--------:|---------:|---------------:|
-|4  |mu                    |  3.4261304| 0.95|  3.1373459|  3.7109673| 1.00000|    0.95|       -1|         1|       0.0000000|
-|1  |beta (Control - Pain) | -0.4848002| 0.95| -1.0426880|  0.0452834| 0.96438|    0.95|       -1|         1|       0.9898737|
-|5  |sig2                  |  1.1061817| 0.95|  0.7707757|  1.6676312| 1.00000|    0.95|       -1|         1|       0.2915789|
-|2  |delta                 | -0.4619808| 0.95| -0.9985058|  0.0413485| 0.96438|    0.95|       -1|         1|       1.0000000|
-|3  |g                     |  0.5448393| 0.95|  0.0928315| 15.8435212| 1.00000|    0.95|       -1|         1|       0.6907789|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.4261304 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1355925 </td>
+   <td style="text-align:right;"> 3.7088678 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> beta (Control - Pain) </td>
+   <td style="text-align:right;"> -0.4848002 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.0362104 </td>
+   <td style="text-align:right;"> 0.0505082 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.9910738 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 1.1061817 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.7316134 </td>
+   <td style="text-align:right;"> 1.5957396 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.3060389 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.4619808 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.9816252 </td>
+   <td style="text-align:right;"> 0.0549678 </td>
+   <td style="text-align:right;"> 0.96438 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.5448393 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0321040 </td>
+   <td style="text-align:right;"> 7.7710573 </td>
+   <td style="text-align:right;"> 1.00000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.7170661 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -663,12 +1044,77 @@ describe_posterior(Mehr_samples,
 
 <div class="kable-table">
 
-|   |Parameter |     Median|   CI|     CI_low|    CI_high|     pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------|----------:|----:|----------:|----------:|------:|-------:|--------:|---------:|---------------:|
-|3  |mu        | -0.0665270| 0.95| -0.1260660| -0.0079075| 0.9866|    0.95|    -0.05|      0.05|       0.2747263|
-|4  |sig2      |  0.0288372| 0.95|  0.0182590|  0.0492998| 1.0000|    0.95|    -0.05|      0.05|       1.0000000|
-|1  |delta     | -0.3926439| 0.95| -0.7480745| -0.0438846| 0.9866|    0.95|    -0.05|      0.05|       0.0022842|
-|2  |g         |  0.4905500| 0.95|  0.0877182| 13.6082978| 1.0000|    0.95|    -0.05|      0.05|       0.0000000|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> -0.0665270 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1250551 </td>
+   <td style="text-align:right;"> -0.0070477 </td>
+   <td style="text-align:right;"> 0.9866 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.05 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 0.2765866 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 0.0288372 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0167153 </td>
+   <td style="text-align:right;"> 0.0461617 </td>
+   <td style="text-align:right;"> 1.0000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.05 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 1.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.3926439 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.7453336 </td>
+   <td style="text-align:right;"> -0.0412643 </td>
+   <td style="text-align:right;"> 0.9866 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.05 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 0.0031894 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.4905500 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0310898 </td>
+   <td style="text-align:right;"> 6.6585659 </td>
+   <td style="text-align:right;"> 1.0000 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.05 </td>
+   <td style="text-align:right;"> 0.05 </td>
+   <td style="text-align:right;"> 0.0018210 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -760,13 +1206,90 @@ describe_posterior(Schroeder_samples)
 
 <div class="kable-table">
 
-|   |Parameter                 |     Median|   CI|    CI_low|    CI_high| pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:-------------------------|----------:|----:|---------:|----------:|--:|-------:|--------:|---------:|---------------:|
-|4  |mu                        |  3.8130925| 0.95|  3.109169|  4.5185592|  1|    0.95|     -0.1|       0.1|               0|
-|1  |beta (Transcript - Audio) | -1.5465217| 0.95| -2.946880| -0.3121002|  1|    0.95|     -0.1|       0.1|               0|
-|5  |sig2                      |  4.7849364| 0.95|  3.138439|  7.8110282|  1|    0.95|     -0.1|       0.1|               0|
-|2  |delta                     | -0.7084995| 0.95| -1.362898| -0.1365876|  1|    0.95|     -0.1|       0.1|               0|
-|3  |g                         |  0.7529274| 0.95|  0.113435| 21.8814934|  1|    0.95|     -0.1|       0.1|               0|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.8130925 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1000416 </td>
+   <td style="text-align:right;"> 4.5084205 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> beta (Transcript - Audio) </td>
+   <td style="text-align:right;"> -1.5465217 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2.8563933 </td>
+   <td style="text-align:right;"> -0.2470896 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 4.7849364 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 2.8903369 </td>
+   <td style="text-align:right;"> 7.3577109 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.7084995 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.3237764 </td>
+   <td style="text-align:right;"> -0.1060463 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.7529274 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0303917 </td>
+   <td style="text-align:right;"> 10.9374117 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.017463 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -779,15 +1302,22 @@ Zwaan_ttest <- ttestBF(x = Zwaan_data$session1_responsecongruent,
                       paired = TRUE, 
                       rscale = "medium",
                       nullInterval = c(-Inf, 0)) # negative as we expect incongruent to be larger than congruent
+```
 
+```
+## t is large; approximation invoked.
+## t is large; approximation invoked.
+```
+
+```r
 Zwaan_ttest
 ```
 
 ```
 ## Bayes factor analysis
 ## --------------
-## [1] Alt., r=0.707 -Inf<d<0    : 8.786135e+12 ±0%
-## [2] Alt., r=0.707 !(-Inf<d<0) : 60.23154     ±0%
+## [1] Alt., r=0.707 -Inf<d<0    : 8.786135e+12 ±NA%
+## [2] Alt., r=0.707 !(-Inf<d<0) : 0.00599365   ±NA%
 ## 
 ## Against denominator:
 ##   Null, mu = 0 
@@ -823,12 +1353,77 @@ describe_posterior(Zwaan_samples)
 
 <div class="kable-table">
 
-|   |Parameter |       Median|   CI|       CI_low|      CI_high| pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------|------------:|----:|------------:|------------:|--:|-------:|--------:|---------:|---------------:|
-|3  |mu        |  -38.7918762| 0.95|  -47.6011164|  -30.0234377|  1|    0.95|     -0.1|       0.1|               0|
-|4  |sig2      | 3146.1775444| 0.95| 2548.8931250| 3953.1759593|  1|    0.95|     -0.1|       0.1|               0|
-|1  |delta     |   -0.6923077| 0.95|   -0.8652760|   -0.5196815|  1|    0.95|     -0.1|       0.1|               0|
-|2  |g         |    0.7060218| 0.95|    0.1296344|   19.6262419|  1|    0.95|     -0.1|       0.1|               0|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> -38.7918762 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -47.7344049 </td>
+   <td style="text-align:right;"> -30.1566459 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 3146.1775444 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 2516.5804255 </td>
+   <td style="text-align:right;"> 3903.5552713 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.6923077 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.8610332 </td>
+   <td style="text-align:right;"> -0.5157044 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.7060218 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0360341 </td>
+   <td style="text-align:right;"> 9.7236084 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.1 </td>
+   <td style="text-align:right;"> 0.1 </td>
+   <td style="text-align:right;"> 0.0091367 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -842,13 +1437,90 @@ describe_posterior(Schroeder_samples,
 
 <div class="kable-table">
 
-|   |Parameter                 |     Median|   CI|    CI_low|    CI_high| pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:-------------------------|----------:|----:|---------:|----------:|--:|-------:|--------:|---------:|---------------:|
-|4  |mu                        |  3.8130925| 0.95|  3.109169|  4.5185592|  1|    0.95|       -2|         0|       0.0000000|
-|1  |beta (Transcript - Audio) | -1.5465217| 0.95| -2.946880| -0.3121002|  1|    0.95|       -2|         0|       0.7561895|
-|5  |sig2                      |  4.7849364| 0.95|  3.138439|  7.8110282|  1|    0.95|       -2|         0|       0.0000000|
-|2  |delta                     | -0.7084995| 0.95| -1.362898| -0.1365876|  1|    0.95|       -2|         0|       1.0000000|
-|3  |g                         |  0.7529274| 0.95|  0.113435| 21.8814934|  1|    0.95|       -2|         0|       0.0000000|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> 3.8130925 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 3.1000416 </td>
+   <td style="text-align:right;"> 4.5084205 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> beta (Transcript - Audio) </td>
+   <td style="text-align:right;"> -1.5465217 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2.8563933 </td>
+   <td style="text-align:right;"> -0.2470896 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0.763992 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 4.7849364 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 2.8903369 </td>
+   <td style="text-align:right;"> 7.3577109 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.7084995 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -1.3237764 </td>
+   <td style="text-align:right;"> -0.1060463 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1.000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.7529274 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0303917 </td>
+   <td style="text-align:right;"> 10.9374117 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -2 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0.000000 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 
@@ -863,12 +1535,77 @@ describe_posterior(Zwaan_samples,
 
 <div class="kable-table">
 
-|   |Parameter |       Median|   CI|       CI_low|      CI_high| pd| ROPE_CI| ROPE_low| ROPE_high| ROPE_Percentage|
-|:--|:---------|------------:|----:|------------:|------------:|--:|-------:|--------:|---------:|---------------:|
-|3  |mu        |  -38.7918762| 0.95|  -47.6011164|  -30.0234377|  1|    0.95|      -10|         0|               0|
-|4  |sig2      | 3146.1775444| 0.95| 2548.8931250| 3953.1759593|  1|    0.95|      -10|         0|               0|
-|1  |delta     |   -0.6923077| 0.95|   -0.8652760|   -0.5196815|  1|    0.95|      -10|         0|               1|
-|2  |g         |    0.7060218| 0.95|    0.1296344|   19.6262419|  1|    0.95|      -10|         0|               0|
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:left;"> Parameter </th>
+   <th style="text-align:right;"> Median </th>
+   <th style="text-align:right;"> CI </th>
+   <th style="text-align:right;"> CI_low </th>
+   <th style="text-align:right;"> CI_high </th>
+   <th style="text-align:right;"> pd </th>
+   <th style="text-align:right;"> ROPE_CI </th>
+   <th style="text-align:right;"> ROPE_low </th>
+   <th style="text-align:right;"> ROPE_high </th>
+   <th style="text-align:right;"> ROPE_Percentage </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> mu </td>
+   <td style="text-align:right;"> -38.7918762 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -47.7344049 </td>
+   <td style="text-align:right;"> -30.1566459 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -10 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> sig2 </td>
+   <td style="text-align:right;"> 3146.1775444 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 2516.5804255 </td>
+   <td style="text-align:right;"> 3903.5552713 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -10 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> delta </td>
+   <td style="text-align:right;"> -0.6923077 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -0.8610332 </td>
+   <td style="text-align:right;"> -0.5157044 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -10 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> g </td>
+   <td style="text-align:right;"> 0.7060218 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> 0.0360341 </td>
+   <td style="text-align:right;"> 9.7236084 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0.95 </td>
+   <td style="text-align:right;"> -10 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table>
 
 </div>
 

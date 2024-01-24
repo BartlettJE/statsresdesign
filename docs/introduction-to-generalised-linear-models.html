@@ -7,7 +7,7 @@
 <title>Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-generalised-linear-models.html">
@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -100,7 +100,6 @@
 <span class="header-section-number">3</span> Introduction to Generalised Linear Models<a class="anchor" aria-label="anchor" href="#introduction-to-generalised-linear-models"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not appropriate to assume normality. It is a popular and convenient choice as assuming normality is often robust, but for some outcomes it would simply not be the appropriate choice. Generalised linear models allow you to specify a link and link function for the model residuals, so you can apply a linear model to alternative distributions. In this chapter, we will cover two types of generalised linear models: logistic regression and ordinal regression.</p>
-<p>You are always welcome to provide feedback on our resources, but this book is part of a new suite of materials we are developing. If you have any comments, please complete this <a href="https://forms.office.com/e/Wc18LDDSpF" target="_blank">online short anonymous form</a> or contact one of the lecturing team directly.</p>
 <div id="learning-objectives-2" class="section level2" number="3.1">
 <h2>
 <span class="header-section-number">3.1</span> Learning objectives<a class="anchor" aria-label="anchor" href="#learning-objectives-2"><i class="fas fa-link"></i></a>
@@ -142,16 +141,16 @@
 <h3>
 <span class="header-section-number">3.3.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-2"><i class="fas fa-link"></i></a>
 </h3>
-<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
+<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
 <p>Irving et al. studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group</p>
 <p>129 participants completed a continuous influence paradigm where participants read a fictious newspaper article one sentence at a time about a causal link between cognitive decline and watching TV in older adults. There is one independent variable (<code>Condition</code>) to randomly allocate participants into one of two groups:</p>
 <ol style="list-style-type: decimal">
 <li><p>The correction group (group <code>1</code> in the data) had one sentence saying: “The lead author has since specified that the results have been misrepresented and that TV screen time has not yet been found to cause cognitive decline. Only a correlation has been found…”</p></li>
 <li><p>The no correction group (group <code>0</code> in the data) alternatively said: “The lead author of the study could not be reached for comment”</p></li>
 </ol>
-<p>Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make (<code>DV1_1</code> to <code>DV1_5</code> in the data set).</p>
+<p>Participants then completed five free-text questions asking them about information in the study. Their responses were manually coded and received a 1 if they made a mistaken causal inference, or a 0 if they did not make one (<code>DV1_1</code> to <code>DV1_5</code> in the data set).</p>
 <p>In chapter 1, we looked at the sum of these inferences to approach the data analysis assuming normality, but here we will treat the questions individually. Instead of questioning whether people in the correction group would produce fewer mistaken causal inferences than those in the no correction group, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.</p>
-<p>For the guided example, we will focus on <code>DV1_1</code> which coded <code>1</code> or <code>0</code> for whether participant's provided a mistaken causal inference in the question "Based on the news story, why is binge watching TV seen as bad?". So, we will test whether the probability of making a mistaken causal inference will be lower in the correction group compared to the no correction group.</p>
+<p>For the guided example, we will focus on <code>DV1_1</code> which coded <code>1</code> or <code>0</code> for whether participant's provided a mistaken causal inference in the question "Based on the news story, why is binge watching TV seen as bad?".</p>
 </div>
 <div id="exploratory-data-analysis-2" class="section level3" number="3.3.2">
 <h3>
@@ -168,30 +167,42 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="03-GLM1_files/figure-html/unnamed-chunk-2-1.png" width="100%" style="display: block; margin: auto;"></div>
 <p>It looks like more participants in the correction group compared to the no correction group did not make a mistaken causal inference (0), whereas more participants in the no correction group compared to the correction group made a mistaken causal inference (1).</p>
-<p>Instead of counts, we can also express binary 0 and 1 data as a proportion or probability of making a mistake. If you take the mean of binary data, it tells you the probability, so we can calculate the proportion of participant's making a mistake in each group.</p>
+<p>Instead of counts, we can also express binary 0 and 1 data as a proportion or probability of making a mistake. If you take the mean of binary data, it tells you the proportion, so we can calculate the proportion of participant's making a mistake in each group.</p>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">irving_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>proportion_causal_inference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">DV1_1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr class="header">
-<th align="left">Condition</th>
-<th align="right">proportion_causal_inference</th>
+<thead><tr>
+<th style="text-align:left;">
+Condition
+</th>
+<th style="text-align:right;">
+proportion_causal_inference
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">0</td>
-<td align="right">0.4696970</td>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.4696970
+</td>
 </tr>
-<tr class="even">
-<td align="left">1</td>
-<td align="right">0.3492063</td>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.3492063
+</td>
 </tr>
 </tbody>
 </table></div>
 </div>
-<p>Both the bar plot and summary statistics support our prediction, participants in the no correction condition (47%) were more likely to make a mistaken causal inference than participants in the correction condition (35%). These are just descriptive statistics though, so need to think about modelling to make inferences from these data.</p>
+<p>Both the bar plot and summary statistics support our prediction, participants in the no correction condition (47%) were more likely to make a mistaken causal inference than participants in the correction condition (35%). These are just descriptive statistics though, so you need to think about modelling to make inferences from these data.</p>
 </div>
 <div id="would-linear-regression-work" class="section level3" number="3.3.3">
 <h3>
@@ -223,7 +234,7 @@
 ## Residual standard error: 0.4921 on 127 degrees of freedom
 ## Multiple R-squared:  0.01499,    Adjusted R-squared:  0.007231 
 ## F-statistic: 1.932 on 1 and 127 DF,  p-value: 0.1669</code></pre>
-<p>It is somewhat interpretable as when you take the mean of binary data, you get the proportion. So, the intercept represents the proportion of mistaken causal inferences in the no correction group, and the slope coefficient represents the mean difference in proportion, suggesting there are .12/12% fewer mistakes in the correction group.</p>
+<p>It is somewhat interpretable as when you take the mean of binary data, you get the proportion. So, the intercept represents the proportion of mistaken causal inferences in the no correction group, and the slope coefficient represents the mean difference in proportion, suggesting there are .12/12% fewer mistakes in the correction group, but its not statistically significant.</p>
 <p>Although it works and we can make sense of the results, the question is whether it is an informative and appropriate way of modelling a binary outcome. Lets check the assumptions to see if anything looks off.</p>
 <div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">irving_model1</span><span class="op">)</span></span></code></pre></div>
@@ -241,7 +252,7 @@
 </h4>
 <p>In a linear model, we model the outcome as a product of an intercept, a slope, and error. Its that final error part which is why we have worried about normality so far. In a regular linear regression model, we need the model residuals (the difference between the expected and observed values) to be normally distributed.</p>
 <p>Logistic regression is an adaptation of the linear regression framework we have worked with so far, where we can replace that error component. This is called generalised linear regression and we can specify a link and link function, instead of normal residuals being built into the model.</p>
-<p>So far, we have always used <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="op">)</span></span></code>, but R comes with another called <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="op">)</span></span></code> for generalised linear regression models. To demonstrate how we can set the link family, we can use it to recreate a regular linear regression model, but this time explicitly calling a normal distribution as the link (using its alternate name a Gaussian distribution) and <code><span><span class="st">"identity"</span></span></code> as the link function.</p>
+<p>So far, we have always used <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="op">)</span></span></code>, but R comes with another function called <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="op">)</span></span></code> for generalised linear regression models. To demonstrate how we can set the link family, we can use it to recreate a regular linear regression model, but this time explicitly calling a normal distribution as the link (using its alternate name a Gaussian distribution) and <code><span><span class="st">"identity"</span></span></code> as the link function.</p>
 <div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">irving_model1_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">DV1_1</span> <span class="op">~</span> <span class="va">Condition</span>, </span>
 <span>                     family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">gaussian</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span>, </span>
@@ -252,6 +263,10 @@
 ## Call:
 ## glm(formula = DV1_1 ~ Condition, family = gaussian(link = "identity"), 
 ##     data = irving_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.4697  -0.4697  -0.3492   0.5303   0.6508  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
@@ -269,6 +284,9 @@
 ## Number of Fisher Scoring iterations: 2</code></pre>
 <p>The link specifies the distribution family and the link function is the transformation for the model units. So, for our normal/Gaussian distribution, we have an identity link which essentially means no transformation, just the values we input. A normal distribution is described by a mean and standard deviation, so we just interpret the raw units in the model.</p>
 <p>The results here are accurate to the third decimal to show its an identical process. The only difference to our regular model output is the model fit statistics. Regular linear regression uses ordinal least squares to fit the model, whereas generalised linear regression fits the models using maximum likelihood. Holding everything else constant, this requires greater computing power, so its redundant to use <code><span><span class="fu"><a target="_blank" href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="op">)</span></span></code> when you just want to assume normal/Gaussian errors, but its important to show the logic behind these procedures.</p>
+<div class="info">
+<p>In this chapter, we are focusing on logistic regression and ordinal regression as variations of generalised linear regression. There are more possibilities though, so type <code><a href="https://rdrr.io/r/stats/family.html">?family</a></code> into the console to see the different families you could enter for the link and link function.</p>
+</div>
 </div>
 <div id="logistic-regression-in-glm" class="section level4" number="3.3.4.2">
 <h4>
@@ -289,6 +307,10 @@
 ## Call:
 ## glm(formula = DV1_1 ~ Condition, family = binomial(link = "logit"), 
 ##     data = irving_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.1263  -1.1263  -0.9269   1.2294   1.4506  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)
@@ -320,7 +342,7 @@
 ##                 2.5 %   97.5 %
 ## (Intercept) 0.5436185 1.436243
 ## Condition1  0.2958388 1.225418</code></pre>
-<p>An odds ratio is a ratio of the odds of the event happening in one group compared to the odds of the event happening in another group. In this context, a ratio of making a mistaken causal inference (1s compared to 0s) in the no correction group, compared to the correction group.</p>
+<p>An odds ratio is a ratio of the odds of an event happening in one group compared to the odds of an event happening in another group. In this context, a ratio of making a mistaken causal inference (1s compared to 0s) in the no correction group, compared to the correction group.</p>
 <p>An odds ratio of 1 means they are equally likely to happen. An odds ratio of less than 1 means something is less likely to happen, whereas more than 1 means something is more likely to happen. The odds ratio is 0.61 here, suggesting the odds of making a mistaken causal inference is lower in the correction group (our target group - <code>1</code>) compared to the no correction group (the reference group - <code>0</code>). Odds ratios below 1 can be tricky to interpret, so you can flip them around by taking the reciprocal.</p>
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Take the reciprocal of the exponential of the second coefficient </span></span>
@@ -334,7 +356,7 @@
 ##                2.5 %    97.5 %
 ## (Intercept) 1.839525 0.6962612
 ## Condition1  3.380219 0.8160484</code></pre>
-<p>Expressed this way, there are 1.65 [0.82, 3.38] lower odds of making a mistaken causal inference in the correction group compared to the no correction group. In this model, it is not statistically significant and we can see there is a decent amount of uncertainty around the estimate, with an odds ratio spanning above and below 1.</p>
+<p>Expressed this way, there are 1.65 [0.82, 3.38] lower odds (or expressed in probability 65% lower) of making a mistaken causal inference in the correction group compared to the no correction group. In this model, it is not statistically significant and we can see there is a decent amount of uncertainty around the estimate, with an odds ratio spanning above and below 1.</p>
 <div class="warning">
 <p>In this scenario, you would get the same reciprocal odds ratio if you changed the groups around with correction as the reference group. Taking the reciprocal is the same information expressed differently, but its important you are clear about the model estimates to avoid confusing your reader. If you do this yourself, make sure you explain what the model estimates were and how you took the reciprocal.</p>
 </div>
@@ -348,27 +370,32 @@
 <h4>
 <span class="header-section-number">3.3.4.3</span> Calculating the model probability estimates<a class="anchor" aria-label="anchor" href="#calculating-the-model-probability-estimates"><i class="fas fa-link"></i></a>
 </h4>
-<p>Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by the exponential of the log odds divided by 1 plus the exponential log odds.</p>
+<p>Finally, there is a relationship between probability, odds, and log odds. So, we can use the coefficients to produce model estimates for the probability of a mistaken causal inference in each group. The logic is the same as for regular linear regression models, the intercept is the reference group, and the slope coefficient for your predictor is the shift across units of your predictors. We can calculate the probability by taking the exponential of the log odds divided by 1 plus the exponential log odds.</p>
 <div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Estimated probability of making an error in the 0 condition </span></span>
+<span><span class="co"># We use coef() to isolate the model coefficients and subset the 1st item - the intercept</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## (Intercept) 
 ##    0.469697</code></pre>
 <p>This means the estimated probability of a mistaken causal inference in the no correction condition is .47 or 47%. Then for the correction group, we repeat the process, but adding together the intercept and slope coefficient. Given the slope was negative, this is the equivalent of subtracting the slope.</p>
 <div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Estimated probability of making an error in the 0 condition </span></span>
+<code class="sourceCode R"><span><span class="co"># Estimated probability of making an error in the 1 condition</span></span>
+<span><span class="co"># We use coef() to isolate the model coefficients and subset the 1st item - the intercept </span></span>
+<span><span class="co"># We then add the 2nd item in coef() - the slope </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">irving_model2</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## (Intercept) 
 ##   0.3492063</code></pre>
-<p>This means the estimated probability of a mistaken causal inference in the correction condition is .35 or 35%. These values line up nicely with our original summary statistics, but keep in mind they are model estimates. They are closer here as its a very simple model and we are demonstrating the principles, but they will not line up this close when you have more complex models.</p>
+<p>This means the estimated probability of a mistaken causal inference in the correction condition is .35 or 35%. These values line up nicely with our original summary statistics, but keep in mind they are model estimates. They are closer here as its a very simple model and we are demonstrating the principles, but they will not line up this close when you have more complex models with partial effects to understand.</p>
 </div>
 <div id="using-emmeans-to-get-model-estimates" class="section level4" number="3.3.4.4">
 <h4>
 <span class="header-section-number">3.3.4.4</span> Using <code>emmeans</code> to get model estimates<a class="anchor" aria-label="anchor" href="#using-emmeans-to-get-model-estimates"><i class="fas fa-link"></i></a>
 </h4>
-<p>Another way of getting model estimates is using <code><span><span class="fu">emmeans</span><span class="op">(</span><span class="op">)</span></span></code> function from the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022">Lenth, 2022</a>)</span>. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients.</p>
+<p>Another way of getting model estimates is using <code><span><span class="fu">emmeans</span><span class="op">(</span><span class="op">)</span></span></code> function from the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022" role="doc-biblioref">Lenth, 2022</a>)</span>. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients.</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">irving_model2</span>, specs <span class="op">=</span> <span class="st">"Condition"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># logistic regression model as the object</span></span>
+<span><span class="co"># Specifying Condition as the predictor we want marginal effects for</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">irving_model2</span>, specs <span class="op">=</span> <span class="st">"Condition"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Condition emmean    SE  df asymp.LCL asymp.UCL
 ##  0         -0.121 0.247 Inf    -0.605     0.362
 ##  1         -0.623 0.264 Inf    -1.141    -0.105
@@ -391,7 +418,7 @@
 <h3>
 <span class="header-section-number">3.4.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-3"><i class="fas fa-link"></i></a>
 </h3>
-<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
+<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014" role="doc-biblioref">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
 <p>In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results.</p>
 <p>Participants were randomly allocated (<code>ExpCond</code>) to recall an unethical behaviour (<code>1</code>; n = 49) or an ethical behaviour (<code>0</code>; n = 51). The key outcome was their perception of how bright the room was (<code>welllit</code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
 </div>
@@ -484,7 +511,7 @@
 <p>For each group, the lines corresponds with the cumulative percentage at each scale point. When the line is horizontal, there is no change. When the line moves vertically, it represents the next percentage increase, adding to the cumulative percentage from the previous shift, until you reach 100%.</p>
 <p>Ordinal regression models estimate these shifts in probability and you get <em>k</em>-1 estimates for the thresholds, meaning you get one fewer estimate than the total number of scale points. Behind the scenes, the model interprets the outcome as a Gaussian looking latent variable, meaning the ordinal scale points are tapping into some kind of construct, but honouring there are discrete scale points.</p>
 <p>The coefficient in the model represents the probability shift of a 1 scale point increase from one distribution to another on the scale of your predictors. So, for every 1-unit increase in a continuous predictor, you see how the probability shifts, or how the probability shifts for the difference between two groups in a categorical predictor. A positive slope coefficient would mean an increase in probability along your predictor scale, while a negative slope coefficient would mean a decrease in probability along your predictor scale.</p>
-<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023">Christensen, 2023</a>)</span> package as it nicely supports cumulative link models as regular regression models we have used until this point or scaled up to mixed effects models.</p>
+<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023" role="doc-biblioref">Christensen, 2023</a>)</span> package as it nicely supports cumulative link models as regular regression models we have used until this point or scaled up to mixed effects models.</p>
 <p>First, we need to convert the outcome into a factor, so there are a discrete ordered number of points.</p>
 <div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="va">Brandt_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -631,7 +658,7 @@
 <h3>
 <span class="header-section-number">3.5.1</span> Independent logistic regression<a class="anchor" aria-label="anchor" href="#independent-logistic-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use the same data set from <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022">2022</a>)</span>, but this time using a different question as a binary outcome. If you are coming to this fresh, make sure to remind yourself of the data set outlined in the <a href="introduction-to-generalised-linear-models.html#logistic-regression">logistic regression section</a> and load the data.</p>
+<p>For an independent activity, we will use the same data set from <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span>, but this time using a different question as a binary outcome. If you are coming to this fresh, make sure to remind yourself of the data set outlined in the <a href="introduction-to-generalised-linear-models.html#logistic-regression">logistic regression section</a> and load the data.</p>
 <p>Instead of using <code>DV1_1</code>, you will use <code>DV1_3</code> instead. This asked participants "Based on the results of this study, can we conclude that watching TV causes cognitive decline?". Coded responses were 1 for if the participant's responded with a mistaken causal conclusion and 0 if they did not provide a mistaken causal conclusion.</p>
 <div class="try">
 <p>From here, apply what you learnt in the guided example for logistic regression to this new independent task and complete the questions below to check your understanding. Remember you are predicting <code>DV1_3</code> from <code>Condition</code> to see if the probability of a mistaken causal inference is greater in the correction condition compared to the no correction condition.</p>
@@ -645,9 +672,9 @@
 <li><p>Rounding to two decimals, the slope coefficient converted to an odds ratio is <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["0.09",".09"]'>. Taking the reciprocal, the odds ratio is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["10.58"]'> [lower 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["2.85"]'>, upper 95% CI = <input class="webex-solveme nospaces" data-tol="0.001" size="4" data-answer='["68.8"]'>].</p></li>
 <li><p>This suggests there are <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["10.58"]'> lower odds of making a mistaken causal inference in the <select class="webex-select"><option value="blank"></option>
 <option value="x">no correction</option>
-<option value="answer">audio</option></select> condition compared to the <select class="webex-select"><option value="blank"></option>
+<option value="answer">correction</option></select> condition compared to the <select class="webex-select"><option value="blank"></option>
 <option value="answer">no correction</option>
-<option value="x">audio</option></select> condition.</p></li>
+<option value="x">correction</option></select> condition.</p></li>
 <li><p>Rounding to three decimals, the estimated probability of making a mistaken causal inference in the no correction group is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["0.258",".258"]'> and the estimated probability of making a mistaken causal inference in the correction group is <input class="webex-solveme nospaces" data-tol="0.001" size="5" data-answer='["0.032",".032"]'>.</p></li>
 </ul>
 </div>
@@ -655,7 +682,7 @@
 <h3>
 <span class="header-section-number">3.5.2</span> Independent ordinal regression<a class="anchor" aria-label="anchor" href="#independent-ordinal-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
+<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015" role="doc-biblioref">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
 <p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a rating scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
 <p>For this example, we will focus on the hire rating (variable <code>Hire_Rating</code> to see whether the audio condition had a would lead to higher ratings than the transcript condition (variable <code>CONDITION</code>).</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
@@ -708,6 +735,10 @@
 ## Call:
 ## glm(formula = DV1_3 ~ Condition, family = binomial(link = "logit"), 
 ##     data = irving_data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.7718  -0.7718  -0.2540  -0.2540   2.6268  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1114,7 +1145,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-23.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1127,7 +1158,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
