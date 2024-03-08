@@ -7,7 +7,7 @@
 <title>Chapter 2 Multiple Linear Regression | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, we build on the chapter 1 content where you learnt about the general linear model and applied it to the case of simple linear regression. In this chapter, we will extend that...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
 <meta property="og:title" content="Chapter 2 Multiple Linear Regression | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/multiple-linear-regression.html">
@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -149,7 +149,7 @@
 <h3>
 <span class="header-section-number">2.3.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset"><i class="fas fa-link"></i></a>
 </h3>
-<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate different predictor coding schemes, we will use data from <span class="citation">James et al. (<a href="references.html#ref-james_computer_2015" role="doc-biblioref">2015</a>)</span> who wanted to find non-pharmacological interventions for reducing intrusive memories of traumatic events. They compared four conditions:</p>
+<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate different predictor coding schemes, we will use data from <span class="citation">James et al. (<a href="references.html#ref-james_computer_2015">2015</a>)</span> who wanted to find non-pharmacological interventions for reducing intrusive memories of traumatic events. They compared four conditions:</p>
 <ol style="list-style-type: decimal">
 <li><p>No-task control: Participants completed a 10-minute filler task.</p></li>
 <li><p>Reactivation + Tetris: Participants were shown a series of images from a trauma film to
@@ -212,7 +212,7 @@ reactivate traumatic memories. After a filler task, participants played Tetris f
 <span class="header-section-number">2.3.4</span> Dummy coding <code>Condition</code><a class="anchor" aria-label="anchor" href="#dummy-coding-condition"><i class="fas fa-link"></i></a>
 </h3>
 <p>To demonstrate different coding schemes, we will start with dummy coding. Dummy coding is the default in R and when we entered <code>Condition</code> as a predictor, this is what R does behind the scenes. However, we have no control over the process and the reference group/intercept will be first in numerical or alphabetical order, then each successive <em>k</em>-1 group will be added as separate predictors.</p>
-<p>Instead, we can define our own dummy coding to control the reference and target groups. This is particularly useful when you have specific hypotheses like in <span class="citation">James et al. (<a href="references.html#ref-james_computer_2015" role="doc-biblioref">2015</a>)</span>, as we are interested in the combined reactivation and Tetris group (group 2). This means we can code for condition 2 as the reference group / intercept, and the other groups are coded as individual predictors.</p>
+<p>Instead, we can define our own dummy coding to control the reference and target groups. This is particularly useful when you have specific hypotheses like in <span class="citation">James et al. (<a href="references.html#ref-james_computer_2015">2015</a>)</span>, as we are interested in the combined reactivation and Tetris group (group 2). This means we can code for condition 2 as the reference group / intercept, and the other groups are coded as individual predictors.</p>
 <p>For dummy coding, you will have <em>k</em>-1 predictors, meaning one fewer predictor than the number of groups. Since we have four groups, we will need to create three predictors. In the code below, our reference group will always be set to 0. Then, for each dummy coded predictor, we will set the target group to 1. Each target group will be 1 for when it is a predictor, but reactivation and Tetris (condition 2) will always be set to 0.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Dummy code condition 2 as 0 for each comparison, and each successive group as 1</span></span>
@@ -227,76 +227,36 @@ reactivate traumatic memories. After a filler task, participants played Tetris f
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">Condition</span>, <span class="va">RT_control</span>, <span class="va">RT_tetris</span>, <span class="va">RT_reactivation</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-RT_control
-</th>
-<th style="text-align:right;">
-RT_tetris
-</th>
-<th style="text-align:right;">
-RT_reactivation
-</th>
+<thead><tr class="header">
+<th align="left">Condition</th>
+<th align="right">RT_control</th>
+<th align="right">RT_tetris</th>
+<th align="right">RT_reactivation</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table></div>
@@ -351,38 +311,22 @@ RT_reactivation
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>mean_difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">post_intrusions</span><span class="op">)</span> <span class="op">-</span> <span class="va">RT_mean</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-mean_difference
-</th>
+<thead><tr class="header">
+<th align="left">Condition</th>
+<th align="right">mean_difference</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3.222222
-</td>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">3.222222</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-2.000000
-</td>
+<tr class="even">
+<td align="left">3</td>
+<td align="right">2.000000</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-2.944444
-</td>
+<tr class="odd">
+<td align="left">4</td>
+<td align="right">2.944444</td>
 </tr>
 </tbody>
 </table></div>
@@ -420,76 +364,42 @@ mean_difference
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">Condition</span>, <span class="va">control_deviation</span>, <span class="va">tetris_deviation</span>, <span class="va">reactivation_deviation</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-control_deviation
-</th>
-<th style="text-align:right;">
-tetris_deviation
-</th>
-<th style="text-align:right;">
-reactivation_deviation
-</th>
+<colgroup>
+<col width="14%">
+<col width="26%">
+<col width="25%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Condition</th>
+<th align="right">control_deviation</th>
+<th align="right">tetris_deviation</th>
+<th align="right">reactivation_deviation</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-0.5
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.0
-</td>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">0.5</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
--0.5
-</td>
-<td style="text-align:right;">
--0.5
-</td>
-<td style="text-align:right;">
--0.5
-</td>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">-0.5</td>
+<td align="right">-0.5</td>
+<td align="right">-0.5</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.5
-</td>
-<td style="text-align:right;">
-0.0
-</td>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">0.0</td>
+<td align="right">0.5</td>
+<td align="right">0.0</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.5
-</td>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.5</td>
 </tr>
 </tbody>
 </table></div>
@@ -540,61 +450,31 @@ reactivation_deviation
 <span>            deviations <span class="op">=</span> <span class="op">(</span><span class="va">grand_mean</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">post_intrusions</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-mean_intrusions
-</th>
-<th style="text-align:right;">
-deviations
-</th>
+<thead><tr class="header">
+<th align="left">Condition</th>
+<th align="right">mean_intrusions</th>
+<th align="right">deviations</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-5.111111
-</td>
-<td style="text-align:right;">
--2.3611111
-</td>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">5.111111</td>
+<td align="right">-2.3611111</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1.888889
-</td>
-<td style="text-align:right;">
-4.0833333
-</td>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1.888889</td>
+<td align="right">4.0833333</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-3.888889
-</td>
-<td style="text-align:right;">
-0.0833333
-</td>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">3.888889</td>
+<td align="right">0.0833333</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-4.833333
-</td>
-<td style="text-align:right;">
--1.8055556
-</td>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">4.833333</td>
+<td align="right">-1.8055556</td>
 </tr>
 </tbody>
 </table></div>
@@ -625,104 +505,48 @@ deviations
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">standardise_variables</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:right;">
-post_intrusions
-</th>
-<th style="text-align:right;">
-RT_control
-</th>
-<th style="text-align:right;">
-RT_tetris
-</th>
-<th style="text-align:right;">
-RT_reactivation
-</th>
+<thead><tr class="header">
+<th align="right">post_intrusions</th>
+<th align="right">RT_control</th>
+<th align="right">RT_tetris</th>
+<th align="right">RT_reactivation</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:right;">
-0.0206797
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="odd">
+<td align="right">0.0206797</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
-<tr>
-<td style="text-align:right;">
--0.2771082
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="even">
+<td align="right">-0.2771082</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-0.6162555
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="odd">
+<td align="right">0.6162555</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
-<tr>
-<td style="text-align:right;">
--0.5748961
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="even">
+<td align="right">-0.5748961</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
-<tr>
-<td style="text-align:right;">
--0.2771082
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="odd">
+<td align="right">-0.2771082</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-0.0206797
-</td>
-<td style="text-align:right;">
-1.719981
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
-<td style="text-align:right;">
--0.5733269
-</td>
+<tr class="even">
+<td align="right">0.0206797</td>
+<td align="right">1.719981</td>
+<td align="right">-0.5733269</td>
+<td align="right">-0.5733269</td>
 </tr>
 </tbody>
 </table></div>
@@ -747,10 +571,10 @@ RT_reactivation
 ## 
 ## Coefficients:
 ##                                Estimate              Std. Error t value
-## (Intercept)     -0.00000000000000005042  0.11145399933614341670   0.000
-## RT_control       0.41840827520580753385  0.13746063961845120249   3.044
-## RT_tetris        0.25970168805877702489  0.13746063961845120249   1.889
-## RT_reactivation  0.38233859630875494107  0.13746063961845117474   2.781
+## (Intercept)     -0.00000000000000005202  0.11145399933614336119   0.000
+## RT_control       0.41840827520580753385  0.13746063961845117474   3.044
+## RT_tetris        0.25970168805877696938  0.13746063961845117474   1.889
+## RT_reactivation  0.38233859630875477453  0.13746063961845111923   2.781
 ##                 Pr(&gt;|t|)   
 ## (Intercept)      1.00000   
 ## RT_control       0.00332 **
@@ -765,94 +589,44 @@ RT_reactivation
 <p>Instead of the original units, our coefficients are now expressed as a standardised mean difference. This means instead of the reference group having an average of 3.22 fewer intrusive memories than control, the difference was 0.42 standard deviations. Standardised units are reported all the time in psychology as its easier to compare studies using different measures, but its important the measures and comparisons are comparable to make sense.</p>
 <p>Now you know the logic behind standardising predictors and how it works, there is a shortcut you can use to standardise the estimates of a model you have already created. The <code class="package">effectsize</code> package has a handy function called <code><span><span class="fu">standardize_parameters</span><span class="op">(</span><span class="op">)</span></span></code> which will refit a model and return standardised estimates, helpfully also including the 95% CI around the estimates.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">james_dummy</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">james_dummy</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Parameter
-</th>
-<th style="text-align:right;">
-Std_Coefficient
-</th>
-<th style="text-align:right;">
-CI
-</th>
-<th style="text-align:right;">
-CI_low
-</th>
-<th style="text-align:right;">
-CI_high
-</th>
+<thead><tr class="header">
+<th align="left">Parameter</th>
+<th align="right">Std_Coefficient</th>
+<th align="right">CI</th>
+<th align="right">CI_low</th>
+<th align="right">CI_high</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.2224030
-</td>
-<td style="text-align:right;">
-0.2224030
-</td>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.0000000</td>
+<td align="right">0.95</td>
+<td align="right">-0.2224030</td>
+<td align="right">0.2224030</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-RT_control
-</td>
-<td style="text-align:right;">
-0.4184083
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.1441098
-</td>
-<td style="text-align:right;">
-0.6927067
-</td>
+<tr class="even">
+<td align="left">RT_control</td>
+<td align="right">0.4184083</td>
+<td align="right">0.95</td>
+<td align="right">0.1441098</td>
+<td align="right">0.6927067</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-RT_tetris
-</td>
-<td style="text-align:right;">
-0.2597017
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.0145967
-</td>
-<td style="text-align:right;">
-0.5340001
-</td>
+<tr class="odd">
+<td align="left">RT_tetris</td>
+<td align="right">0.2597017</td>
+<td align="right">0.95</td>
+<td align="right">-0.0145967</td>
+<td align="right">0.5340001</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-RT_reactivation
-</td>
-<td style="text-align:right;">
-0.3823386
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.1080402
-</td>
-<td style="text-align:right;">
-0.6566370
-</td>
+<tr class="even">
+<td align="left">RT_reactivation</td>
+<td align="right">0.3823386</td>
+<td align="right">0.95</td>
+<td align="right">0.1080402</td>
+<td align="right">0.6566370</td>
 </tr>
 </tbody>
 </table></div>
@@ -868,7 +642,7 @@ RT_reactivation
 <h3>
 <span class="header-section-number">2.4.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-1"><i class="fas fa-link"></i></a>
 </h3>
-<p>To demonstrate multiple linear regression models, we will use data from <span class="citation">Evans (<a href="references.html#ref-evans_unethical_2024" role="doc-biblioref">2024</a>)</span> (the stage two manuscript is currently under review) who performed a multi-site registered replication report containing 2218 participants. They wanted to replicate <span class="citation">Jones &amp; Kavanagh (<a href="references.html#ref-jones_experimental_1996" role="doc-biblioref">1996</a>)</span> - an influential study in organisational psychology on unethical workplace behaviour. The variables can be split into two types. The first are situational factors and relate to experimental manipulations on a vignette that participants read:</p>
+<p>To demonstrate multiple linear regression models, we will use data from <span class="citation">Evans (<a href="references.html#ref-evans_unethical_2024">2024</a>)</span> (the stage two manuscript is currently under review) who performed a multi-site registered replication report containing 2218 participants. They wanted to replicate <span class="citation">Jones &amp; Kavanagh (<a href="references.html#ref-jones_experimental_1996">1996</a>)</span> - an influential study in organisational psychology on unethical workplace behaviour. The variables can be split into two types. The first are situational factors and relate to experimental manipulations on a vignette that participants read:</p>
 <ol style="list-style-type: decimal">
 <li><p>Workplace environment (<code>QWE</code>): Your workplace environment is described as high or low quality.</p></li>
 <li><p>Manager influence (<code>MI</code>): Your manager is described as behaving ethically or unethically.</p></li>
@@ -1007,145 +781,65 @@ Alternatively, we might look at the relationship between unethical behaviour int
 </h4>
 <p>At this point with a mix of predictors, we can also check the standardised coefficients to see which predictors appear to be the strongest on a standard deviation scale.</p>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">individual_model2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">individual_model2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Parameter
-</th>
-<th style="text-align:right;">
-Std_Coefficient
-</th>
-<th style="text-align:right;">
-CI
-</th>
-<th style="text-align:right;">
-CI_low
-</th>
-<th style="text-align:right;">
-CI_high
-</th>
+<thead><tr class="header">
+<th align="left">Parameter</th>
+<th align="right">Std_Coefficient</th>
+<th align="right">CI</th>
+<th align="right">CI_low</th>
+<th align="right">CI_high</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
-</td>
-<td style="text-align:right;">
-0.1659965
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.0871282
-</td>
-<td style="text-align:right;">
-0.2448649
-</td>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.1659965</td>
+<td align="right">0.95</td>
+<td align="right">0.0871282</td>
+<td align="right">0.2448649</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-QWEhigh
-</td>
-<td style="text-align:right;">
--0.1082689
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1871863
-</td>
-<td style="text-align:right;">
--0.0293515
-</td>
+<tr class="even">
+<td align="left">QWEhigh</td>
+<td align="right">-0.1082689</td>
+<td align="right">0.95</td>
+<td align="right">-0.1871863</td>
+<td align="right">-0.0293515</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-MIethical
-</td>
-<td style="text-align:right;">
--0.1230192
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.2020337
-</td>
-<td style="text-align:right;">
--0.0440047
-</td>
+<tr class="odd">
+<td align="left">MIethical</td>
+<td align="right">-0.1230192</td>
+<td align="right">0.95</td>
+<td align="right">-0.2020337</td>
+<td align="right">-0.0440047</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-PIethical
-</td>
-<td style="text-align:right;">
--0.1036139
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1826004
-</td>
-<td style="text-align:right;">
--0.0246273
-</td>
+<tr class="even">
+<td align="left">PIethical</td>
+<td align="right">-0.1036139</td>
+<td align="right">0.95</td>
+<td align="right">-0.1826004</td>
+<td align="right">-0.0246273</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-LOCTot
-</td>
-<td style="text-align:right;">
-0.0296680
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.0124626
-</td>
-<td style="text-align:right;">
-0.0717985
-</td>
+<tr class="odd">
+<td align="left">LOCTot</td>
+<td align="right">0.0296680</td>
+<td align="right">0.95</td>
+<td align="right">-0.0124626</td>
+<td align="right">0.0717985</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-SocDesTot
-</td>
-<td style="text-align:right;">
--0.0989384
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1423766
-</td>
-<td style="text-align:right;">
--0.0555001
-</td>
+<tr class="even">
+<td align="left">SocDesTot</td>
+<td align="right">-0.0989384</td>
+<td align="right">0.95</td>
+<td align="right">-0.1423766</td>
+<td align="right">-0.0555001</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-MachTot
-</td>
-<td style="text-align:right;">
-0.2421870
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.1977892
-</td>
-<td style="text-align:right;">
-0.2865848
-</td>
+<tr class="odd">
+<td align="left">MachTot</td>
+<td align="right">0.2421870</td>
+<td align="right">0.95</td>
+<td align="right">0.1977892</td>
+<td align="right">0.2865848</td>
 </tr>
 </tbody>
 </table></div>
@@ -1192,66 +886,30 @@ MachTot
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">individual_model1</span>, <span class="va">individual_model2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:right;">
-Res.Df
-</th>
-<th style="text-align:right;">
-RSS
-</th>
-<th style="text-align:right;">
-Df
-</th>
-<th style="text-align:right;">
-Sum of Sq
-</th>
-<th style="text-align:right;">
-F
-</th>
-<th style="text-align:right;">
-Pr(&gt;F)
-</th>
+<thead><tr class="header">
+<th align="right">Res.Df</th>
+<th align="right">RSS</th>
+<th align="right">Df</th>
+<th align="right">Sum of Sq</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:right;">
-2214
-</td>
-<td style="text-align:right;">
-32591.48
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="odd">
+<td align="right">2214</td>
+<td align="right">32591.48</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-2211
-</td>
-<td style="text-align:right;">
-29487.44
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3104.04
-</td>
-<td style="text-align:right;">
-77.5814
-</td>
-<td style="text-align:right;">
-0
-</td>
+<tr class="even">
+<td align="right">2211</td>
+<td align="right">29487.44</td>
+<td align="right">3</td>
+<td align="right">3104.04</td>
+<td align="right">77.5814</td>
+<td align="right">0</td>
 </tr>
 </tbody>
 </table></div>
@@ -1532,7 +1190,7 @@ NA
 <span class="header-section-number">2.6</span> Independent activity<a class="anchor" aria-label="anchor" href="#independent-activity-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>Now you have followed along to a guided example, it is important you can transfer your knowledge to a new scenario. So, we have a new data set for you to try out your understanding of these techniques on. Follow the instructions below and answer the questions, you can then scroll down to the <a href="multiple-linear-regression.html#C2_solution">end of the chapter</a> to see the solution we based on the questions on.</p>
-<p>For an independent activity, we will use data from Tulloch et al. who performed an unpublished replication of <span class="citation">Troy et al. (<a href="references.html#ref-troy_change_2017" role="doc-biblioref">2017</a>)</span>. Troy et al. conducted three studies exploring the effect of emotion regulation and socioeconomic status on depressive symptoms. The data you will use comes from a dissertation project where we replicated study one to investigate if socioeconomic status moderates the link between cognitive reappraisal ability and depressive symptoms. For the purposes of this task, the key variables from the study included:</p>
+<p>For an independent activity, we will use data from Tulloch et al. who performed an unpublished replication of <span class="citation">Troy et al. (<a href="references.html#ref-troy_change_2017">2017</a>)</span>. Troy et al. conducted three studies exploring the effect of emotion regulation and socioeconomic status on depressive symptoms. The data you will use comes from a dissertation project where we replicated study one to investigate if socioeconomic status moderates the link between cognitive reappraisal ability and depressive symptoms. For the purposes of this task, the key variables from the study included:</p>
 <ul>
 <li><p>Socioeconomic Status (SES; <code>SES</code>) - Current annual family income was rated on a 1 to 12 scale aligning with income bands. The bands were converted from the original study's values in US dollars, to the replication study's target population of UK (in British Pounds) and Malaysia (in Malaysian Ringgit). Its an odd way of recording this data, but go with it...</p></li>
 <li><p>Country (<code>Country</code>) - Categorical variable showing whether the participant completed the study in Malaysia or the UK.</p></li>
@@ -1682,111 +1340,51 @@ NA
 ## Multiple R-squared:  0.2557, Adjusted R-squared:  0.2391 
 ## F-statistic: 15.46 on 4 and 180 DF,  p-value: 6.901e-11</code></pre>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">tulloch_model1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">tulloch_model1</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Parameter
-</th>
-<th style="text-align:right;">
-Std_Coefficient
-</th>
-<th style="text-align:right;">
-CI
-</th>
-<th style="text-align:right;">
-CI_low
-</th>
-<th style="text-align:right;">
-CI_high
-</th>
+<thead><tr class="header">
+<th align="left">Parameter</th>
+<th align="right">Std_Coefficient</th>
+<th align="right">CI</th>
+<th align="right">CI_low</th>
+<th align="right">CI_high</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1265450
-</td>
-<td style="text-align:right;">
-0.1265450
-</td>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.0000000</td>
+<td align="right">0.95</td>
+<td align="right">-0.1265450</td>
+<td align="right">0.1265450</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Country_deviation
-</td>
-<td style="text-align:right;">
-0.1890952
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.0292300
-</td>
-<td style="text-align:right;">
-0.3489603
-</td>
+<tr class="even">
+<td align="left">Country_deviation</td>
+<td align="right">0.1890952</td>
+<td align="right">0.95</td>
+<td align="right">0.0292300</td>
+<td align="right">0.3489603</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-LS_center
-</td>
-<td style="text-align:right;">
-0.3628109
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.2284307
-</td>
-<td style="text-align:right;">
-0.4971912
-</td>
+<tr class="odd">
+<td align="left">LS_center</td>
+<td align="right">0.3628109</td>
+<td align="right">0.95</td>
+<td align="right">0.2284307</td>
+<td align="right">0.4971912</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-CRA_center
-</td>
-<td style="text-align:right;">
--0.1769852
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.3099507
-</td>
-<td style="text-align:right;">
--0.0440197
-</td>
+<tr class="even">
+<td align="left">CRA_center</td>
+<td align="right">-0.1769852</td>
+<td align="right">0.95</td>
+<td align="right">-0.3099507</td>
+<td align="right">-0.0440197</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-SES_center
-</td>
-<td style="text-align:right;">
--0.1724731
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.3317415
-</td>
-<td style="text-align:right;">
--0.0132047
-</td>
+<tr class="odd">
+<td align="left">SES_center</td>
+<td align="right">-0.1724731</td>
+<td align="right">0.95</td>
+<td align="right">-0.3317415</td>
+<td align="right">-0.0132047</td>
 </tr>
 </tbody>
 </table></div>
@@ -1825,128 +1423,58 @@ SES_center
 ## Multiple R-squared:  0.256,  Adjusted R-squared:  0.2352 
 ## F-statistic: 12.32 on 5 and 179 DF,  p-value: 2.832e-10</code></pre>
 <div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/effectsize/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">tulloch_model2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/parameters/reference/standardize_parameters.html">standardize_parameters</a></span><span class="op">(</span><span class="va">tulloch_model2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Parameter
-</th>
-<th style="text-align:right;">
-Std_Coefficient
-</th>
-<th style="text-align:right;">
-CI
-</th>
-<th style="text-align:right;">
-CI_low
-</th>
-<th style="text-align:right;">
-CI_high
-</th>
+<thead><tr class="header">
+<th align="left">Parameter</th>
+<th align="right">Std_Coefficient</th>
+<th align="right">CI</th>
+<th align="right">CI_low</th>
+<th align="right">CI_high</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-(Intercept)
-</td>
-<td style="text-align:right;">
-0.0007205
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1262589
-</td>
-<td style="text-align:right;">
-0.1276998
-</td>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.0007205</td>
+<td align="right">0.95</td>
+<td align="right">-0.1262589</td>
+<td align="right">0.1276998</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-Country_deviation
-</td>
-<td style="text-align:right;">
-0.1877666
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.0272046
-</td>
-<td style="text-align:right;">
-0.3483285
-</td>
+<tr class="even">
+<td align="left">Country_deviation</td>
+<td align="right">0.1877666</td>
+<td align="right">0.95</td>
+<td align="right">0.0272046</td>
+<td align="right">0.3483285</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-LS_center
-</td>
-<td style="text-align:right;">
-0.3613759
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
-0.2262574
-</td>
-<td style="text-align:right;">
-0.4964944
-</td>
+<tr class="odd">
+<td align="left">LS_center</td>
+<td align="right">0.3613759</td>
+<td align="right">0.95</td>
+<td align="right">0.2262574</td>
+<td align="right">0.4964944</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-CRA_center
-</td>
-<td style="text-align:right;">
--0.1803568
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.3158157
-</td>
-<td style="text-align:right;">
--0.0448979
-</td>
+<tr class="even">
+<td align="left">CRA_center</td>
+<td align="right">-0.1803568</td>
+<td align="right">0.95</td>
+<td align="right">-0.3158157</td>
+<td align="right">-0.0448979</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-SES_center
-</td>
-<td style="text-align:right;">
--0.1742427
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.3344240
-</td>
-<td style="text-align:right;">
--0.0140615
-</td>
+<tr class="odd">
+<td align="left">SES_center</td>
+<td align="right">-0.1742427</td>
+<td align="right">0.95</td>
+<td align="right">-0.3344240</td>
+<td align="right">-0.0140615</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-CRA_center:SES_center
-</td>
-<td style="text-align:right;">
-0.0182935
-</td>
-<td style="text-align:right;">
-0.95
-</td>
-<td style="text-align:right;">
--0.1120138
-</td>
-<td style="text-align:right;">
-0.1486008
-</td>
+<tr class="even">
+<td align="left">CRA_center:SES_center</td>
+<td align="right">0.0182935</td>
+<td align="right">0.95</td>
+<td align="right">-0.1120138</td>
+<td align="right">0.1486008</td>
 </tr>
 </tbody>
 </table></div>
@@ -1960,66 +1488,30 @@ CRA_center:SES_center
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">tulloch_model1</span>, <span class="va">tulloch_model2</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:right;">
-Res.Df
-</th>
-<th style="text-align:right;">
-RSS
-</th>
-<th style="text-align:right;">
-Df
-</th>
-<th style="text-align:right;">
-Sum of Sq
-</th>
-<th style="text-align:right;">
-F
-</th>
-<th style="text-align:right;">
-Pr(&gt;F)
-</th>
+<thead><tr class="header">
+<th align="right">Res.Df</th>
+<th align="right">RSS</th>
+<th align="right">Df</th>
+<th align="right">Sum of Sq</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:right;">
-180
-</td>
-<td style="text-align:right;">
-1616.120
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
+<tr class="odd">
+<td align="right">180</td>
+<td align="right">1616.120</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-179
-</td>
-<td style="text-align:right;">
-1615.428
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0.6925931
-</td>
-<td style="text-align:right;">
-0.0767439
-</td>
-<td style="text-align:right;">
-0.7820792
-</td>
+<tr class="even">
+<td align="right">179</td>
+<td align="right">1615.428</td>
+<td align="right">1</td>
+<td align="right">0.6925931</td>
+<td align="right">0.0767439</td>
+<td align="right">0.7820792</td>
 </tr>
 </tbody>
 </table></div>
@@ -2303,7 +1795,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-24.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-08.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -2316,7 +1808,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -7,7 +7,7 @@
 <title>Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, we build on simple and multiple linear regression. All the lessons you learnt there still apply for building models with one or more predictors, but sometimes it is not...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Introduction to Generalised Linear Models | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-generalised-linear-models.html">
@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://psyteachr.github.io/statsresdesign/images/logos/logo.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="libs/kePrint-0.0.1/kePrint.js"></script><link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6NP3MF25W3"></script><script>
       window.dataLayer = window.dataLayer || [];
@@ -141,7 +141,7 @@
 <h3>
 <span class="header-section-number">3.3.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-2"><i class="fas fa-link"></i></a>
 </h3>
-<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
+<p>For the guided examples, we have two datasets, but we will introduce them in turn. To demonstrate logistic regression, we will use data from the original <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022">2022</a>)</span> study, which Bartlett and Zhang from chapter 1's data replicated.</p>
 <p>Irving et al. studied statistical misinformation, meaning a scientific result that people think is true, but later turns out to be false. Their specific focus was on mistaking correlational evidence for causal evidence and how you can best correct misinformation. Their research question was: Can you correct statistical misinformation through debunking? The hypothesis was: There will be fewer causal inferences in the correction group compared to the no correction group</p>
 <p>129 participants completed a continuous influence paradigm where participants read a fictious newspaper article one sentence at a time about a causal link between cognitive decline and watching TV in older adults. There is one independent variable (<code>Condition</code>) to randomly allocate participants into one of two groups:</p>
 <ol style="list-style-type: decimal">
@@ -174,30 +174,18 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>proportion_causal_inference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">DV1_1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="kable-table">
 <div class="inline-table"><table class="table table-sm">
-<thead><tr>
-<th style="text-align:left;">
-Condition
-</th>
-<th style="text-align:right;">
-proportion_causal_inference
-</th>
+<thead><tr class="header">
+<th align="left">Condition</th>
+<th align="right">proportion_causal_inference</th>
 </tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-0
-</td>
-<td style="text-align:right;">
-0.4696970
-</td>
+<tr class="odd">
+<td align="left">0</td>
+<td align="right">0.4696970</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-0.3492063
-</td>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">0.3492063</td>
 </tr>
 </tbody>
 </table></div>
@@ -264,10 +252,6 @@ proportion_causal_inference
 ## glm(formula = DV1_1 ~ Condition, family = gaussian(link = "identity"), 
 ##     data = irving_data)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.4697  -0.4697  -0.3492   0.5303   0.6508  
-## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
 ## (Intercept)  0.46970    0.06058   7.754 2.51e-12 ***
@@ -307,10 +291,6 @@ proportion_causal_inference
 ## Call:
 ## glm(formula = DV1_1 ~ Condition, family = binomial(link = "logit"), 
 ##     data = irving_data)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.1263  -1.1263  -0.9269   1.2294   1.4506  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)
@@ -391,7 +371,7 @@ proportion_causal_inference
 <h4>
 <span class="header-section-number">3.3.4.4</span> Using <code>emmeans</code> to get model estimates<a class="anchor" aria-label="anchor" href="#using-emmeans-to-get-model-estimates"><i class="fas fa-link"></i></a>
 </h4>
-<p>Another way of getting model estimates is using <code><span><span class="fu">emmeans</span><span class="op">(</span><span class="op">)</span></span></code> function from the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022" role="doc-biblioref">Lenth, 2022</a>)</span>. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients.</p>
+<p>Another way of getting model estimates is using <code><span><span class="fu">emmeans</span><span class="op">(</span><span class="op">)</span></span></code> function from the <code class="package">emmeans</code> package <span class="citation">(<a href="references.html#ref-Lenth2022">Lenth, 2022</a>)</span>. This can be particularly useful in more complicated models when you want marginal effects across interactions, but you might prefer to see the estimates in this format instead of reconstructing them from the coefficients.</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># logistic regression model as the object</span></span>
 <span><span class="co"># Specifying Condition as the predictor we want marginal effects for</span></span>
@@ -418,7 +398,7 @@ proportion_causal_inference
 <h3>
 <span class="header-section-number">3.4.1</span> Introduction to the dataset<a class="anchor" aria-label="anchor" href="#introduction-to-the-dataset-3"><i class="fas fa-link"></i></a>
 </h3>
-<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014" role="doc-biblioref">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
+<p>To demonstrate ordinal regression, we will use data from <span class="citation">Brandt et al. (<a href="references.html#ref-brandt_does_2014">2014</a>)</span>. The aim of Brandt et al. was to replicate a relatively famous social psychology study (Banerjee et al., 2012) on the effect of recalling unethical behaviour on the perception of brightness.</p>
 <p>In common language, unethical behaviour is considered as "dark", so the original authors designed a priming experiment where participants were randomly allocated to recall an unethical behaviour or an ethical behaviour from their past. Participants then completed a series of measures including their perception of how bright the testing room was. Brandt et al. were sceptical and wanted to replicate this study to see if they could find similar results.</p>
 <p>Participants were randomly allocated (<code>ExpCond</code>) to recall an unethical behaviour (<code>1</code>; n = 49) or an ethical behaviour (<code>0</code>; n = 51). The key outcome was their perception of how bright the room was (<code>welllit</code>), from 1 (not bright at all) to 7 (very bright). The research question was: Does recalling unethical behaviour lead people to perceive a room as darker than if they recall ethical behaviour?</p>
 </div>
@@ -511,7 +491,7 @@ proportion_causal_inference
 <p>For each group, the lines corresponds with the cumulative percentage at each scale point. When the line is horizontal, there is no change. When the line moves vertically, it represents the next percentage increase, adding to the cumulative percentage from the previous shift, until you reach 100%.</p>
 <p>Ordinal regression models estimate these shifts in probability and you get <em>k</em>-1 estimates for the thresholds, meaning you get one fewer estimate than the total number of scale points. Behind the scenes, the model interprets the outcome as a Gaussian looking latent variable, meaning the ordinal scale points are tapping into some kind of construct, but honouring there are discrete scale points.</p>
 <p>The coefficient in the model represents the probability shift of a 1 scale point increase from one distribution to another on the scale of your predictors. So, for every 1-unit increase in a continuous predictor, you see how the probability shifts, or how the probability shifts for the difference between two groups in a categorical predictor. A positive slope coefficient would mean an increase in probability along your predictor scale, while a negative slope coefficient would mean a decrease in probability along your predictor scale.</p>
-<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023" role="doc-biblioref">Christensen, 2023</a>)</span> package as it nicely supports cumulative link models as regular regression models we have used until this point or scaled up to mixed effects models.</p>
+<p>We will fit ordinal regression models using the <code class="package">ordinal</code> <span class="citation">(<a href="references.html#ref-Christensen2023">Christensen, 2023</a>)</span> package as it nicely supports cumulative link models as regular regression models we have used until this point or scaled up to mixed effects models.</p>
 <p>First, we need to convert the outcome into a factor, so there are a discrete ordered number of points.</p>
 <div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Brandt_data</span> <span class="op">&lt;-</span> <span class="va">Brandt_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -658,7 +638,7 @@ proportion_causal_inference
 <h3>
 <span class="header-section-number">3.5.1</span> Independent logistic regression<a class="anchor" aria-label="anchor" href="#independent-logistic-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use the same data set from <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022" role="doc-biblioref">2022</a>)</span>, but this time using a different question as a binary outcome. If you are coming to this fresh, make sure to remind yourself of the data set outlined in the <a href="introduction-to-generalised-linear-models.html#logistic-regression">logistic regression section</a> and load the data.</p>
+<p>For an independent activity, we will use the same data set from <span class="citation">Irving et al. (<a href="references.html#ref-irving_correcting_2022">2022</a>)</span>, but this time using a different question as a binary outcome. If you are coming to this fresh, make sure to remind yourself of the data set outlined in the <a href="introduction-to-generalised-linear-models.html#logistic-regression">logistic regression section</a> and load the data.</p>
 <p>Instead of using <code>DV1_1</code>, you will use <code>DV1_3</code> instead. This asked participants "Based on the results of this study, can we conclude that watching TV causes cognitive decline?". Coded responses were 1 for if the participant's responded with a mistaken causal conclusion and 0 if they did not provide a mistaken causal conclusion.</p>
 <div class="try">
 <p>From here, apply what you learnt in the guided example for logistic regression to this new independent task and complete the questions below to check your understanding. Remember you are predicting <code>DV1_3</code> from <code>Condition</code> to see if the probability of a mistaken causal inference is greater in the correction condition compared to the no correction condition.</p>
@@ -682,7 +662,7 @@ proportion_causal_inference
 <h3>
 <span class="header-section-number">3.5.2</span> Independent ordinal regression<a class="anchor" aria-label="anchor" href="#independent-ordinal-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015" role="doc-biblioref">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
+<p>For an independent activity, we will use data from <span class="citation">Schroeder &amp; Epley (<a href="references.html#ref-schroeder_sound_2015">2015</a>)</span>. The aim of the study was to investigate whether delivering a short speech to a potential employer would be more effective at landing you a job than writing the speech down and the employer reading it themselves. Thirty-nine professional recruiters were randomly assigned to receive a job application speech as either a transcript for them to read, or an audio recording of the applicant reading the speech.</p>
 <p>The recruiters then rated the applicants on perceived intellect, their impression of the applicant, and whether they would recommend hiring the candidate. All ratings were originally on a rating scale ranging from 0 (low intellect, impression etc.) to 10 (high impression, recommendation etc.), with the final value representing the mean across several items.</p>
 <p>For this example, we will focus on the hire rating (variable <code>Hire_Rating</code> to see whether the audio condition had a would lead to higher ratings than the transcript condition (variable <code>CONDITION</code>).</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
@@ -735,10 +715,6 @@ proportion_causal_inference
 ## Call:
 ## glm(formula = DV1_3 ~ Condition, family = binomial(link = "logit"), 
 ##     data = irving_data)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.7718  -0.7718  -0.2540  -0.2540   2.6268  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
@@ -1145,7 +1121,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-01-24.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-08.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -1158,7 +1134,7 @@ $( document ).ready(function() {
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
