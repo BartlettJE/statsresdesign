@@ -573,11 +573,12 @@ Their research question was: To what extent does the intervention affect autonom
 
 ```{r Heino data, warning=FALSE, message=FALSE}
 
+# In contrast to the original article, deviation coding given the interaction
 Heino_data <- read_csv("data/Heino-2018.csv") %>% 
   group_by(ID, intervention, time) %>% 
   summarise(value = mean(value, na.rm = TRUE)) %>% 
-  mutate(intervention = factor(intervention, levels = c(0, 1)),
-         time = factor(time, levels = c(0, 1))) %>% 
+  mutate(intervention = factor(case_when(intervention == 0 ~ -0.5, .default = 0.5)),
+         time = factor(case_when(time == 0 ~ -0.5, .default = 0.5))) %>% 
   ungroup()
 
 ```
