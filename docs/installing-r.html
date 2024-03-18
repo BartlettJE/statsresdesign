@@ -7,7 +7,7 @@
 <title>A Installing R | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="Installing R and RStudio is usually straightforward. The sections below explain how and there is a helpful YouTube video here.  A.1 Installing Base R Install base R. Choose the download link for...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
 <meta property="og:title" content="A Installing R | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/installing-r.html">
@@ -83,6 +83,7 @@
 <li><a class="" href="introduction-to-generalised-linear-models.html"><span class="header-section-number">3</span> Introduction to Generalised Linear Models</a></li>
 <li><a class="" href="introduction-to-bayesian-hypothesis-testing.html"><span class="header-section-number">4</span> Introduction to Bayesian Hypothesis Testing</a></li>
 <li><a class="" href="introduction-to-bayesian-estimation.html"><span class="header-section-number">5</span> Introduction to Bayesian Estimation</a></li>
+<li><a class="" href="introduction-to-linear-mixed-effects-models.html"><span class="header-section-number">6</span> Introduction to Linear Mixed Effects Models</a></li>
 <li class="book-part">Appendices</li>
 <li><a class="active" href="installing-r.html"><span class="header-section-number">A</span> Installing R</a></li>
 <li><a class="" href="conventions.html"><span class="header-section-number">B</span> Conventions</a></li>
@@ -95,12 +96,12 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="installing-r" class="section level1" number="6">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="installing-r" class="section level1" number="7">
 <h1>
 <span class="header-section-number">A</span> Installing <code>R</code><a class="anchor" aria-label="anchor" href="#installing-r"><i class="fas fa-link"></i></a>
 </h1>
 <p>Installing R and RStudio is usually straightforward. The sections below explain how and <a href="https://www.youtube.com/watch?v=lVKMsaWju8w" target="_blank">there is a helpful YouTube video here</a>.</p>
-<div id="installing-base-r" class="section level2" number="6.1">
+<div id="installing-base-r" class="section level2" number="7.1">
 <h2>
 <span class="header-section-number">A.1</span> Installing Base R<a class="anchor" aria-label="anchor" href="#installing-base-r"><i class="fas fa-link"></i></a>
 </h2>
@@ -109,13 +110,13 @@
 <p>If you are installing the Windows version, choose the "<a href="https://cran.rstudio.com/bin/windows/base/">base</a>" subdirectory and click on the download link at the top of the page. After you install R, you should also install <a href="https://cran.rstudio.com/bin/windows/Rtools/" target="_blank">RTools</a>; use the "recommended" version highlighted near the top of the list.</p>
 <p>If you are using Linux, choose your specific operating system and follow the installation instructions.</p>
 </div>
-<div id="installing-rstudio" class="section level2" number="6.2">
+<div id="installing-rstudio" class="section level2" number="7.2">
 <h2>
 <span class="header-section-number">A.2</span> Installing RStudio<a class="anchor" aria-label="anchor" href="#installing-rstudio"><i class="fas fa-link"></i></a>
 </h2>
 <p>Go to <a href="https://www.rstudio.com/products/rstudio/download/#download" target="_blank">rstudio.com</a> and download the RStudio Desktop (Open Source License) version for your operating system under the list titled <strong>Installers for Supported Platforms</strong>.</p>
 </div>
-<div id="rstudio-settings" class="section level2" number="6.3">
+<div id="rstudio-settings" class="section level2" number="7.3">
 <h2>
 <span class="header-section-number">A.3</span> RStudio Settings<a class="anchor" aria-label="anchor" href="#rstudio-settings"><i class="fas fa-link"></i></a>
 </h2>
@@ -135,15 +136,15 @@ Figure A.2: RStudio Code settings
 </p>
 </div>
 </div>
-<div id="installing-latex" class="section level2" number="6.4">
+<div id="installing-latex" class="section level2" number="7.4">
 <h2>
 <span class="header-section-number">A.4</span> Installing LaTeX<a class="anchor" aria-label="anchor" href="#installing-latex"><i class="fas fa-link"></i></a>
 </h2>
 <p>You can install the LaTeX typesetting system to produce PDF reports from RStudio. Without this additional installation, you will be able to produce reports in HTML but not PDF. This course will not require you to make PDFs. To generate PDF reports, you will additionally need to install <code class="package">tinytex</code> <span class="citation">(<a href="references.html#ref-R-tinytex">Xie, 2022</a>)</span> and run the following code:</p>
-<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb344"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">tinytex</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html">install_tinytex</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installing-the-brms-package" class="section level2" number="6.5">
+<div id="installing-the-brms-package" class="section level2" number="7.5">
 <h2>
 <span class="header-section-number">A.5</span> Installing the <code>brms</code> package<a class="anchor" aria-label="anchor" href="#installing-the-brms-package"><i class="fas fa-link"></i></a>
 </h2>
@@ -151,7 +152,7 @@ Figure A.2: RStudio Code settings
 <p>The best place to start is referring to the FAQs on the <a href="https://github.com/paul-buerkner/brms#how-do-i-install-brms" target="_blank">package Github page</a>.</p>
 <p>First, if you have a Windows computer, you should install Rtools. If you have a Mac, then you should install Xcode.</p>
 <p>Once you have the program relevant to your computer, then you can install <code class="package">brms</code> as usual:</p>
-<div class="sourceCode" id="cb304"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"brms"</span><span class="op">)</span></span></code></pre></div>
 
 </div>
@@ -358,7 +359,7 @@ $( document ).ready(function() {
   window.onresize = move_sidebar;
 });
 </script><div class="chapter-nav">
-<div class="prev"><a href="introduction-to-bayesian-estimation.html"><span class="header-section-number">5</span> Introduction to Bayesian Estimation</a></div>
+<div class="prev"><a href="introduction-to-linear-mixed-effects-models.html"><span class="header-section-number">6</span> Introduction to Linear Mixed Effects Models</a></div>
 <div class="next"><a href="conventions.html"><span class="header-section-number">B</span> Conventions</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
@@ -386,7 +387,7 @@ $( document ).ready(function() {
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-08.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-18.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

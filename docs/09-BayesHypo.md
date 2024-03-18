@@ -785,7 +785,7 @@ Zwaan_ttest
 ## Bayes factor analysis
 ## --------------
 ## [1] Alt., r=0.707 -Inf<d<0    : 8.786135e+12 ±0%
-## [2] Alt., r=0.707 !(-Inf<d<0) : 60.23154     ±0%
+## [2] Alt., r=0.707 !(-Inf<d<0) : 60.58291     ±0%
 ## 
 ## Against denominator:
 ##   Null, mu = 0 

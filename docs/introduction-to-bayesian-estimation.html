@@ -7,7 +7,7 @@
 <title>Chapter 5 Introduction to Bayesian Estimation | Statistics and Research Design</title>
 <meta name="author" content="James Bartlett">
 <meta name="description" content="In this chapter, you will learn about the Bayesian approach to estimation by fitting regression models using the brms package (Bürkner, 2017). This is the most flexible approach to modelling as...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
 <meta property="og:title" content="Chapter 5 Introduction to Bayesian Estimation | Statistics and Research Design">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://psyteachr.github.io/statsresdesign/introduction-to-bayesian-estimation.html">
@@ -83,6 +83,7 @@
 <li><a class="" href="introduction-to-generalised-linear-models.html"><span class="header-section-number">3</span> Introduction to Generalised Linear Models</a></li>
 <li><a class="" href="introduction-to-bayesian-hypothesis-testing.html"><span class="header-section-number">4</span> Introduction to Bayesian Hypothesis Testing</a></li>
 <li><a class="active" href="introduction-to-bayesian-estimation.html"><span class="header-section-number">5</span> Introduction to Bayesian Estimation</a></li>
+<li><a class="" href="introduction-to-linear-mixed-effects-models.html"><span class="header-section-number">6</span> Introduction to Linear Mixed Effects Models</a></li>
 <li class="book-part">Appendices</li>
 <li><a class="" href="installing-r.html"><span class="header-section-number">A</span> Installing R</a></li>
 <li><a class="" href="conventions.html"><span class="header-section-number">B</span> Conventions</a></li>
@@ -746,26 +747,26 @@
 <option value="x">Negative</option></select></p></li>
 <li>
 <p>Can we be confident in the direction of the coefficient?</p>
-<div id="radio_EKMXQUHEFD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EKMXQUHEFD" value="x"><span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_EKMXQUHEFD" value="answer"><span>No, the 95% HDI crosses 0</span></label>
+<div id="radio_URFKNZPJWC" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_URFKNZPJWC" value="x"><span>Yes, the 95% HDI excludes 0</span></label><label><input type="radio" autocomplete="off" name="radio_URFKNZPJWC" value="answer"><span>No, the 95% HDI crosses 0</span></label>
 </div>
 </li>
 <li>
 <p>What would your conclusion be for the research question?</p>
-<div id="radio_EXGRXYVYGB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_EXGRXYVYGB" value="x"><span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_EXGRXYVYGB" value="answer"><span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label>
+<div id="radio_IHBLAHPVDU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_IHBLAHPVDU" value="x"><span>Recalling unethical behaviour lead people to perceive a room as darker.</span></label><label><input type="radio" autocomplete="off" name="radio_IHBLAHPVDU" value="answer"><span>The effect was in the opposite direction but we would not be confident that the manipulation had an effect.</span></label>
 </div>
 </li>
 <li>
 <p>Are the results sensitive to the choice between default and user priors?</p>
-<div id="radio_WTASTBANUZ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_WTASTBANUZ" value="answer"><span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_WTASTBANUZ" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label>
+<div id="radio_WAPHNTNLLL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WAPHNTNLLL" value="answer"><span>No, there is little difference in the parameters and our conclusions do not change.</span></label><label><input type="radio" autocomplete="off" name="radio_WAPHNTNLLL" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label>
 </div>
 </li>
 <li>
 <p>Does the normal model capture the features of the data?</p>
-<div id="radio_DACIWHZSRM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DACIWHZSRM" value="answer"><span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_DACIWHZSRM" value="x"><span>Yes, assuming a normal distribution captures key features of the data.</span></label>
+<div id="radio_LMTAVVBGVJ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LMTAVVBGVJ" value="answer"><span>No, assuming a normal distribution misses key features of the data.</span></label><label><input type="radio" autocomplete="off" name="radio_LMTAVVBGVJ" value="x"><span>Yes, assuming a normal distribution captures key features of the data.</span></label>
 </div>
 </li>
 </ul>
@@ -1366,27 +1367,27 @@ Explain these answers
 <option value="x">Negative</option></select></p></li>
 <li>
 <p>Can we be confident in the direction of the individual predictors?</p>
-<div id="radio_DGJRNYMAVF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DGJRNYMAVF" value="x"><span>No, the 95% HDI of both coefficients contain 0.</span></label><label><input type="radio" autocomplete="off" name="radio_DGJRNYMAVF" value="x"><span>The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_DGJRNYMAVF" value="x"><span>The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_DGJRNYMAVF" value="answer"><span>Yes, both individual predictors are positive and their 95% HDI excludes 0.</span></label>
+<div id="radio_WQOVCVLRWK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WQOVCVLRWK" value="x"><span>No, the 95% HDI of both coefficients contain 0.</span></label><label><input type="radio" autocomplete="off" name="radio_WQOVCVLRWK" value="x"><span>The 95% HDI of absorption contains 0, but theory of mind is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_WQOVCVLRWK" value="x"><span>The 95% HDI of theory of mind contains 0, but absorption is positive and excludes 0.</span></label><label><input type="radio" autocomplete="off" name="radio_WQOVCVLRWK" value="answer"><span>Yes, both individual predictors are positive and their 95% HDI excludes 0.</span></label>
 </div>
 </li>
 <li>
 <p>How can you interpret the interaction?</p>
-<div id="radio_AUTXDRGWYK" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AUTXDRGWYK" value="x"><span>There is no clear interaction.</span></label><label><input type="radio" autocomplete="off" name="radio_AUTXDRGWYK" value="answer"><span>For lower values of theory of mind, the slope becomes more positive.</span></label><label><input type="radio" autocomplete="off" name="radio_AUTXDRGWYK" value="x"><span>For lower values of theory of mind, the slope becomes more negative.</span></label>
+<div id="radio_GJCERMPXJH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GJCERMPXJH" value="x"><span>There is no clear interaction.</span></label><label><input type="radio" autocomplete="off" name="radio_GJCERMPXJH" value="answer"><span>For lower values of theory of mind, the slope becomes more positive.</span></label><label><input type="radio" autocomplete="off" name="radio_GJCERMPXJH" value="x"><span>For lower values of theory of mind, the slope becomes more negative.</span></label>
 </div>
 </li>
 </ul>
 <p><strong>Hint: </strong> You will need to look at the conditional effects plot and see how one predictor moderates the effect of the other predictor.</p>
 <ul>
 <li>Comparing the models with and without the interaction term, which would you retain?
-<div id="radio_QCXOMTEQMZ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QCXOMTEQMZ" value="x"><span>The model with the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_QCXOMTEQMZ" value="x"><span>The model without the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_QCXOMTEQMZ" value="answer"><span>There is little difference between the two models, but we would retain the interaction for theoretical interest.</span></label>
+<div id="radio_OZCVTBWWVE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OZCVTBWWVE" value="x"><span>The model with the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_OZCVTBWWVE" value="x"><span>The model without the interaction term clearly has the better fit.</span></label><label><input type="radio" autocomplete="off" name="radio_OZCVTBWWVE" value="answer"><span>There is little difference between the two models, but we would retain the interaction for theoretical interest.</span></label>
 </div>
 </li>
 <li>Are the results sensitive to the choice between default and user priors?
-<div id="radio_XDUDNJEIJD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_XDUDNJEIJD" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label><label><input type="radio" autocomplete="off" name="radio_XDUDNJEIJD" value="answer"><span>No, there is almost no difference in the parameters and our conclusions do not change.</span></label>
+<div id="radio_GEOKSGFRCP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_GEOKSGFRCP" value="x"><span>Yes, there is a qualitative difference in our conclusions and the parameters change substantially.</span></label><label><input type="radio" autocomplete="off" name="radio_GEOKSGFRCP" value="answer"><span>No, there is almost no difference in the parameters and our conclusions do not change.</span></label>
 </div>
 </li>
 </ul>
@@ -2118,48 +2119,6 @@ Explain these answers
 </div>
 </div>
 </div>
-
-
-
-<div class="chapter-nav">
-<div class="prev"><a href="introduction-to-bayesian-hypothesis-testing.html"><span class="header-section-number">4</span> Introduction to Bayesian Hypothesis Testing</a></div>
-<div class="next"><a href="installing-r.html"><span class="header-section-number">A</span> Installing R</a></div>
-</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
-    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#introduction-to-bayesian-estimation"><span class="header-section-number">5</span> Introduction to Bayesian Estimation</a></li>
-<li><a class="nav-link" href="#learning-objectives-4"><span class="header-section-number">5.1</span> Learning objectives</a></li>
-<li>
-<a class="nav-link" href="#simpleregression"><span class="header-section-number">5.2</span> Simple Linear Regression</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#guided-example-schroeder-epley-2015"><span class="header-section-number">5.2.1</span> Guided example (Schroeder &amp; Epley, 2015)</a></li>
-<li><a class="nav-link" href="#independent-activity-brandt-et-al.-2014"><span class="header-section-number">5.2.2</span> Independent activity (Brandt et al., 2014)</a></li>
-</ul>
-</li>
-<li>
-<a class="nav-link" href="#multipleregression"><span class="header-section-number">5.3</span> Multiple Linear Regression</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#guided-example-heino-et-al.-2018"><span class="header-section-number">5.3.1</span> Guided example (Heino et al., 2018)</a></li>
-<li><a class="nav-link" href="#independent-activity-coleman-et-al.-2019"><span class="header-section-number">5.3.2</span> Independent activity (Coleman et al., 2019)</a></li>
-</ul>
-</li>
-<li><a class="nav-link" href="#summary-1"><span class="header-section-number">5.4</span> Summary</a></li>
-<li><a class="nav-link" href="#taking-this-further"><span class="header-section-number">5.5</span> Taking this further</a></li>
-<li>
-<a class="nav-link" href="#independent-activity-solutions-1"><span class="header-section-number">5.6</span> Independent activity solutions</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#Brandt-solution"><span class="header-section-number">5.6.1</span> Brandt et al. (2014)</a></li>
-<li><a class="nav-link" href="#Coleman-solution"><span class="header-section-number">5.6.2</span> Coleman et al. (2019)</a></li>
-</ul>
-</li>
-</ul>
-
-      <div class="book-extra">
-        <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/psyteachr/statsresdesign/blob/master/book/10-BayesEst.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/psyteachr/statsresdesign/edit/master/book/10-BayesEst.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
-        </ul>
-</div>
-    </nav>
-</div>
-</div>
 <script>
 
 /* update total correct if #webex-total_correct exists */
@@ -2361,15 +2320,52 @@ $( document ).ready(function() {
   move_sidebar();
   window.onresize = move_sidebar;
 });
-</script>
+</script><div class="chapter-nav">
+<div class="prev"><a href="introduction-to-bayesian-hypothesis-testing.html"><span class="header-section-number">4</span> Introduction to Bayesian Hypothesis Testing</a></div>
+<div class="next"><a href="introduction-to-linear-mixed-effects-models.html"><span class="header-section-number">6</span> Introduction to Linear Mixed Effects Models</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#introduction-to-bayesian-estimation"><span class="header-section-number">5</span> Introduction to Bayesian Estimation</a></li>
+<li><a class="nav-link" href="#learning-objectives-4"><span class="header-section-number">5.1</span> Learning objectives</a></li>
+<li>
+<a class="nav-link" href="#simpleregression"><span class="header-section-number">5.2</span> Simple Linear Regression</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#guided-example-schroeder-epley-2015"><span class="header-section-number">5.2.1</span> Guided example (Schroeder &amp; Epley, 2015)</a></li>
+<li><a class="nav-link" href="#independent-activity-brandt-et-al.-2014"><span class="header-section-number">5.2.2</span> Independent activity (Brandt et al., 2014)</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#multipleregression"><span class="header-section-number">5.3</span> Multiple Linear Regression</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#guided-example-heino-et-al.-2018"><span class="header-section-number">5.3.1</span> Guided example (Heino et al., 2018)</a></li>
+<li><a class="nav-link" href="#independent-activity-coleman-et-al.-2019"><span class="header-section-number">5.3.2</span> Independent activity (Coleman et al., 2019)</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#summary-1"><span class="header-section-number">5.4</span> Summary</a></li>
+<li><a class="nav-link" href="#taking-this-further"><span class="header-section-number">5.5</span> Taking this further</a></li>
+<li>
+<a class="nav-link" href="#independent-activity-solutions-1"><span class="header-section-number">5.6</span> Independent activity solutions</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#Brandt-solution"><span class="header-section-number">5.6.1</span> Brandt et al. (2014)</a></li>
+<li><a class="nav-link" href="#Coleman-solution"><span class="header-section-number">5.6.2</span> Coleman et al. (2019)</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/psyteachr/statsresdesign/blob/master/book/10-BayesEst.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/psyteachr/statsresdesign/edit/master/book/10-BayesEst.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
 
 </div>
- <!-- .container -->
+</div> <!-- .container -->
 
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-08.</p>
+    <p>"<strong>Statistics and Research Design</strong>" was written by James Bartlett. It was last built on 2024-03-18.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
